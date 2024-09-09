@@ -5,4 +5,4 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return inertia('Home');
-});
+})->name('app.home');
