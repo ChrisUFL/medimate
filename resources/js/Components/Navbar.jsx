@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react'
+import { Link, Head } from '@inertiajs/react'
 import React from 'react'
 import Navlink from './Navlink'
 import logo from '../../../public/static/images/logo.svg'
