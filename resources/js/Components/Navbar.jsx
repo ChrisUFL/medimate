@@ -5,7 +5,7 @@ import logo from '../../../public/static/images/logo_64.png'
 
 const Navbar = () => {
   return (
-    <div className='flex align-middle justify-evenly mt-5 font-medium text-center text-l leading-8'>
+    <div className='flex align-middle justify-between mt-5 mb-5 font-medium text-center text-l leading-8'>
         <div className='logo flex'>
           <Link href={ route('web.home') }>
           <img src='../../static/images/logo_64.png' alt={ logo } width={ 32 } height={ 32 }/>
