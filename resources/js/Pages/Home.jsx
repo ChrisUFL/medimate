@@ -3,6 +3,7 @@ import "../../css/app.css"
 import React from 'react'
 import Navbar from '../Components/Navbar'
 import HomepageTile from "../Components/HomepageTile"
+import Footer from "../Components/Footer"
 
 const Home = ({ user, calendar }) => {
   return (
@@ -20,6 +21,7 @@ const Home = ({ user, calendar }) => {
             </div>
           </section>
       </div>
+      <Footer />
     </div>
   )
 }
