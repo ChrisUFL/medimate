@@ -1,13 +1,16 @@
 <?php
 
+use App\Http\Controllers\AppointmentsController;
+use App\Http\Controllers\FitnessController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MedicationsController;
+use App\Http\Controllers\NotesController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return inertia('Home');
-})->name('web.home');
+Route::get('/', [HomeController::class, 'index'])->name('web.home');
 
-Route::get('/notes', function () { return inertia('Notes'); })->name('web.notes');
-Route::get('/appointments', function () { return inertia('Appointments'); })->name('web.appointments');
-Route::get('/medications', function () { return inertia('Medications'); })->name('web.medications');
-Route::get('/fitness', function () { return inertia('Fitness'); })->name('web.fitness');
+Route::get('/notes', [NotesController::class, 'index'])->name('web.notes');
+Route::get('/appointments', [AppointmentsController::class, 'index'])->name('web.appointments');
+Route::get('/medications', [MedicationsController::class, 'index'])->name('web.medications');
+Route::get('/fitness', [FitnessController::class, 'index'])->name('web.fitness');
