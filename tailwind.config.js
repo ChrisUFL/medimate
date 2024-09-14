@@ -6,7 +6,11 @@ export default {
       "./resources/**/*.jsx",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'home': "url('/static/images/homebg.png')",
+      }
+    },
   },
   plugins: [],
 }

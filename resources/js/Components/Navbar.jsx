@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/react'
 import React from 'react'
 import Navlink from './Navlink'
-import logo from '../../../public/static/images/logo_64.png'
+import logo from '../../../public/static/images/logo.svg'
 
 const Navbar = () => {
   return (
@@ -9,7 +9,7 @@ const Navbar = () => {
       <div className="content flex align-middle justify-between px-10 max-w-[1280px] m-auto">
         <div className='logo flex'>
           <Link href={ route('web.home') }>
-          <img src='../../static/images/logo_64.png' alt={ logo } width={ 32 } height={ 32 }/>
+          <img src={ logo } alt={ 'logo' } width={ 32 } height={ 32 }/>
           </Link>
           <span className='ml-2'>MediMate</span>
         </div>
