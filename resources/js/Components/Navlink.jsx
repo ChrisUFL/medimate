@@ -5,7 +5,7 @@ const Navlink = ({name, routeName}) => {
     let currentRouteStyle = '';
 
     if (route().current(routeName)) {
-        currentRouteStyle = 'text-indigo-700 underline'
+        currentRouteStyle = 'text-indigo-600'
     }
 
     return (
