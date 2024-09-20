@@ -2,7 +2,11 @@ import React from 'react'
 
 const Appointments = () => {
   return (
-    <div>Appointments</div>
+    <div>
+      <div>Appointments</div>
+      <h1>test</h1>
+    </div>
+    
   )
 }
 
