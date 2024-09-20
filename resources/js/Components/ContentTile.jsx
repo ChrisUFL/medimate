@@ -19,7 +19,7 @@ const ContentTile = ({image, title, data, color, dataType = "text"}) => {
   }
 
   return (
-    <div className={`flex-col justify-center px-11 pb-10 text-white basis-3/12 ${color}`}>
+    <div className={`flex-col justify-center px-11 pb-10 text-white basis-3/12 h-[420px] ${color}`}>
         <img src={ dbell } alt={ title } className='flex h-[48px] mx-auto my-8'/>
 
         <h1 className='flex justify-center text-3xl mb-3'>This is a title</h1>
