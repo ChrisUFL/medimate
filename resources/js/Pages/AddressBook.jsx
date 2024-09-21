@@ -1,11 +1,17 @@
 import React from 'react';
+import Navbar from '../Components/Navbar'
+import "../../css/AddressBook.css"
+
 
 const AddressBook = () => {
     return (
         <div>
-            <h1>Address Book</h1>
-            <p>test</p>
-            
+            <Navbar />
+            <div class = "page">
+
+                    <input class = "search"vtype="text" placeholder = "Search..."/>
+                <div class = "address-container"></div>
+            </div>
         </div>
     );
 };
