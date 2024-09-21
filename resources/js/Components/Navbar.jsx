@@ -22,6 +22,7 @@ const Navbar = () => {
         <Navlink name='Notes' routeName='web.notes' />
         <Navlink name='Appointments' routeName='web.appointments' />
         <Navlink name='Fitness' routeName='web.fitness' />
+        <Navlink name='Address Book' routeName='web.addressbook' />
         </div>
 
         <div className="account">
