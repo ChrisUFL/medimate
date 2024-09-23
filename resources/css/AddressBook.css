@@ -3,9 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    border:solid;
-    
+    flex-direction: column;    
 }
 .search{
     border:solid;
@@ -15,9 +13,6 @@
     margin: 1rem;
 }
 .address-container{
-    border: solid;
-    padding: 1rem;
     width: 80%;
-    padding: 1rem;
-    margin: 1rem;
+
 }
