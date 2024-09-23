@@ -1,17 +1,17 @@
 import React from 'react';
 import Navbar from '../Components/Navbar'
 import Contact from '../Components/Contact';
-import "../../css/AddressBook.css"
+import "../../css/app.css"
 
 
 const AddressBook = () => {
     return (
         <div>
             <Navbar />
-            <div class = "page">
+            <div class = "flex justify-center items-center flex-col">
 
-                    <input class = "search"vtype="text" placeholder = "Search..."/>
-                <div class = "address-container">
+                <input class = "border border-solid rounded-md w-4/5 p-4 m-4" type="text" placeholder = "Search..."/>
+                <div class = "w-4/5">
                     <table class="table-auto w-full border rounded-bg border-gray-400">
                         <tr class="bg-blue-700 text-white rounded-sm">
                             <th class="border border-gray-400 px-3 py-2">Name</th>
