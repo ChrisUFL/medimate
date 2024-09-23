@@ -22,6 +22,7 @@ const AddressBook = () => {
                         <Contact></Contact>
                         <Contact></Contact>
                         <Contact></Contact>
+                        <Contact></Contact>
                         
                     </table>
                     
