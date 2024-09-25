@@ -1,9 +1,20 @@
-import { Link } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
 import React from 'react'
 import Navlink from './Navlink'
 import logo from '../../../public/static/images/logo.svg'
 
 const Navbar = () => {
+  const user = usePage().props.auth.user;
+
+
+  let loginText = "Login";
+  let routeName = "login";
+
+  if (user) { 
+    loginText = user.name;
+    routeName = "profile.edit"
+  }
+
   return (
     <div className='mb-5 font-medium text-center text-l leading-8 py-7 bg-white w-screen'>
       <div className="content flex align-middle justify-between px-10 max-w-[1280px] m-auto">
@@ -24,8 +35,9 @@ const Navbar = () => {
         <Navlink name='Fitness' routeName='web.fitness' />
         </div>
 
-        <div className="account">
-          <Link href={''}>Login</Link>
+        <div className="flex gap-5 account">
+          <Link href={ route(routeName) }>{ loginText }</Link>
+          { user ?  <></> : <Link href={ route(`register`) }> Register </Link>}
         </div>
     </div>
     </div>
