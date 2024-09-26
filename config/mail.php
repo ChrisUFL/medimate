@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'log'),
+    'default' => 'mailgun',
 
     /*
     |--------------------------------------------------------------------------
@@ -93,6 +93,13 @@ return [
                 'ses',
                 'postmark',
             ],
+        ],
+
+        'mailgun' => [
+            'transport' => 'mailgun',
+            // 'client' => [
+            //     'timeout' => 5,
+            // ],
         ],
 
     ],
