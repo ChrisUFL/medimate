@@ -21,6 +21,12 @@ class Note extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'content',
+        'user_id',
+    ];
+
     protected function casts(): array
     {
         return [

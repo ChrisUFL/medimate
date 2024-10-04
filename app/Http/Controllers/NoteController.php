@@ -4,17 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\NoteRequest;
 use App\Models\Note;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class NoteController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = User::query()
-            ->whereHas('notes')
-            ->first();
+        $user = $request->user();
         $notes = $user->notes()
             ->get(['note_id', 'title', 'content'])
             ->each(static function ($note) {
@@ -41,6 +38,17 @@ class NoteController extends Controller
      */
     public function store(NoteRequest $request)
     {
+        $validated = $request->validated();
+        $user = $request->user();
+        $validated['user_id'] = $user->id;
+
+        if ($validated) {
+            /** @var Note $note */
+            $note = $request->user()->notes()->create($validated);
+
+            return redirect(route('notes.show', ['note' => $note->id]));
+        }
+
         return redirect(route('web.home'));
     }
 
@@ -51,11 +59,15 @@ class NoteController extends Controller
     {
         $userId = $request->user()?->id;
         $note = Note::firstWhere('id', '=', $id);
-        $allowedUserIds = $note->pluck('user_id')->toArray();
 
-        /*if (! in_array($userId, $allowedUserIds)) {
+        if (! $note) {
+            abort(404);
+        }
+
+        $allowedUserIds = $note->pluck('user_id')->toArray();
+        if (! in_array($userId, $allowedUserIds)) {
             abort(403);
-        }*/
+        }
 
         /** @var Note $note */
         return Inertia::render('Notes/Show', [
@@ -69,24 +81,59 @@ class NoteController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request, string $id)
     {
-        //
+        $userId = $request->user()?->id;
+        $note = Note::firstWhere('id', '=', $id);
+
+        if (! $note) {
+            abort(404);
+        }
+
+        if ($userId !== $note->user_id) {
+            abort(401);
+        }
+
+        return Inertia::render('Notes/Edit', [
+            'note_id' => $note->id,
+            'note_title' => $note->title,
+            'note_content' => $note->content,
+            'note_owner' => $note->user_id,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(NoteRequest $request, string $id)
     {
-        //
+        $note = Note::firstWhere('id', '=', $id);
+        $userId = $request->user()->id;
+        $validated = $request->validated();
+
+        if (! $validated || ! $note || ! $userId) {
+            abort(404);
+        }
+
+        if ($note->update($validated)) {
+            return redirect(route('notes.show', ['note' => $note->id], false));
+        }
+
+        return redirect(route('notes.index', [], false));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        //
+        $note = Note::firstWhere('id', '=', $id);
+        if (! $note || $note->user_id !== $request->user()->id) {
+            abort(403);
+        }
+
+        if ($note->delete()) {
+            return redirect(route('notes.index'));
+        }
     }
 }
