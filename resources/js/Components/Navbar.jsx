@@ -11,7 +11,7 @@ const Navbar = () => {
   let routeName = "login";
 
   if (user) { 
-    loginText = user.first_name;
+    loginText = user.first_name.charAt(0).toUpperCase() + user.first_name.slice(1);
     routeName = "profile.edit"
   }
 
