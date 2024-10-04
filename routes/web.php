@@ -26,6 +26,6 @@ Route::get('/appointments', [AppointmentController::class, 'index'])->name('web.
 Route::get('/medications', [MedicationController::class, 'index'])->name('web.medications');
 Route::get('/fitness', [FitnessController::class, 'index'])->name('web.fitness');
 
-Route::resource('notes', NoteController::class)->middleware('auth');
+Route::resource('notes', NoteController::class)/*->middleware('auth')*/;
 
 require __DIR__.'/auth.php';

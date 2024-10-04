@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\NoteRequest;
+use App\Models\Note;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class NoteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $user = User::query()
@@ -43,15 +41,29 @@ class NoteController extends Controller
      */
     public function store(NoteRequest $request)
     {
-        //
+        return redirect(route('web.home'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id, Request $request)
     {
-        //
+        $userId = $request->user()?->id;
+        $note = Note::firstWhere('id', '=', $id);
+        $allowedUserIds = $note->pluck('user_id')->toArray();
+
+        /*if (! in_array($userId, $allowedUserIds)) {
+            abort(403);
+        }*/
+
+        /** @var Note $note */
+        return Inertia::render('Notes/Show', [
+            'note_id' => $note->id,
+            'note_title' => $note->title,
+            'note_content' => $note->content,
+            'note_owner' => $note->user_id,
+        ]);
     }
 
     /**

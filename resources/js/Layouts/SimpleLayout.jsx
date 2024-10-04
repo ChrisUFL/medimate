@@ -3,9 +3,9 @@ import React from 'react'
 
 function SimpleLayout({ children }) {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col items-center bg-gray-10">
         <Navbar/>
-        <div className='content flex justify-center bg-gray-200 min-h-screen w-screen'>
+        <div className='content flex justify-center w-full max-w-[70%]'>
             { children }
         </div>
     </div>

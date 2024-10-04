@@ -1,11 +1,16 @@
 import Navbar from '@/Components/Navbar'
+import PrimaryButton from '@/Components/PrimaryButton'
 import SimpleLayout from '@/Layouts/SimpleLayout'
-import { Head, Link, usePage } from '@inertiajs/react'
+import { Head, Link, usePage, router } from '@inertiajs/react'
 import React from 'react'
 import { FaLink } from 'react-icons/fa'
 
 const Notes = ({notes}) => {
   const page = usePage();
+
+  function goToNew () {
+    router.get(route('notes.create'))
+  }
 
   const content = notes.map( (note) => {
     return (
@@ -21,7 +26,7 @@ const Notes = ({notes}) => {
       <Head title='Notes' />
         <div className='mt-3 flex-col max-w-[1280px] w-[70%]'>
         <div className='flex justify-end drop-shadow-lg'> 
-          <Link href={route('notes.create')} className='rounded-[15px] bg-indigo-400 p-2 my-2'>Add Note</Link>
+          <PrimaryButton onClick={goToNew} className='mb-2'> Add Note </PrimaryButton>
         </div>
       
         <div className="relative overflow-x-auto">
