@@ -2,14 +2,14 @@ import { Link } from '@inertiajs/react'
 import React from 'react'
 
 const Navlink = ({name, routeName}) => {
-    let currentRouteStyle = '';
+    let className = '';
 
     if (route().current(routeName)) {
-        currentRouteStyle = 'text-slate-500'
+        className = 'text-indigo-600 font-extrabold border-indigo-400'
     }
 
     return (
-      <Link href={route(`${routeName}`)} className={currentRouteStyle}>{name}</Link>
+      <Link href={route(`${routeName}`)} className={className}>{name}</Link>
     )
 }
 

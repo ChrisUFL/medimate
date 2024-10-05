@@ -11,12 +11,12 @@ const Navbar = () => {
   let routeName = "login";
 
   if (user) { 
-    loginText = user.name;
+    loginText = user.first_name.charAt(0).toUpperCase() + user.first_name.slice(1);
     routeName = "profile.edit"
   }
 
   return (
-    <div className='mb-5 font-medium text-center text-l leading-8 py-7 bg-white w-screen'>
+    <div className='font-medium text-center text-l leading-8 py-7 bg-white w-screen'>
       <div className="content flex align-middle justify-between px-10 max-w-[1280px] m-auto">
         <div className='logo flex'>
           <Link href={ route('web.home') }>
@@ -30,7 +30,7 @@ const Navbar = () => {
         <div className='links flex gap-5'>
         <Navlink name='Home' routeName='web.home' />
         <Navlink name='Medications' routeName='web.medications' />
-        <Navlink name='Notes' routeName='web.notes' />
+        <Navlink name='Notes' routeName='notes.index' />
         <Navlink name='Appointments' routeName='web.appointments' />
         <Navlink name='Fitness' routeName='web.fitness' />
         </div>

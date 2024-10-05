@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\AppointmentsController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\FitnessController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\MedicationsController;
-use App\Http\Controllers\NotesController;
+use App\Http\Controllers\MedicationController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -22,9 +22,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/notes', [NotesController::class, 'index'])->name('web.notes');
-Route::get('/appointments', [AppointmentsController::class, 'index'])->name('web.appointments');
-Route::get('/medications', [MedicationsController::class, 'index'])->name('web.medications');
+Route::get('/appointments', [AppointmentController::class, 'index'])->name('web.appointments');
+Route::get('/medications', [MedicationController::class, 'index'])->name('web.medications');
 Route::get('/fitness', [FitnessController::class, 'index'])->name('web.fitness');
 
+Route::resource('notes', NoteController::class)->middleware('auth');
 require __DIR__.'/auth.php';
