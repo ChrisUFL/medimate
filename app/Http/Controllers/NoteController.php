@@ -68,7 +68,7 @@ class NoteController extends Controller
             abort(404);
         }
 
-        $allowedUserIds = $note->pluck('user_id')->toArray();
+        $allowedUserIds = $note->users()->pluck('user_id')->toArray();
         if (! in_array($userId, $allowedUserIds)) {
             abort(403);
         }
