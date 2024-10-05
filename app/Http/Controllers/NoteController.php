@@ -139,5 +139,7 @@ class NoteController extends Controller
         if ($note->delete()) {
             return redirect(route('notes.index'));
         }
+
+        return redirect(route('notes.show', ['note' => $id], false));
     }
 }
