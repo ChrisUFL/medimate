@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\NoteRequest;
 use App\Models\Note;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -11,12 +12,20 @@ class NoteController extends Controller
 {
     public function index(Request $request)
     {
+        $searchTerm = $request->query('q');
         $user = $request->user();
         $notes = $user->notes()
-            ->paginate(10, ['note_id', 'title', 'content']);
+            ->when($searchTerm, static function (Builder $query) use ($searchTerm) {
+                $query->where('title', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('content', 'LIKE', "%{$searchTerm}%");
+            })
+            ->where('notes.user_id', '=', $user->id)
+            ->paginate(10, ['note_id', 'title', 'content'])
+            ->appends(['q' => $searchTerm]);
 
         return Inertia::render('Notes/Index', [
             'notes' => $notes,
+            'search_term' => $searchTerm,
         ]);
     }
 
