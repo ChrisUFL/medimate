@@ -140,6 +140,6 @@ class NoteController extends Controller
             return redirect(route('notes.index'));
         }
 
-        return redirect(route('notes.show', ['note' => $id], false));
+        return redirect()->back();
     }
 }
