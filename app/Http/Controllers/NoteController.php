@@ -13,12 +13,7 @@ class NoteController extends Controller
     {
         $user = $request->user();
         $notes = $user->notes()
-            ->get(['note_id', 'title', 'content'])
-            ->each(static function ($note) {
-                if (strlen($note->content) > 50) {
-                    $note->content = rtrim(substr($note->content, 0, 50)).'...';
-                }
-            });
+            ->paginate(10, ['note_id', 'title', 'content']);
 
         return Inertia::render('Notes/Index', [
             'notes' => $notes,

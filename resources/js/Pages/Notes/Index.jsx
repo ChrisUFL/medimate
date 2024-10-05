@@ -1,4 +1,5 @@
 import Navbar from '@/Components/Navbar'
+import Paginator from '@/Components/Paginator'
 import PrimaryButton from '@/Components/PrimaryButton'
 import SimpleLayout from '@/Layouts/SimpleLayout'
 import { Head, Link, usePage, router } from '@inertiajs/react'
@@ -8,11 +9,12 @@ import { FaLink } from 'react-icons/fa'
 const Notes = ({notes}) => {
   const page = usePage();
 
+  console.log(notes);
   function goToNew () {
     router.get(route('notes.create'))
   }
 
-  const content = notes.map( (note) => {
+  const content = notes.data.map( (note) => {
     return (
       <tr key={ note.note_id }>
       <td className='px-6 py-3'>{ note.title }</td>
@@ -42,6 +44,7 @@ const Notes = ({notes}) => {
               { content }
             </tbody>
           </table>
+          <Paginator links={notes.links} currentPage={notes.current_page} lastPage={notes.last_page}/>
         </div>
         </div>
     </SimpleLayout>
