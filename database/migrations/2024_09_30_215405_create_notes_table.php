@@ -6,7 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('notes', static function (Blueprint $table) {
@@ -27,6 +28,15 @@ return new class extends Migration {
 
     public static function down(): void
     {
+        Schema::table('notes', static function (Blueprint $table) {
+            $table->dropConstrainedForeignIdFor(User::class);
+        });
+
+        Schema::table('note_user', static function (Blueprint $table) {
+            $table->dropConstrainedForeignIdFor(User::class);
+            $table->dropConstrainedForeignIdFor(Note::class);
+        });
+
         Schema::dropIfExists('notes');
         Schema::dropIfExists('note_user');
     }
