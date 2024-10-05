@@ -15,10 +15,13 @@ const Notes = ({notes}) => {
   }
 
   const content = notes.data.map( (note) => {
+    let note_content = note.content.substring(0, 85).trim();
+    note_content += note.content.length > 50 ? '...' : '';
+
     return (
       <tr key={ note.note_id }>
       <td className='px-6 py-3'>{ note.title }</td>
-      <td className='px-6 py-3'>{ note.content }</td>
+      <td className='px-6 py-3'>{ note_content }</td>
       <td className='px-6 py-3 flex justify-center'><Link href={route('notes.show', {'note': note.note_id })}><FaLink /></Link></td>
       </tr> )
   });
