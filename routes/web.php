@@ -20,11 +20,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
-Route::get('/appointments', [AppointmentController::class, 'index'])->name('web.appointments');
-Route::get('/medications', [MedicationController::class, 'index'])->name('web.medications');
-Route::get('/fitness', [FitnessController::class, 'index'])->name('web.fitness');
+    Route::get('/appointments', [AppointmentController::class, 'index'])->middleware('auth')->name('web.appointments');
+    Route::get('/medications', [MedicationController::class, 'index'])->middleware('auth')->name('web.medications');
+    Route::get('/fitness', [FitnessController::class, 'index'])->middleware('auth')->name('web.fitness');
+    
+});
 
 Route::resource('notes', NoteController::class)->middleware('auth');
 require __DIR__.'/auth.php';
