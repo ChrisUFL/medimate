@@ -36,7 +36,7 @@ function Show({...note}) {
   return (
     <SimpleLayout>
         <Head title={note.note_title} />
-        <div className='w-full mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg'>
+        <div className='mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg'>
         <h3 className='text-2xl font-semibold my-3'>{note.note_title}</h3>
         <pre className='max-h-screen text-slate-700 text-wrap overflow-auto font-serif'>{note.note_content}</pre>
         <div className='flex justify-end gap-2'>

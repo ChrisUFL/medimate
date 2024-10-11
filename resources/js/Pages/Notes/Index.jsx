@@ -42,7 +42,7 @@ const Notes = ({notes, search_term}) => {
   return (
     <SimpleLayout>
       <Head title='Notes' />
-        <div className='mt-3 flex-col max-w-[1280px] w-[70%]'>
+        <div className='mt-3 flex-col'>
         <div className='flex justify-between drop-shadow-lg'> 
           <div className='flex mb-1'>
             <input type='text' className='h-9 rounded' placeholder='Search' value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyDown={handleKeyDown} />

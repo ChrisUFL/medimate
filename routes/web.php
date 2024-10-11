@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MedicationController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProviderController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,3 +24,5 @@ Route::middleware('auth')->group(static function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/provider', [ProviderController::class, 'index'])->name('web.provider');

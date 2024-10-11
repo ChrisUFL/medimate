@@ -1,21 +1,9 @@
-import { Link, usePage } from '@inertiajs/react'
 import React from 'react'
 import Navlink from './Navlink'
+import { Link } from '@inertiajs/react'
 import logo from '../../../public/static/images/logo.svg'
-import Dropdown from './Dropdown'
 
-const Navbar = () => {
-  const user = usePage().props.auth.user;
-
-
-  let loginText = "Login";
-  let routeName = "login";
-
-  if (user) { 
-    loginText = user.first_name.charAt(0).toUpperCase() + user.first_name.slice(1);
-    routeName = "profile.edit"
-  }
-
+function ProviderNavbar() {
   return (
     <div className='font-medium text-center text-l leading-8 py-7 bg-white w-screen'>
       <div className="content flex align-middle justify-between px-10 max-w-[1280px] m-auto">
@@ -37,12 +25,12 @@ const Navbar = () => {
         </div>
 
         <div className="flex gap-5 account">
-          <Link href={ route(routeName) }>{ loginText }</Link>
-          { user ?  <></> : <Link href={ route(`register`) }> Register </Link>}
+          <Link href={ '/' }>{ 'loginText' }</Link>
+          { true ?  <></> : <Link href={ route(`register`) }> Register </Link>}
         </div>
     </div>
     </div>
   )
 }
 
-export default Navbar
+export default ProviderNavbar

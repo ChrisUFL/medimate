@@ -1,10 +1,12 @@
-import Navbar from '@/Components/Navbar'
+import ProviderNavbar from '@/Components/ProviderNavbar'
+import { Head } from '@inertiajs/react'
 import React from 'react'
 
-function SimpleLayout({ children }) {
+function SimpleLayout({ children, pageTitle }) {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100">
-        <Navbar/>
+        <Head title={pageTitle}/>
+        <ProviderNavbar />
         <div className='content flex justify-center w-full max-w-[1000px]'>
             { children }
         </div>
