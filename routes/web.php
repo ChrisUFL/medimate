@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MedicationController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProviderController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,3 +29,5 @@ Route::get('/fitness', [FitnessController::class, 'index'])->name('web.fitness')
 
 Route::resource('notes', NoteController::class)->middleware('auth');
 require __DIR__.'/auth.php';
+
+Route::get('/provider', [ProviderController::class, 'index'])->name('web.provider');
