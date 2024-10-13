@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\ProviderControllers;
+namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PatientRequest;
-use App\Jobs\SendPasswordResetEmailJob;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,7 +12,7 @@ class PatientController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Patients/Index', [
+        return Inertia::render('Provider/Patients/Index', [
             'patients' => [
                 [
                     'avatar_url' => 'https://placehold.co/32',
@@ -63,7 +62,7 @@ class PatientController extends Controller
 
     public function create(Request $request)
     {
-        return Inertia::render('Patients/Create', [
+        return Inertia::render('Provider/Patients/Create', [
             'previousRoute' => $this->getPreviousRoute(url()->previous()),
         ]);
     }
@@ -72,7 +71,7 @@ class PatientController extends Controller
     {
         $validated = $request->validated();
         if (User::create($validated)) {
-            dispatch(new SendPasswordResetEmailJob($validated['email']));
+            //dispatch(new SendPasswordResetEmailJob($validated['email']));
         }
 
         return redirect()->route('patients.index');
@@ -80,7 +79,7 @@ class PatientController extends Controller
 
     public function show($id)
     {
-        return Inertia::render('Patients/Show');
+        return Inertia::render('Provider/Patients/Show');
     }
 
     public function edit($id) {}

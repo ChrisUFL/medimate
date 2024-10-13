@@ -8,35 +8,32 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property int $id
- * @property int $user_id
- * @property string $title
- * @property string $content
+ * @property Carbon $appointment_time
+ * @property int $patient_id
+ * @property int $provider_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
- *
- * @property-read User $user
  */
-class Note extends Model
+class Appointment extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'title',
-        'content',
-        'user_id',
-    ];
-
+    protected $guarded = [];
     protected function casts(): array
     {
         return [
+            'appointment_time' => 'datetime',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
     }
-
-    public function user(): BelongsTo
+    public function patient(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'patient_id', 'id');
+    }
+
+    public function provider(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'provider_id', 'id');
     }
 }

@@ -6,6 +6,8 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -20,7 +22,8 @@ use Illuminate\Notifications\Notifiable;
  * @property Carbon $date_of_birth
  * @property string $avatar_url
  *
- * @property-read Note $note;
+ * @property-read Note $note
+ * @property-read Company $company
  */
 class User extends Authenticatable
 {
@@ -66,13 +69,33 @@ class User extends Authenticatable
         ];
     }
 
-    public function notes(): BelongsToMany
+    public function notes(): HasMany
     {
-        return $this->belongsToMany(Note::class);
+        return $this->hasMany(Note::class);
     }
 
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    public function companies(): BelongsToMany
+    {
+        return $this->belongsToMany(Company::class);
+    }
+
+    public function employee(): HasOne
+    {
+        return $this->hasOne(Employee::class);
+    }
+
+    public function doctorAppointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class, 'patient_id', 'id');
+    }
+
+    public function appointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class, 'provider_id', 'id');
     }
 }

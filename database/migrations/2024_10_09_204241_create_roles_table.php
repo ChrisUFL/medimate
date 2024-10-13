@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Company;
+use App\Models\Employee;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -10,7 +12,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('roles', static function (Blueprint $table) {
             $table->id();
             $table->UUID('role_id')->unique()->nullable(false);
             $table->string('role_name')->unique()->nullable(false);
@@ -18,7 +20,7 @@ return new class extends Migration
             $table->timestamp('updated_at')->useCurrent();
         });
 
-        Schema::create('user_role', function (Blueprint $table) {
+        Schema::create('user_role', static function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Role::class)->nullable(false)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->nullable(false)->constrained()->cascadeOnDelete();
@@ -26,20 +28,8 @@ return new class extends Migration
             $table->timestamp('updated_at')->useCurrent();
         });
 
-        Schema::create('patient_provider', static function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('patient_id')->nullable(false);
-            $table->unsignedBigInteger('provider_id')->nullable(false);
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-
-            $table->foreign('patient_id')->references('id')->on('users');
-            $table->foreign('provider_id')->references('id')->on('users');
-        });
-
         Schema::create('appointments', static function (Blueprint $table) {
             $table->id();
-            $table->string('patient_name');
             $table->timestamp('appointment_time')->nullable(false);
             $table->unsignedBigInteger('patient_id')->nullable(false);
             $table->unsignedBigInteger('provider_id')->nullable(false);
@@ -52,12 +42,20 @@ return new class extends Migration
 
         Schema::create('companies', static function (Blueprint $table) {
             $table->id();
-            $table->string('company_name')->nullable(false);
             $table->foreignIdFor(User::class);
+            $table->string('company_name')->nullable(false);
             $table->string('street_address');
             $table->string('city');
             $table->string('state');
             $table->string('zip_code');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+        });
+
+        Schema::create('company_user', static function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Company::class);
+            $table->foreignIdFor(User::class);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
@@ -70,11 +68,6 @@ return new class extends Migration
             $table->dropConstrainedForeignIdFor(User::class);
         });
 
-        Schema::table('patient_provider', static function (Blueprint $table) {
-            $table->dropConstrainedForeignId('patient_id');
-            $table->dropConstrainedForeignId('provider_id');
-        });
-
         Schema::table('appointments', static function (Blueprint $table) {
             $table->dropConstrainedForeignId('patient_id');
             $table->dropConstrainedForeignId('provider_id');
@@ -82,7 +75,7 @@ return new class extends Migration
 
         Schema::dropIfExists('roles');
         Schema::dropIfExists('user_role');
-        Schema::dropIfExists('patient_provider');
+        Schema::dropIfExists('company_user');
         Schema::dropIfExists('appointments');
         Schema::dropIfExists('companies');
     }

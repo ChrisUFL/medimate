@@ -20,7 +20,7 @@ class NoteController extends Controller
                     ->orWhere('content', 'LIKE', "%{$searchTerm}%");
             })
             ->where('notes.user_id', '=', $user->id)
-            ->paginate(10, ['note_id', 'title', 'content'])
+            ->paginate(10, ['notes.id', 'title', 'content'])
             ->appends(['q' => $searchTerm]);
 
         return Inertia::render('Notes/Index', [
@@ -68,8 +68,7 @@ class NoteController extends Controller
             abort(404);
         }
 
-        $allowedUserIds = $note->users()->pluck('user_id')->toArray();
-        if (! in_array($userId, $allowedUserIds)) {
+        if ($userId !== $note->user->id) {
             abort(403);
         }
 

@@ -29,7 +29,28 @@ const dateClick = (e) => {
     console.log(e.dateStr);
 }
 
-const Index = () => {
+const eventClick = (e) => {
+  console.log(e.event.title);
+}
+
+
+const Index = ({appointments}) => {
+
+  const appointmentTimes = appointments.map((appointment) => {
+    let datestring = new Date(appointment.appointment_time);
+    const endTime = datestring.setMinutes(datestring.getMinutes() + 30);
+
+    return ({
+      title: appointment.title,
+      start: appointment.appointment_time,
+      end: datestring.toISOString(),
+      url: route('appointments.show', {
+        appointment: appointment.id,
+      })
+    })
+  });
+
+
   return (
     <ProviderLayout pageTitle={'Appointments'}>
     <div className='flex w-[100%]'>
@@ -42,7 +63,8 @@ const Index = () => {
     businessHours={businessHours}
     slotDuration={'00:15:00'}
     nowIndicator={true}
-    allDaySlot={false}/>
+    allDaySlot={false}
+    events={appointmentTimes} />
     </div>
     
   </ProviderLayout>

@@ -25,7 +25,7 @@ const Create = ({previousRoute}) => {
         post(route('patients.store', {}, false))
     };
 
-    console.log(previousRoute);
+
   return (
     <ProviderLayout pageTitle={'Add Patient'}>
         <ShadowBox styles='w-[500px]'>

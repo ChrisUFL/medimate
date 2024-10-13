@@ -1,15 +1,15 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\Company\PatientController;
 use App\Http\Controllers\FitnessController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MedicationController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProviderControllers\DashboardController;
-use App\Http\Controllers\ProviderControllers\PatientController;
+use App\Http\Controllers\Provider\AppointmentController as ProviderAppointments;
+use App\Http\Controllers\Provider\DashboardController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProviderControllers\AppointmentController as ProviderAppointments;
 
 Route::get('/', [HomeController::class, 'index'])->name('web.home');
 

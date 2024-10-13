@@ -32,17 +32,16 @@ const Notes = ({notes, search_term}) => {
     note_content += note.content.length > 50 ? '...' : '';
 
     return (
-      <tr key={ note.note_id }>
+      <tr key={ note.id }>
       <td className='px-6 py-3'>{ note.title }</td>
       <td className='px-6 py-3'>{ note_content }</td>
-      <td className='px-6 py-3 flex justify-center'><Link href={route('notes.show', {'note': note.note_id })}><FaLink /></Link></td>
+      <td className='px-6 py-3 flex justify-center'><Link href={route('notes.show', {'note': note.id })}><FaLink /></Link></td>
       </tr> )
   });
 
   return (
-    <SimpleLayout>
-      <Head title='Notes' />
-        <div className='mt-3 flex-col'>
+    <SimpleLayout title='Notes'>
+        <div className='mt-3 flex-col w-[1000px]'>
         <div className='flex justify-between drop-shadow-lg'>
           <div className='flex mb-1'>
             <input type='text' className='h-9 rounded' placeholder='Search' value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyDown={handleKeyDown} />
