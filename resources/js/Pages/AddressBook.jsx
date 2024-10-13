@@ -3,13 +3,20 @@ import Navbar from '../Components/Navbar'
 import Contact from '../Components/Contact';
 import "../../css/app.css"
 
-const data = {
-    name : "KJ OBrien",
-    email : "kj@gmail.com",
-    phone: "+1 (561) 555-5555",
-    address : "123 Main Street"
-
-}
+const data = [
+    {
+        name : "KJ OBrien",
+        email : "kj@gmail.com",
+        phone: "+1 (561) 555-5555",
+        address : "123 Main Street"
+    },
+    {
+        name : "Reed Books",
+        email : "rbooks@gmail.com",
+        phone: "+1 (561) 123-4567",
+        address : "0 Binary Lane"
+    }     
+]
 
 
 const AddressBook = () => {
@@ -25,7 +32,12 @@ const AddressBook = () => {
                         <th class="border border-gray-400 px-3 py-2">Phone Number</th>
                         <th class="border border-gray-400 px-3 py-2">Address</th>
                     </tr>
-                    <Contact contact_data = {data}></Contact>
+                    <tbody>
+                        {data.map((contact, index) => (
+                            <Contact key={index} contact_data={contact} />
+                        ))}
+                    </tbody>
+
 
                 </table>
             </div>
