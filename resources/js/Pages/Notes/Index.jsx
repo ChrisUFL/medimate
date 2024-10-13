@@ -38,22 +38,22 @@ const Notes = ({notes, search_term}) => {
       <td className='px-6 py-3 flex justify-center'><Link href={route('notes.show', {'note': note.note_id })}><FaLink /></Link></td>
       </tr> )
   });
- 
+
   return (
     <SimpleLayout>
       <Head title='Notes' />
         <div className='mt-3 flex-col'>
-        <div className='flex justify-between drop-shadow-lg'> 
+        <div className='flex justify-between drop-shadow-lg'>
           <div className='flex mb-1'>
             <input type='text' className='h-9 rounded' placeholder='Search' value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyDown={handleKeyDown} />
             <div className='h-9 flex items-center absolute left-[170px]' >
-              <FaSearch onClick={search} className='text-slate-300 cursor-pointer'/>  
+              <FaSearch onClick={search} className='text-slate-300 cursor-pointer'/>
             </div>
-                        
+
           </div>
-          <PrimaryButton onClick={goToNew} className='mb-1'> Add Note </PrimaryButton>
+          <PrimaryButton onClick={goToNew} className='mb-1'>Add Note</PrimaryButton>
         </div>
-      
+
         <div className='relative overflow-x-auto'>
           <table className='w-full text-md text-left'>
             <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>

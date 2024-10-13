@@ -31,19 +31,19 @@ function Create() {
 
                     <div className='mt-4'>
                         <InputLabel htmlFor="content" value="Note" />
-                        <Textarea placeholder='Note' name='content' className='mt-1 block w-full rounded' rows={3} value={data.content} onChange={e => {setData('content', e.target.value)}}></Textarea>
-                        <InputError message={errors.content} className="mt-2"/>  
+                        <Textarea placeholder='Note' name='content' className='mt-1 block w-full rounded' rows={3} value={data.content} onChange={e => setData('content', e.target.value)}></Textarea>
+                        <InputError message={errors.content} className="mt-2"/>
                     </div>
-                    
+
                     <div className='flex justify-end'>
                         <PrimaryButton className='mt-2' disabled={processing}>Submit</PrimaryButton>
                     </div>
-                    
+
                 </form>
             </section>
         </div>
     </SimpleLayout>
-    
+
   )
 }
 

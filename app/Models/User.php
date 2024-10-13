@@ -17,6 +17,8 @@ use Illuminate\Notifications\Notifiable;
  * @property Carbon $email_verified_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property Carbon $date_of_birth
+ * @property string $avatar_url
  *
  * @property-read Note $note;
  */
@@ -34,6 +36,8 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
+        'date_of_birth',
+        'avatar_url',
     ];
 
     /**
@@ -58,6 +62,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
+            'dob' => 'date',
         ];
     }
 

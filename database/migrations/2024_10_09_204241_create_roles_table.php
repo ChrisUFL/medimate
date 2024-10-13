@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Roles extends Migration
+return new class extends Migration
 {
     public function up(): void
     {
@@ -53,7 +53,13 @@ class Roles extends Migration
         Schema::create('companies', static function (Blueprint $table) {
             $table->id();
             $table->string('company_name')->nullable(false);
-            $table->unsignedBigInteger('owner_id')->nullable(false);
+            $table->foreignIdFor(User::class);
+            $table->string('street_address');
+            $table->string('city');
+            $table->string('state');
+            $table->string('zip_code');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 
@@ -64,7 +70,20 @@ class Roles extends Migration
             $table->dropConstrainedForeignIdFor(User::class);
         });
 
+        Schema::table('patient_provider', static function (Blueprint $table) {
+            $table->dropConstrainedForeignId('patient_id');
+            $table->dropConstrainedForeignId('provider_id');
+        });
+
+        Schema::table('appointments', static function (Blueprint $table) {
+            $table->dropConstrainedForeignId('patient_id');
+            $table->dropConstrainedForeignId('provider_id');
+        });
+
         Schema::dropIfExists('roles');
         Schema::dropIfExists('user_role');
+        Schema::dropIfExists('patient_provider');
+        Schema::dropIfExists('appointments');
+        Schema::dropIfExists('companies');
     }
-}
+};

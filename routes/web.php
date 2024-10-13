@@ -6,10 +6,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MedicationController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProviderController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\ProviderControllers\DashboardController;
+use App\Http\Controllers\ProviderControllers\PatientController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\ProviderControllers\AppointmentController as ProviderAppointments;
 
 Route::get('/', [HomeController::class, 'index'])->name('web.home');
 
@@ -23,6 +23,8 @@ Route::middleware('auth')->group(static function () {
     Route::resource('notes', NoteController::class);
 });
 
-require __DIR__.'/auth.php';
+Route::get('/provider', [DashboardController::class, 'index'])->name('web.provider');
+Route::resource('/provider/appointments', ProviderAppointments::class);
+Route::resource('/provider/patients', PatientController::class);
 
-Route::get('/provider', [ProviderController::class, 'index'])->name('web.provider');
+require __DIR__.'/auth.php';

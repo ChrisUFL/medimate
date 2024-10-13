@@ -12,6 +12,7 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        date_of_birth: '',
     });
 
     const submit = (e) => {
@@ -76,6 +77,12 @@ export default function Register() {
                     />
 
                     <InputError message={errors.email} className="mt-2" />
+                </div>
+
+                <div className='mt-4'>
+                    <InputLabel value={'Date of Birth'} htmlFor='date_of_birth'/>
+                    <input type='date' className='mt-1 block w-full rounded-md border-gray-300' name='date_of_birth' value={data.date_of_birth} onChange={e => setData('date_of_birth', e.target.value)}/>
+                    <InputError message={errors.date_of_birth} className="mt-2"/>
                 </div>
 
                 <div className="mt-4">
