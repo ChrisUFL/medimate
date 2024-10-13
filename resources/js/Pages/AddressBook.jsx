@@ -25,10 +25,8 @@ const AddressBook = () => {
                         <th class="border border-gray-400 px-3 py-2">Phone Number</th>
                         <th class="border border-gray-400 px-3 py-2">Address</th>
                     </tr>
-                    <Contact name={data.name}></Contact>
-                    <Contact></Contact>
-                    <Contact></Contact>
-                    <Contact></Contact>
+                    <Contact contact_data = {data}></Contact>
+
                 </table>
             </div>
         </div>
