@@ -15,7 +15,13 @@ const data = [
         email : "rbooks@gmail.com",
         phone: "+1 (561) 123-4567",
         address : "0 Binary Lane"
-    }     
+    },
+    {
+        name : "Billy Napier",
+        email : "bnapier@ufl.com",
+        phone: "+1 (352) 462-1958",
+        address : "5 Swamp Blvd"
+    }   
 ]
 
 
