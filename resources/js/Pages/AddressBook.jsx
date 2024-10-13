@@ -25,7 +25,8 @@ const data = [
 ]
 
 
-const AddressBook = () => {
+const AddressBook = ({contacts}) => {
+    console.log(contacts);
     return (
         <div>
             <Navbar />
@@ -39,7 +40,7 @@ const AddressBook = () => {
                         <th class="border border-gray-400 px-3 py-2">Address</th>
                     </tr>
                     <tbody>
-                        {data.map((contact, index) => (
+                        {contacts.map((contact, index) => (
                             <Contact key={index} contact_data={contact} />
                         ))}
                     </tbody>
