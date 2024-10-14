@@ -1,10 +1,9 @@
 import React from "react";
 import ProviderLayout from "@/Layouts/ProviderLayout";
-import { useForm, router } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 import ShadowBox from "@/Components/ShadowBox";
 import TextInput from "@/Components/TextInput";
 import InputLabel from "@/Components/InputLabel";
-import Select from "react-select";
 import PrimaryButton from "@/Components/PrimaryButton";
 import DangerButton from "@/Components/DangerButton";
 

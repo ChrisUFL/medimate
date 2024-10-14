@@ -1,7 +1,6 @@
 import React from "react";
 import ProviderLayout from "@/Layouts/ProviderLayout";
 import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 
 const headerToolBar = {

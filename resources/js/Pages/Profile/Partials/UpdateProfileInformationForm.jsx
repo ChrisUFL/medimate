@@ -22,6 +22,7 @@ export default function UpdateProfileInformation({
     const submit = (e) => {
         e.preventDefault();
 
+        // eslint-disable-next-line no-undef
         patch(route("profile.update"));
     };
 
@@ -33,7 +34,8 @@ export default function UpdateProfileInformation({
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-600">
-                    Update your account's profile information and email address.
+                    Update your account&apos;s profile information and email
+                    address.
                 </p>
             </header>
 
@@ -75,6 +77,7 @@ export default function UpdateProfileInformation({
                         <p className="text-sm mt-2 text-gray-800">
                             Your email address is unverified.
                             <Link
+                                // eslint-disable-next-line no-undef
                                 href={route("verification.send")}
                                 method="post"
                                 as="button"

@@ -3,7 +3,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import SimpleLayout from "@/Layouts/SimpleLayout";
-import { Label, Textarea } from "@headlessui/react";
+import { Textarea } from "@headlessui/react";
 import { Head, useForm } from "@inertiajs/react";
 import React from "react";
 

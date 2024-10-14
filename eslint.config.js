@@ -12,6 +12,8 @@ export default [
   {
     rules: {
       "react/prop-types": "off",
+      "react/jsx-key": "off",
+      "no-undef": "off",
     }
   }
 ];

@@ -9,6 +9,7 @@ const ContentTile = ({ image, title, data, color, dataType = "text" }) => {
     const listItems = [];
 
     if (dataType === "calendar") {
+        // eslint-disable-next-line no-unused-vars
         for (const [k, v] of Object.entries(data.calendar)) {
             listItems.push(
                 <Link href={route("web.home")}>
@@ -19,6 +20,7 @@ const ContentTile = ({ image, title, data, color, dataType = "text" }) => {
     }
 
     if (dataType === "medication") {
+        // eslint-disable-next-line no-unused-vars
         for (const [k, v] of Object.entries(data.medication)) {
             listItems.push(
                 <Link href={route("web.home")}>

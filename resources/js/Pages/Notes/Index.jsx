@@ -1,9 +1,7 @@
-import Navbar from "@/Components/Navbar";
 import Paginator from "@/Components/Paginator";
 import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
 import SimpleLayout from "@/Layouts/SimpleLayout";
-import { Head, Link, usePage, router } from "@inertiajs/react";
+import { Link, usePage, router } from "@inertiajs/react";
 import { React, useState } from "react";
 import { FaLink, FaSearch } from "react-icons/fa";
 
