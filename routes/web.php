@@ -23,8 +23,8 @@ Route::middleware('auth')->group(static function () {
     Route::resource('notes', NoteController::class);
 });
 
-Route::get('/provider', [DashboardController::class, 'index'])->name('web.provider');
+/*Route::get('/provider', [DashboardController::class, 'index'])->name('web.provider');
 Route::resource('/provider/appointments', ProviderAppointments::class);
-Route::resource('/provider/patients', PatientController::class);
+Route::resource('/provider/patients', PatientController::class);*/
 
 require __DIR__.'/auth.php';
