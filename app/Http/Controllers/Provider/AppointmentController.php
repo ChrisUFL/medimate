@@ -65,12 +65,15 @@ class AppointmentController extends Controller
     public function show(Request $request, $id)
     {
         $appointment = Appointment::firstWhere('id', '=', $id);
-        $employeeIds = Employee::firstWhere('user_id', '=', $appointment->provider_id)
-            ->company
-            ->employees()
+        $employeeIds = Employee::firstWhere('user_id', '=', $appointment?->provider_id)
+            ?->company
+            ?->employees
             ->pluck('user_id')
             ->toArray();
 
+        if (! $employeeIds) {
+            abort(404);
+        }
         // TODO remove hardcoded id
         if (! in_array(12, $employeeIds)) {
             abort(401);
