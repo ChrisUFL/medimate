@@ -15,6 +15,7 @@ class NoteController extends Controller
         $searchTerm = $request->query('q');
         $user = $request->user();
         $notes = $user->notes()
+            /** @phpstan-ignore-next-line  */
             ->when($searchTerm, static function (Builder $query) use ($searchTerm) {
                 $query->where('title', 'LIKE', "%{$searchTerm}%")
                     ->orWhere('content', 'LIKE', "%{$searchTerm}%");
@@ -46,14 +47,10 @@ class NoteController extends Controller
         $user = $request->user();
         $validated['user_id'] = $user->id;
 
-        if ($validated) {
-            /** @var Note $note */
-            $note = $request->user()->notes()->create($validated);
+        /** @var Note $note */
+        $note = $request->user()->notes()->create($validated);
 
-            return redirect(route('notes.show', ['note' => $note->id]));
-        }
-
-        return redirect(route('web.home'));
+        return redirect(route('notes.show', ['note' => $note->id]));
     }
 
     /**

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React from 'react'
 import ProviderLayout from '@/Layouts/ProviderLayout'
 import { useForm } from '@inertiajs/react'
