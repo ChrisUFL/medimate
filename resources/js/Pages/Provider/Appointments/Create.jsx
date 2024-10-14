@@ -1,96 +1,111 @@
 /* eslint-disable no-undef */
-import React from 'react'
-import ProviderLayout from '@/Layouts/ProviderLayout'
-import { useForm } from '@inertiajs/react'
-import ShadowBox from '@/Components/ShadowBox'
-import TextInput from '@/Components/TextInput'
-import InputLabel from '@/Components/InputLabel'
-import Select from 'react-select'
-import PrimaryButton from '@/Components/PrimaryButton'
+import React from "react";
+import ProviderLayout from "@/Layouts/ProviderLayout";
+import { useForm } from "@inertiajs/react";
+import ShadowBox from "@/Components/ShadowBox";
+import TextInput from "@/Components/TextInput";
+import InputLabel from "@/Components/InputLabel";
+import Select from "react-select";
+import PrimaryButton from "@/Components/PrimaryButton";
 
-const Create = ({patients, employees, dateTime}) => {
- let time = '';
- let date = '';
+const Create = ({ patients, employees, dateTime }) => {
+    let time = "";
+    let date = "";
 
- if (dateTime !== undefined) {
-    const [datePart, timePart] = dateTime.split('T');
-    time = timePart?.substring(0, 8);
-    date = datePart;
- }
+    if (dateTime !== undefined) {
+        const [datePart, timePart] = dateTime.split("T");
+        time = timePart?.substring(0, 8);
+        date = datePart;
+    }
 
- const { data, setData, post, processing, errors} = useForm({
-    patientId: null,
-    doctorId: null,
-    appointmentTime: time ?? '',
-    appointmentDate: date ?? '',
- })
+    const { data, setData, post, processing, errors } = useForm({
+        patientId: null,
+        doctorId: null,
+        appointmentTime: time ?? "",
+        appointmentDate: date ?? "",
+    });
 
- const submit = (e) => {
-    e.preventDefault(),
-    post(route('appointments.store'))
- }
+    const submit = (e) => {
+        e.preventDefault(), post(route("appointments.store"));
+    };
 
- const options = patients.map((patient) => {
-    const name = patient.first_name + ' ' + patient.last_name + ' - ' + patient.email;
-    return (
-        {
+    const options = patients.map((patient) => {
+        const name =
+            patient.first_name +
+            " " +
+            patient.last_name +
+            " - " +
+            patient.email;
+        return {
             value: patient.id,
-            label: name
-        }
-    )
- })
+            label: name,
+        };
+    });
 
- const employeesOptions = employees.map((employee) => {
-    const name = employee.first_name + ' ' + employee.last_name;
+    const employeesOptions = employees.map((employee) => {
+        const name = employee.first_name + " " + employee.last_name;
+
+        return {
+            value: employee.user_id,
+            label: name,
+        };
+    });
 
     return (
-        {
-            value: employee.user_id,
-            label: name
-        }
-    )
- })
+        <ProviderLayout pageTitle={"Create Appointment"}>
+            <div className="w-96">
+                <form onSubmit={submit}>
+                    <ShadowBox styles={"h-[400px] py-8"}>
+                        <div>
+                            <InputLabel value="User" />
+                            <Select
+                                options={options}
+                                onChange={(e) => setData("patientId", e?.value)}
+                                isClearable={true}
+                            />
+                        </div>
+                        <div className="mt-4">
+                            <InputLabel value="Doctor" />
+                            <Select
+                                options={employeesOptions}
+                                onChange={(e) => setData("doctorId", e?.value)}
+                                isClearable={true}
+                            />
+                        </div>
+                        <div className="mt-4">
+                            <InputLabel value="Select Date" htmlFor="date" />
+                            <TextInput
+                                type="date"
+                                name="date"
+                                value={data.appointmentDate}
+                                onChange={(e) =>
+                                    setData("appointmentDate", e.target.value)
+                                }
+                                className="w-[100%]"
+                            />
+                        </div>
+                        <div className="mt-4">
+                            <InputLabel value="Select Time" htmlFor="time" />
+                            <TextInput
+                                type="time"
+                                name="time"
+                                value={data.appointmentTime}
+                                onChange={(e) =>
+                                    setData("appointmentTime", e.target.value)
+                                }
+                                className="w-[100%]"
+                            />
+                        </div>
+                        <div className="mt-4">
+                            <PrimaryButton disabled={processing}>
+                                Submit
+                            </PrimaryButton>
+                        </div>
+                    </ShadowBox>
+                </form>
+            </div>
+        </ProviderLayout>
+    );
+};
 
-  return (
-    <ProviderLayout pageTitle={'Create Appointment'}>
-        <div className='w-96'>
-        <form onSubmit={submit}>
-            <ShadowBox styles={'h-[400px] py-8'}>
-                <div>
-                    <InputLabel value="User" />
-                    <Select 
-                    options={options} 
-                    onChange={(e) => setData('patientId', e?.value)} 
-                    isClearable={true}
-                    />
-                </div>
-                <div className='mt-4'>
-                    <InputLabel value="Doctor" />
-                    <Select 
-                    options={employeesOptions} 
-                    onChange={(e) => setData('doctorId', e?.value)} 
-                    isClearable={true}
-                    />
-                </div>
-                <div className='mt-4'>
-                    <InputLabel value='Select Date' htmlFor='date' />
-                    <TextInput type='date' name='date' value={data.appointmentDate} onChange={(e) => setData('appointmentDate', e.target.value)} className='w-[100%]' />
-                </div>
-                <div className='mt-4'>
-                    <InputLabel value='Select Time' htmlFor='time' />
-                    <TextInput type='time' name='time' value={data.appointmentTime} onChange={(e) => setData('appointmentTime', e.target.value)} className='w-[100%]' />
-                </div>
-                <div className='mt-4'>
-                    <PrimaryButton disabled={processing}>Submit</PrimaryButton>
-                </div>
-            </ShadowBox> 
-        </form>
-          
-        </div>
-        
-        
-    </ProviderLayout>
-  )
-}
-
-export default Create
+export default Create;
