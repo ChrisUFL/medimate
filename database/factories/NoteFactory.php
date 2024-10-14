@@ -18,7 +18,7 @@ class NoteFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => 607,
+            'user_id' => User::class,
             'title' => fake()->text(50),
             'content' => fake()->realTextBetween(50, 1000),
         ];

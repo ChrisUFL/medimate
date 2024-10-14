@@ -19,11 +19,6 @@ return new class extends Migration
             $table->timestamp('updated_at')->useCurrent();
         });
 
-        Schema::create('note_user', static function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Note::class)->constrained()->cascadeOnDelete();
-        });
     }
 
     public static function down(): void
@@ -32,12 +27,6 @@ return new class extends Migration
             $table->dropConstrainedForeignIdFor(User::class);
         });
 
-        Schema::table('note_user', static function (Blueprint $table) {
-            $table->dropConstrainedForeignIdFor(User::class);
-            $table->dropConstrainedForeignIdFor(Note::class);
-        });
-
         Schema::dropIfExists('notes');
-        Schema::dropIfExists('note_user');
     }
 };

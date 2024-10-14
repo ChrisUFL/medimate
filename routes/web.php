@@ -1,14 +1,15 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\Company\PatientController;
 use App\Http\Controllers\FitnessController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MedicationController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\Provider\AppointmentController as ProviderAppointments;
+use App\Http\Controllers\Provider\DashboardController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'index'])->name('web.home');
 
@@ -21,5 +22,9 @@ Route::middleware('auth')->group(static function () {
     Route::get('/fitness', [FitnessController::class, 'index'])->name('web.fitness');
     Route::resource('notes', NoteController::class);
 });
+
+/*Route::get('/provider', [DashboardController::class, 'index'])->name('web.provider');
+Route::resource('/provider/appointments', ProviderAppointments::class);
+Route::resource('/provider/patients', PatientController::class);*/
 
 require __DIR__.'/auth.php';

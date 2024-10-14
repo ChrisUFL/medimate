@@ -15,12 +15,13 @@ class NoteController extends Controller
         $searchTerm = $request->query('q');
         $user = $request->user();
         $notes = $user->notes()
+            /** @phpstan-ignore-next-line  */
             ->when($searchTerm, static function (Builder $query) use ($searchTerm) {
                 $query->where('title', 'LIKE', "%{$searchTerm}%")
                     ->orWhere('content', 'LIKE', "%{$searchTerm}%");
             })
             ->where('notes.user_id', '=', $user->id)
-            ->paginate(10, ['note_id', 'title', 'content'])
+            ->paginate(10, ['notes.id', 'title', 'content'])
             ->appends(['q' => $searchTerm]);
 
         return Inertia::render('Notes/Index', [
@@ -46,14 +47,10 @@ class NoteController extends Controller
         $user = $request->user();
         $validated['user_id'] = $user->id;
 
-        if ($validated) {
-            /** @var Note $note */
-            $note = $request->user()->notes()->create($validated);
+        /** @var Note $note */
+        $note = $request->user()->notes()->create($validated);
 
-            return redirect(route('notes.show', ['note' => $note->id]));
-        }
-
-        return redirect(route('web.home'));
+        return redirect(route('notes.show', ['note' => $note->id]));
     }
 
     /**
@@ -68,8 +65,7 @@ class NoteController extends Controller
             abort(404);
         }
 
-        $allowedUserIds = $note->users()->pluck('user_id')->toArray();
-        if (! in_array($userId, $allowedUserIds)) {
+        if ($userId !== $note->user->id) {
             abort(403);
         }
 
