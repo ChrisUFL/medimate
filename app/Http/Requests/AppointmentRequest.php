@@ -13,7 +13,6 @@ class AppointmentRequest extends FormRequest
             'doctorId' => ['required', 'int'],
             'appointmentDate' => ['required', 'date'],
             'appointmentTime' => ['required'],
-            ''
         ];
     }
 

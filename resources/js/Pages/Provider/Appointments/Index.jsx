@@ -4,6 +4,7 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import { router } from '@inertiajs/react'
 
 
 const headerToolBar = {
@@ -26,13 +27,10 @@ const businessHours = [
 ];
 
 const dateClick = (e) => {
-    console.log(e.dateStr);
+    router.get(route('appointments.create', {
+      dateTime: e.dateStr,
+    }, false))
 }
-
-const eventClick = (e) => {
-  console.log(e.event.title);
-}
-
 
 const Index = ({appointments}) => {
 

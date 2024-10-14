@@ -7,12 +7,21 @@ import InputLabel from '@/Components/InputLabel'
 import Select from 'react-select'
 import PrimaryButton from '@/Components/PrimaryButton'
 
-const Create = ({patients, employees}) => {
+const Create = ({patients, employees, dateTime}) => {
+ let time = '';
+ let date = '';
+
+ if (dateTime !== undefined) {
+    const [datePart, timePart] = dateTime.split('T');
+    time = timePart?.substring(0, 8);
+    date = datePart;
+ }
+
  const { data, setData, post, processing, errors} = useForm({
     patientId: null,
     doctorId: null,
-    appointmentTime: '',
-    appointmentDate: '',
+    appointmentTime: time ?? '',
+    appointmentDate: date ?? '',
  })
 
  const submit = (e) => {
