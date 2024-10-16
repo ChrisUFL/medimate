@@ -89,18 +89,9 @@ class User extends Authenticatable
         return $this->hasOne(Employee::class);
     }
 
-    public function doctorAppointments(): HasMany
+    /** User is a patient of many companies */
+    public function patient(): HasMany
     {
-        return $this->hasMany(Appointment::class, 'patient_id', 'id');
-    }
-
-    public function appointments(): HasMany
-    {
-        return $this->hasMany(Appointment::class, 'provider_id', 'id');
-    }
-
-    public function chartEntries(): HasMany
-    {
-        return $this->hasMany(ChartEntry::class);
+        return $this->hasMany(Patient::class);
     }
 }

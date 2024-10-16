@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -12,15 +13,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $blood_pressure
  * @property string $temperature
  * @property string $pulse
- * @property string $respirator_rate
+ * @property string $respiratory_rate
  * @property Carbon $visit_date
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
- * @property-read User $user_id
+ * @property-read User $patient_id
  */
 class ChartEntry extends Model {
 
+    use HasFactory;
     protected $guarded = [];
 
     protected function casts(): array

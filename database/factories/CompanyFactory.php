@@ -24,7 +24,7 @@ class CompanyFactory extends Factory
         ];
     }
 
-    protected function getStates()
+    protected function getStates(): array
     {
         return [
             'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado',

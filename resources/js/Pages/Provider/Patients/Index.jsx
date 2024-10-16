@@ -21,7 +21,7 @@ const Index = ({ patients, search_term }) => {
     function search() {
         router.get(
             route("patients.index", {
-                q: searchTerm,
+                q: searchTerm.trim().length === 0 ? null : searchTerm,
             })
         );
     }
@@ -34,7 +34,7 @@ const Index = ({ patients, search_term }) => {
         );
     };
 
-    const tbodyData = patients.map((patient) => {
+    const tbodyData = patients.data.map((patient) => {
         return (
             <tr
                 key={patient.user_id}
@@ -82,7 +82,11 @@ const Index = ({ patients, search_term }) => {
                         New Patient
                     </PrimaryButton>
                 </div>
-                <Table theadData={theadData} tbodyData={tbodyData} />
+                <Table
+                    theadData={theadData}
+                    tbodyData={tbodyData}
+                    paginatorData={patients}
+                />
             </div>
         </ProviderLayout>
     );

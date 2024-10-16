@@ -46,7 +46,7 @@ const Create = ({ patients, employees, dateTime }) => {
         const name = employee.first_name + " " + employee.last_name;
 
         return {
-            value: employee.user_id,
+            value: employee.id,
             label: name,
         };
     });

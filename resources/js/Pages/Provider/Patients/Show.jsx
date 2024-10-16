@@ -20,9 +20,12 @@ import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import { useForm, router } from "@inertiajs/react";
 
-const Show = ({ paginatorData }) => {
+const Show = ({ paginatorData, patient_id, charts, appointments }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const { data, setData, post, processing, errors } = useForm({
+    const [isEditing, setIsEditing] = useState(false);
+    const [tabName, setTabName] = useState("profile");
+    const { data, setData, post, patch, processing, errors, reset } = useForm({
+        patientId: patient_id,
         reason: "",
         summary: "",
         date: "",
@@ -30,6 +33,7 @@ const Show = ({ paginatorData }) => {
         bloodPressure: "",
         pulse: "",
         respRate: "",
+        chartId: "",
     });
 
     function open() {
@@ -37,59 +41,62 @@ const Show = ({ paginatorData }) => {
     }
 
     function addEntry() {
+        submit();
         setIsOpen(false);
     }
 
     function close() {
         setIsOpen(false);
+        setIsEditing(false);
+        reset();
     }
 
-    const tbodyData = [
-        <tr key="a">
-            <td className="px-6 py-3">1/1/1970</td>
-            <td className="px-6 py-3">1/1/1970</td>
-            <td className="px-6 py-3">Lorem ipsum dolor sit amet</td>
-            <td className="px-6 py-3">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
-            </td>
-        </tr>,
-        <tr key="b">
-            <td className="px-6 py-3">1/1/1970</td>
-            <td className="px-6 py-3">1/1/1970</td>
-            <td className="px-6 py-3">Lorem ipsum dolor sit amet</td>
-            <td className="px-6 py-3">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
-            </td>
-        </tr>,
-        <tr key="c">
-            <td className="px-6 py-3">1/1/1970</td>
-            <td className="px-6 py-3">1/1/1970</td>
-            <td className="px-6 py-3">Lorem ipsum dolor sit amet</td>
-            <td className="px-6 py-3">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
-            </td>
-        </tr>,
-        <tr key="d">
-            <td className="px-6 py-3">1/1/1970</td>
-            <td className="px-6 py-3">1/1/1970</td>
-            <td className="px-6 py-3">Lorem ipsum dolor sit amet</td>
-            <td className="px-6 py-3">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
-            </td>
-        </tr>,
-    ];
+    const submit = () => {
+        post(route("chart-entry.store", {}, false));
+    };
+
+    const edit = (id) => {
+        const entry = charts.find((chart) => id === chart.id);
+        const date = entry.visit_date.split("T");
+        setIsEditing(true);
+        setData((prevData) => ({
+            ...prevData,
+            reason: entry.visit_reason,
+            summary: entry.content,
+            date: date[0],
+            bloodPressure: entry.blood_pressure,
+            bodyTemp: entry.temperature,
+            pulse: entry.pulse,
+            respRate: entry.respirator_rate,
+            chartId: entry.id,
+        }));
+        open();
+    };
+
+    const update = (e) => {
+        e.preventDefault();
+        patch(
+            route(
+                "chart-entry.update",
+                {
+                    id: data.chartId,
+                },
+                false
+            )
+        );
+        close();
+    };
+
+    const tbodyData = charts.map((chart) => {
+        const date = chart.visit_date.split("T");
+        return (
+            <tr key={chart.id} onClick={() => edit(chart.id)}>
+                <td className="px-6 py-3">{date[0]}</td>
+                <td className="px-6 py-3">{chart.visit_reason}</td>
+                <td className="px-6 py-3">{chart.content}</td>
+            </tr>
+        );
+    });
     return (
         <>
             <Dialog
@@ -110,119 +117,134 @@ const Show = ({ paginatorData }) => {
                             >
                                 Add a New Chart Entry
                             </DialogTitle>
-                            <div className="mt-4">
-                                <InputLabel
-                                    value="Visit Reason"
-                                    className="text-white"
+                            <form onSubmit={isEditing ? update : submit}>
+                                <TextInput
+                                    value={patient_id}
+                                    className="hidden"
+                                    readOnly={true}
                                 />
                                 <TextInput
-                                    value={data.reason}
-                                    onChange={(e) =>
-                                        setData("reason", e.target.value)
-                                    }
-                                    className="w-[100%]"
+                                    value={data.chartId}
+                                    className="hidden"
+                                    readOnly={true}
                                 />
-                                <InputError value={errors.reason} />
-                            </div>
-                            <div className="mt-4">
-                                <InputLabel
-                                    value="Summary"
-                                    className="text-white"
-                                />
-                                <Textarea
-                                    value={data.summary}
-                                    onChange={(e) =>
-                                        setData("summary", e.target.value)
-                                    }
-                                    className="w-[100%]"
-                                />
-                                <InputError value={errors.summary} />
-                            </div>
-                            <div className="mt-4">
-                                <InputLabel
-                                    value="Blood Pressure"
-                                    className="text-white"
-                                />
-                                <TextInput
-                                    value={data.bloodPressure}
-                                    onChange={(e) =>
-                                        setData("bloodPressure", e.target.value)
-                                    }
-                                    className="w-[100%]"
-                                />
-                                <InputError value={errors.summary} />
-                            </div>
-                            <div className="mt-4">
-                                <InputLabel
-                                    value="Temperature"
-                                    className="text-white"
-                                />
-                                <TextInput
-                                    value={data.bodyTemp}
-                                    onChange={(e) =>
-                                        setData("bodyTemp", e.target.value)
-                                    }
-                                    className="w-[100%]"
-                                />
-                                <InputError value={errors.summary} />
-                            </div>
-                            <div className="mt-4">
-                                <InputLabel
-                                    value="Pluse"
-                                    className="text-white"
-                                />
-                                <TextInput
-                                    value={data.pulse}
-                                    onChange={(e) =>
-                                        setData("pulse", e.target.value)
-                                    }
-                                    className="w-[100%]"
-                                />
-                                <InputError value={errors.summary} />
-                            </div>
-                            <div className="mt-4">
-                                <InputLabel
-                                    value="Respiratory Rate"
-                                    className="text-white"
-                                />
-                                <TextInput
-                                    value={data.respRate}
-                                    onChange={(e) =>
-                                        setData("respRate", e.target.value)
-                                    }
-                                    className="w-[100%]"
-                                />
-                                <InputError value={errors.summary} />
-                            </div>
-                            <div className="mt-4">
-                                <InputLabel
-                                    value="Visit Date"
-                                    className="text-white"
-                                />
-                                <TextInput
-                                    value={data.date}
-                                    type="date"
-                                    onChange={(e) =>
-                                        setData("date", e.target.value)
-                                    }
-                                    className="w-[100%]"
-                                />
-                                <InputError value={errors.reason} />
-                            </div>
-                            <div className="mt-4 flex justify-end gap-3">
-                                <Button
-                                    className="inline-flex items-center gap-2 rounded-md bg-indigo-300 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
-                                    onClick={addEntry}
-                                >
-                                    Add Note
-                                </Button>
-                                <Button
-                                    className="inline-flex items-center gap-2 rounded-md bg-red-600 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
-                                    onClick={addEntry}
-                                >
-                                    Cancel
-                                </Button>
-                            </div>
+                                <div className="mt-4">
+                                    <InputLabel
+                                        value="Visit Reason"
+                                        className="text-white"
+                                    />
+                                    <TextInput
+                                        value={data.reason}
+                                        onChange={(e) =>
+                                            setData("reason", e.target.value)
+                                        }
+                                        className="w-[100%]"
+                                    />
+                                    <InputError value={errors.reason} />
+                                </div>
+                                <div className="mt-4">
+                                    <InputLabel
+                                        value="Summary"
+                                        className="text-white"
+                                    />
+                                    <Textarea
+                                        value={data.summary}
+                                        onChange={(e) =>
+                                            setData("summary", e.target.value)
+                                        }
+                                        className="w-[100%]"
+                                    />
+                                    <InputError value={errors.summary} />
+                                </div>
+                                <div className="mt-4">
+                                    <InputLabel
+                                        value="Blood Pressure"
+                                        className="text-white"
+                                    />
+                                    <TextInput
+                                        value={data.bloodPressure}
+                                        onChange={(e) =>
+                                            setData(
+                                                "bloodPressure",
+                                                e.target.value
+                                            )
+                                        }
+                                        className="w-[100%]"
+                                    />
+                                    <InputError value={errors.summary} />
+                                </div>
+                                <div className="mt-4">
+                                    <InputLabel
+                                        value="Temperature"
+                                        className="text-white"
+                                    />
+                                    <TextInput
+                                        value={data.bodyTemp}
+                                        onChange={(e) =>
+                                            setData("bodyTemp", e.target.value)
+                                        }
+                                        className="w-[100%]"
+                                    />
+                                    <InputError value={errors.summary} />
+                                </div>
+                                <div className="mt-4">
+                                    <InputLabel
+                                        value="Pluse"
+                                        className="text-white"
+                                    />
+                                    <TextInput
+                                        value={data.pulse}
+                                        onChange={(e) =>
+                                            setData("pulse", e.target.value)
+                                        }
+                                        className="w-[100%]"
+                                    />
+                                    <InputError value={errors.summary} />
+                                </div>
+                                <div className="mt-4">
+                                    <InputLabel
+                                        value="Respiratory Rate"
+                                        className="text-white"
+                                    />
+                                    <TextInput
+                                        value={data.respRate}
+                                        onChange={(e) =>
+                                            setData("respRate", e.target.value)
+                                        }
+                                        className="w-[100%]"
+                                    />
+                                    <InputError value={errors.summary} />
+                                </div>
+                                <div className="mt-4">
+                                    <InputLabel
+                                        value="Visit Date"
+                                        className="text-white"
+                                    />
+                                    <TextInput
+                                        value={data.date}
+                                        type="date"
+                                        onChange={(e) =>
+                                            setData("date", e.target.value)
+                                        }
+                                        className="w-[100%]"
+                                    />
+                                    <InputError value={errors.reason} />
+                                </div>
+                                <div className="mt-4 flex justify-end gap-3">
+                                    <Button
+                                        className="inline-flex items-center gap-2 rounded-md bg-indigo-300 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
+                                        onClick={isEditing ? update : addEntry}
+                                    >
+                                        {isEditing ? "Update" : "Add Note"}
+                                    </Button>
+                                    <Button
+                                        className="inline-flex items-center gap-2 rounded-md bg-red-600 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
+                                        onClick={close}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </div>
+                            </form>
                         </DialogPanel>
                     </div>
                 </div>
@@ -231,22 +253,58 @@ const Show = ({ paginatorData }) => {
             <ProviderLayout>
                 <ShadowBox styles="w-max-[750px]">
                     <div className="flex justify-start w-[100%]">
-                        <div className="border-2 border-indigo-400 rounded-md p-1 flex items-center border-r-[1px] rounded-r-none hover:cursor-pointer">
+                        <div
+                            className={
+                                "border-2 rounded-l-md p-1 flex items-center hover:cursor-pointer " +
+                                (tabName === "profile"
+                                    ? "border-indigo-400 border-4"
+                                    : "border-indigo-200 border-r-0")
+                            }
+                            onClick={() => setTabName("profile")}
+                        >
                             <FaUser className="h-5 w-5 inline mr-2" />
-                            <span className="text-lg font-semibold">User</span>
+                            <span className="text-lg font-semibold">
+                                Profile
+                            </span>
                         </div>
-                        <div className="border-2 border-indigo-200 rounded-md p-1 flex items-center border-l-[1px] border-r-[1px] rounded-l-none rounded-r-none hover:cursor-pointer">
+                        <div
+                            className={
+                                "border-2 p-1 flex items-center hover:cursor-pointer " +
+                                (tabName === "profile"
+                                    ? "border-l-0 "
+                                    : "border-l-2 ") +
+                                (tabName === "chart"
+                                    ? "border-indigo-400 border-4 border-l-4"
+                                    : "border-indigo-200 border-r-0")
+                            }
+                            onClick={() => setTabName("chart")}
+                        >
                             <FaNotesMedical className="h-5 w-5 inline mr-2" />
-                            <span className="text-lg font-semibold">Chart</span>
+                            <span className="text-lg font-semibold">
+                                Charts
+                            </span>
                         </div>
-                        <div className="border-2 border-indigo-200 rounded-md p-1 flex items-center border-l-[1px] rounded-l-none hover:cursor-pointer">
+                        <div
+                            className={
+                                "border-2 p-1 flex items-center rounded-r-md hover:cursor-pointer " +
+                                (tabName === "chart"
+                                    ? "border-l-0 "
+                                    : "border-l-2 ") +
+                                (tabName === "appointments"
+                                    ? "border-indigo-400 border-4 border-l-4"
+                                    : "border-indigo-200")
+                            }
+                            onClick={() => setTabName("appointments")}
+                        >
                             <FaCalendarDays className="h-5 w-5 inline mr-2" />
                             <span className="text-lg font-semibold">
                                 Appointments
                             </span>
                         </div>
                     </div>
-                    <ShadowBox styles="user hidden">
+                    <ShadowBox
+                        styles={tabName === "profile" ? "block" : "hidden"}
+                    >
                         <div className="flex justify-center mb-6">
                             <img
                                 src="https://placehold.co/100"
@@ -336,7 +394,7 @@ const Show = ({ paginatorData }) => {
                         </div>
                     </ShadowBox>
 
-                    <div className="chart">
+                    <div className={tabName === "chart" ? "block" : "hidden"}>
                         <div className="flex justify-end mb-2">
                             <PrimaryButton onClick={open}>
                                 Add Entry
@@ -346,7 +404,6 @@ const Show = ({ paginatorData }) => {
                             <table className="w-full text-md text-left">
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
-                                        <th className="px-6 py-3">Date</th>
                                         <th className="px-6 py-3">
                                             Visit Date
                                         </th>
