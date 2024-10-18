@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PatientRequest;
 use App\Http\Requests\PatientUpdateRequest;
+use App\Models\Appointment;
 use App\Models\ChartEntry;
 use App\Models\Patient;
 use App\Models\User;
@@ -85,6 +86,12 @@ class PatientController extends Controller
         }
         /** @var User $patientUser */
         $patientUser = $patient->user()->first();
+        $appointments = Appointment::query()
+            ->where('patient_id', '=', $id)
+            ->where('appointment_time', '>=', Carbon::now())
+            ->orderBy('appointment_time')
+            ->limit(10)
+            ->get();
 
         return Inertia::render('Provider/Patients/Show', [
             'charts' => $charts,
@@ -100,6 +107,7 @@ class PatientController extends Controller
                 'date_of_birth' => Carbon::createFromFormat('Y-m-d', $patientUser['date_of_birth'])->format('F j, Y'),
                 'address' => $patientUser['address'],
             ],
+            'appointments' => $appointments,
         ]);
     }
 

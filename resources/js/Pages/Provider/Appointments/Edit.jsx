@@ -6,6 +6,7 @@ import TextInput from "@/Components/TextInput";
 import InputLabel from "@/Components/InputLabel";
 import Select from "react-select";
 import PrimaryButton from "@/Components/PrimaryButton";
+import InputError from "@/Components/InputError";
 
 const Edit = ({
     id,
@@ -16,20 +17,22 @@ const Edit = ({
     last_name,
     doctor,
 }) => {
-    let time = "";
-    let date = "";
-
-    if (dateTime !== undefined) {
-        const [datePart, timePart] = dateTime.split("T");
-        time = timePart.substring(0, 5);
-        date = datePart;
-    }
-
-    const { data, setData, patch, processing, errors } = useForm({
+    const dateTimeString = dateTime.substring(0, 16);
+    const { data, setData, patch, processing, errors, transform } = useForm({
         patientId: patient,
         doctorId: doctor,
-        appointmentTime: time ?? "",
-        appointmentDate: date ?? "",
+        appointmentTime: dateTimeString ?? "",
+    });
+
+    transform((data) => {
+        let appointmentTime = new Date(data.appointmentTime).setHours(
+            new Date(data.appointmentTime).getHours() - 4
+        );
+
+        return {
+            ...data,
+            isoTime: new Date(appointmentTime).toISOString(),
+        };
     });
 
     const submit = (e) => {
@@ -57,7 +60,7 @@ const Edit = ({
         <ProviderLayout pageTitle={"Create Appointment"}>
             <div className="w-96">
                 <form onSubmit={submit}>
-                    <ShadowBox styles={"h-[400px] py-8"}>
+                    <ShadowBox styles={"h-[320px] py-8"}>
                         <div>
                             <InputLabel value="User" />
                             <TextInput
@@ -76,21 +79,9 @@ const Edit = ({
                             />
                         </div>
                         <div className="mt-4">
-                            <InputLabel value="Select Date" htmlFor="date" />
-                            <TextInput
-                                type="date"
-                                name="date"
-                                value={data.appointmentDate}
-                                onChange={(e) =>
-                                    setData("appointmentDate", e.target.value)
-                                }
-                                className="w-[100%]"
-                            />
-                        </div>
-                        <div className="mt-4">
                             <InputLabel value="Select Time" htmlFor="time" />
                             <TextInput
-                                type="time"
+                                type="datetime-local"
                                 name="time"
                                 value={data.appointmentTime}
                                 onChange={(e) =>
@@ -98,6 +89,7 @@ const Edit = ({
                                 }
                                 className="w-[100%]"
                             />
+                            <InputError message={errors.appointmentTime} />
                         </div>
                         <div className="mt-4">
                             <PrimaryButton disabled={processing}>

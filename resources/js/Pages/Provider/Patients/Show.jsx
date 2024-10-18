@@ -21,6 +21,7 @@ import InputError from "@/Components/InputError";
 import { useForm, router } from "@inertiajs/react";
 import Profile from "./Components/Profile";
 import Charts from "./Components/Charts";
+import Appointments from "./Components/Appointments";
 
 const Show = ({ paginatorData, patient_id, charts, appointments, patient }) => {
     const [tabName, setTabName] = useState("profile");
@@ -28,7 +29,9 @@ const Show = ({ paginatorData, patient_id, charts, appointments, patient }) => {
 
     return (
         <>
-            <ProviderLayout>
+            <ProviderLayout
+                pageTitle={patient.first_name + " " + patient.last_name}
+            >
                 <ShadowBox styles="w-max-[750px]">
                     <div className="flex justify-start w-[100%]">
                         <div
@@ -89,6 +92,10 @@ const Show = ({ paginatorData, patient_id, charts, appointments, patient }) => {
                         charts={charts}
                         patientId={patient_id}
                         isActive={tabName === "chart"}
+                    />
+                    <Appointments
+                        isActive={tabName === "appointments"}
+                        appointments={appointments}
                     />
                 </ShadowBox>
             </ProviderLayout>

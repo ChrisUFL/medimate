@@ -8,16 +8,6 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import DangerButton from "@/Components/DangerButton";
 
 const Show = ({ id, first_name, last_name, doctor, dateTime }) => {
-    let time = "";
-    let date = "";
-
-    console.log(dateTime);
-    if (dateTime !== undefined) {
-        const [datePart, timePart] = dateTime.split("T");
-        time = timePart?.substring(0, 5);
-        date = datePart;
-    }
-
     const edit = () => {
         router.get(
             route(
@@ -45,7 +35,7 @@ const Show = ({ id, first_name, last_name, doctor, dateTime }) => {
     return (
         <ProviderLayout pageTitle={"Create Appointment"}>
             <div className="w-96">
-                <ShadowBox styles={"h-[400px] py-8"}>
+                <ShadowBox styles={"h-[320px] py-8"}>
                     <div>
                         <InputLabel value="User" />
                         <TextInput
@@ -65,19 +55,9 @@ const Show = ({ id, first_name, last_name, doctor, dateTime }) => {
                     <div className="mt-4">
                         <InputLabel value="Date" htmlFor="date" />
                         <TextInput
-                            type="date"
+                            type="datetime-local"
                             name="date"
-                            value={date}
-                            readOnly={true}
-                            className="w-[100%]"
-                        />
-                    </div>
-                    <div className="mt-4">
-                        <InputLabel value="Appointment Time" htmlFor="time" />
-                        <TextInput
-                            type="time"
-                            name="time"
-                            value={time}
+                            value={dateTime.substring(0, 16)}
                             readOnly={true}
                             className="w-[100%]"
                         />

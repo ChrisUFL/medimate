@@ -66,7 +66,7 @@ class AppointmentController extends Controller
             'patient_id' => $validated['patientId'],
             'employee_id' => $validated['doctorId'],
             'company_id' => 1,
-            'appointment_time' => Carbon::createFromFormat('Y-m-d H:i:s', $validated['appointmentDate'].$validated['appointmentTime']),
+            'appointment_time' => Carbon::createFromFormat('Y-m-dTH:i:s', $validated['appointmentTime']),
         ]);
 
         return redirect(route('appointments.index'));
@@ -143,10 +143,9 @@ class AppointmentController extends Controller
         if (! $appointment) {
             abort(404);
         }
-
          $appointment->update([
             'employee_id' => $validated['doctorId'],
-            'appointment_time' => Carbon::createFromFormat('Y-m-d H:i', $validated['appointmentDate'].$validated['appointmentTime']),
+            'appointment_time' => $validated['isoTime'],
         ]);
 
         return redirect(route('appointments.show', ['appointment' => $id]));
