@@ -10,7 +10,7 @@ use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Provider\AppointmentController as ProviderAppointments;
 use App\Http\Controllers\Provider\DashboardController;
-use App\Models\ChartEntry;
+use App\Http\Middleware\EmployeeMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('web.home');
@@ -25,10 +25,15 @@ Route::middleware('auth')->group(static function () {
     Route::resource('notes', NoteController::class);
 });
 
-Route::get('/provider', [DashboardController::class, 'index'])->name('web.provider');
-Route::resource('/provider/appointments', ProviderAppointments::class);
-Route::resource('/provider/patients', PatientController::class);
-Route::post('/chart', [ChartsController::class, 'store'])->name('chart-entry.store');
-Route::patch('/chart/{id}', [ChartsController::class, 'update'])->name('chart-entry.update');
+Route::middleware([
+    'auth',
+    EmployeeMiddleware::class,
+])->group(static function () {
+    Route::get('/provider', [DashboardController::class, 'index'])->name('web.provider');
+    Route::resource('/provider/appointments', ProviderAppointments::class);
+    Route::resource('/provider/patients', PatientController::class);
+    Route::post('/chart', [ChartsController::class, 'store'])->name('chart-entry.store');
+    Route::patch('/chart/{id}', [ChartsController::class, 'update'])->name('chart-entry.update');
+});
 
 require __DIR__.'/auth.php';
