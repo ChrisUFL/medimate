@@ -20,8 +20,7 @@ class ChartsController extends Controller
             'blood_pressure' => $validated['bloodPressure'],
             'temperature' => $validated['bodyTemp'],
             'pulse' => $validated['pulse'],
-            'respirator_rate' => $validated['respRate'],
-            'company_id' => Patient::firstWhere('id', '=', $validated['patientId'])->company_id,
+            'respiratory_rate' => $validated['respRate'],
         ]);
     }
 
@@ -37,7 +36,7 @@ class ChartsController extends Controller
             'blood_pressure' => $validated['bloodPressure'],
             'temperature' => $validated['bodyTemp'],
             'pulse' => $validated['pulse'],
-            'respirator_rate' => $validated['respRate'],
+            'respiratory_rate' => $validated['respRate'],
         ]);
     }
 }

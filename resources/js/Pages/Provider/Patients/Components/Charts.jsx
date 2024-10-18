@@ -1,13 +1,6 @@
-/* eslint-disable no-unused-vars */
 import { React, useState } from "react";
-import ProviderLayout from "@/Layouts/ProviderLayout";
-import { FaNotesMedical } from "react-icons/fa";
-import { FaUser, FaCalendarDays } from "react-icons/fa6";
-import ShadowBox from "@/Components/ShadowBox";
 import TextInput from "@/Components/TextInput";
-import ReadTextArea from "@/Components/ReadTextArea";
 import PrimaryButton from "@/Components/PrimaryButton";
-import DangerButton from "@/Components/DangerButton";
 import Paginator from "@/Components/Paginator";
 import {
     Button,
@@ -18,16 +11,13 @@ import {
 } from "@headlessui/react";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
-import { useForm, router } from "@inertiajs/react";
-import Profile from "./Components/Profile";
-import Charts from "./Components/Charts";
+import { useForm } from "@inertiajs/react";
 
-const Show = ({ paginatorData, patient_id, charts, appointments, patient }) => {
+const Charts = ({ charts, patientId }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
-    const [tabName, setTabName] = useState("profile");
     const { data, setData, post, patch, processing, errors, reset } = useForm({
-        patientId: patient_id,
+        patientId: patientId,
         reason: "",
         summary: "",
         date: "",
@@ -37,7 +27,6 @@ const Show = ({ paginatorData, patient_id, charts, appointments, patient }) => {
         respRate: "",
         chartId: "",
     });
-
     function open() {
         setIsOpen(true);
     }
@@ -121,7 +110,7 @@ const Show = ({ paginatorData, patient_id, charts, appointments, patient }) => {
                             </DialogTitle>
                             <form onSubmit={isEditing ? update : submit}>
                                 <TextInput
-                                    value={patient_id}
+                                    value={patientId}
                                     className="hidden"
                                     readOnly={true}
                                 />
@@ -251,69 +240,32 @@ const Show = ({ paginatorData, patient_id, charts, appointments, patient }) => {
                     </div>
                 </div>
             </Dialog>
-
-            <ProviderLayout>
-                <ShadowBox styles="w-max-[750px]">
-                    <div className="flex justify-start w-[100%]">
-                        <div
-                            className={
-                                "border-2 rounded-l-md p-1 flex items-center hover:cursor-pointer " +
-                                (tabName === "profile"
-                                    ? "border-indigo-400 border-4"
-                                    : "border-indigo-200 border-r-0")
-                            }
-                            onClick={() => setTabName("profile")}
-                        >
-                            <FaUser className="h-5 w-5 inline mr-2" />
-                            <span className="text-lg font-semibold">
-                                Profile
-                            </span>
-                        </div>
-                        <div
-                            className={
-                                "border-2 p-1 flex items-center hover:cursor-pointer " +
-                                (tabName === "profile"
-                                    ? "border-l-0 "
-                                    : "border-l-2 ") +
-                                (tabName === "chart"
-                                    ? "border-indigo-400 border-4 border-l-4"
-                                    : "border-indigo-200 border-r-0")
-                            }
-                            onClick={() => setTabName("chart")}
-                        >
-                            <FaNotesMedical className="h-5 w-5 inline mr-2" />
-                            <span className="text-lg font-semibold">
-                                Charts
-                            </span>
-                        </div>
-                        <div
-                            className={
-                                "border-2 p-1 flex items-center rounded-r-md hover:cursor-pointer " +
-                                (tabName === "chart"
-                                    ? "border-l-0 "
-                                    : "border-l-2 ") +
-                                (tabName === "appointments"
-                                    ? "border-indigo-400 border-4 border-l-4"
-                                    : "border-indigo-200")
-                            }
-                            onClick={() => setTabName("appointments")}
-                        >
-                            <FaCalendarDays className="h-5 w-5 inline mr-2" />
-                            <span className="text-lg font-semibold">
-                                Appointments
-                            </span>
-                        </div>
-                    </div>
-                    <Profile
-                        patientData={patient}
-                        isActive={true}
-                        patientId={"2"}
-                    />
-                    <Charts charts={charts} patientId={patient_id} />
-                </ShadowBox>
-            </ProviderLayout>
+            <div className={tabName === "chart" ? "block" : "hidden"}>
+                <div className="flex justify-end mb-2">
+                    <PrimaryButton onClick={open}>Add Entry</PrimaryButton>
+                </div>
+                <div className="relative overflow-x-auto drop-shadow-md">
+                    <table className="w-full text-md text-left">
+                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th className="px-6 py-3">Visit Date</th>
+                                <th className="px-6 py-3">Visit Reason</th>
+                                <th className="px-6 py-3">Summary</th>
+                            </tr>
+                        </thead>
+                        <tbody className="bg-white border-b">{tbodyData}</tbody>
+                    </table>
+                    {paginatorData && (
+                        <Paginator
+                            links={paginatorData.links}
+                            currentPage={paginatorData.current_page}
+                            lastPage={paginatorData.last_page}
+                        />
+                    )}
+                </div>
+            </div>
         </>
     );
 };
 
-export default Show;
+export default Charts;

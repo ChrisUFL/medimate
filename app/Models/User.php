@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -21,6 +22,10 @@ use Illuminate\Notifications\Notifiable;
  * @property Carbon $updated_at
  * @property Carbon $date_of_birth
  * @property string $avatar_url
+ * @property string $gender
+ * @property string $phone_number
+ * @property string $address
+ * @property string $language
  *
  * @property-read Note $note
  * @property-read Company $company
@@ -79,9 +84,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
-    public function companies(): BelongsToMany
+    public function company(): HasOne
     {
-        return $this->belongsToMany(Company::class);
+        return $this->hasOne(Company::class);
     }
 
     public function employee(): HasOne

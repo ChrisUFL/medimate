@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property-read int $user_id
- * @property-read int $company_id
- * @property-read int $chart_id
+ * @property-read User $user_id
+ * @property-read Company $company_id
+ * @property-read ChartEntry[] $chart_id
  */
 class Patient extends Model
 {
