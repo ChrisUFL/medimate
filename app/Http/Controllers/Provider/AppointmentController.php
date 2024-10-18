@@ -17,7 +17,7 @@ class AppointmentController extends Controller
     public function index(Request $request)
     {
         $appointments = [];
-        $companyId = $request->user()?->employee->company_id;
+        $companyId = $request->user()?->employee?->company_id;
         if (! $companyId) {
             abort(403);
         }
@@ -66,7 +66,7 @@ class AppointmentController extends Controller
             'patient_id' => $validated['patientId'],
             'employee_id' => $validated['doctorId'],
             'company_id' => 1,
-            'appointment_time' => Carbon::createFromFormat('Y-m-dTH:i:s', $validated['appointmentTime']),
+            'appointment_time' => $validated['isoTime'],
         ]);
 
         return redirect(route('appointments.index'));
@@ -83,9 +83,9 @@ class AppointmentController extends Controller
         if (! $employeeIds) {
             abort(404);
         }
-        // TODO remove hardcoded id
-        if (! in_array(101, $employeeIds)) {
-            abort(401);
+
+        if (! in_array($request->user()?->id, $employeeIds)) {
+            abort(403);
         }
 
         return Inertia::render('Provider/Appointments/Show', [

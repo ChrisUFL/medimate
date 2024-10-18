@@ -25,13 +25,15 @@ const Edit = ({
     });
 
     transform((data) => {
-        let appointmentTime = new Date(data.appointmentTime).setHours(
-            new Date(data.appointmentTime).getHours() - 4
+        const appointmentTime = new Date(data.appointmentTime);
+        appointmentTime.setHours(
+            appointmentTime.getHours() -
+                appointmentTime.getTimezoneOffset() / 60
         );
 
         return {
             ...data,
-            isoTime: new Date(appointmentTime).toISOString(),
+            isoTime: appointmentTime.toISOString(),
         };
     });
 
