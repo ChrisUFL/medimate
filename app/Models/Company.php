@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $zip_code
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ *
  * @property-read User $user_id
  */
 class Company extends Model
@@ -23,6 +25,7 @@ class Company extends Model
     use HasFactory;
 
     protected $guarded = [];
+
     protected function casts(): array
     {
         return [
@@ -31,13 +34,23 @@ class Company extends Model
         ];
     }
 
-    public function patients(): BelongsToMany
+    public function patients(): HasMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->hasMany(Patient::class);
     }
 
     public function employees(): HasMany
     {
         return $this->hasMany(Employee::class);
+    }
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function appointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class);
     }
 }

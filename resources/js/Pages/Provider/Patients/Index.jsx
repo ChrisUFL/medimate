@@ -21,7 +21,7 @@ const Index = ({ patients, search_term }) => {
     function search() {
         router.get(
             route("patients.index", {
-                q: searchTerm,
+                q: searchTerm.trim().length === 0 ? null : searchTerm,
             })
         );
     }
@@ -34,7 +34,7 @@ const Index = ({ patients, search_term }) => {
         );
     };
 
-    const tbodyData = patients.map((patient) => {
+    const tbodyData = patients.data.map((patient) => {
         return (
             <tr
                 key={patient.user_id}
@@ -42,7 +42,11 @@ const Index = ({ patients, search_term }) => {
                 onClick={() => tableRowClick(patient)}
             >
                 <td className="px-6 py-3">
-                    <img src={patient.avatar_url} alt="Avatar" />
+                    <img
+                        src={patient.avatar_url}
+                        alt="Avatar"
+                        className="h-10 w-10 rounded-[50%]"
+                    />
                 </td>
                 <td className="px-6 py-3">{patient.first_name}</td>
                 <td className="px-6 py-3">{patient.last_name}</td>
@@ -82,7 +86,11 @@ const Index = ({ patients, search_term }) => {
                         New Patient
                     </PrimaryButton>
                 </div>
-                <Table theadData={theadData} tbodyData={tbodyData} />
+                <Table
+                    theadData={theadData}
+                    tbodyData={tbodyData}
+                    paginatorData={patients}
+                />
             </div>
         </ProviderLayout>
     );

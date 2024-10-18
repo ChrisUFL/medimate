@@ -1,10 +1,11 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace App\Http\Controllers\Provider;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AppointmentRequest;
 use App\Models\Appointment;
+use App\Models\Company;
 use App\Models\Employee;
 use App\Models\User;
 use Carbon\Carbon;
@@ -15,24 +16,32 @@ class AppointmentController extends Controller
 {
     public function index(Request $request)
     {
-        //todo Get user id from $request
-        $user = User::firstWhere('id', '=', 1);
-        $company = $user?->companies()?->first();
-        if ($company) {
-            $employeeIds = $company->employees()->pluck('id');
-            $appointments = Appointment::query()
-                ->whereIn('provider_id', $employeeIds)
-                ->get(['appointment_time', 'patient_id', 'id'])
-                ->each(static function ($appointment) {
-                    $user = User::firstWhere('id', '=', $appointment['patient_id']);
-                    $appointment['title'] = $user->first_name.' '.$user->last_name;
-
-                    return $appointment;
-                });
+        $appointments = [];
+        $companyId = $request->user()?->employee?->company_id;
+        if (! $companyId) {
+            abort(403);
         }
 
+        Company::query()
+            ->select([
+                'users.first_name', 'users.last_name',
+                'appointments.appointment_time', 'appointments.id AS appointment_id',
+                'companies.id',
+            ])
+            ->join('appointments', 'companies.id', '=', 'appointments.company_id')
+            ->join('patients', 'appointments.patient_id', '=', 'patients.id')
+            ->join('users', 'patients.user_id', '=', 'users.id')
+            ->where('companies.id', '=', $companyId)
+            ->each(static function ($result) use (& $appointments) {
+                $appointments[] = [
+                    'title' => $result->first_name.' '.$result->last_name,
+                    'appointment_time' => $result->appointment_time,
+                    'appointment_id' => $result->appointment_id,
+                ];
+            });
+
         return Inertia::render('Provider/Appointments/Index', [
-            'appointments' => $appointments ?? [],
+            'appointments' => $appointments,
         ]);
     }
 
@@ -41,7 +50,7 @@ class AppointmentController extends Controller
         $dateStr = $request->query('dateTime');
 
         $users = User::all(['id', 'first_name', 'last_name', 'email']);
-        $employees = Employee::all(['user_id', 'first_name', 'last_name']);
+        $employees = Employee::all(['id', 'first_name', 'last_name']);
 
         return Inertia::render('Provider/Appointments/Create', [
             'patients' => $users,
@@ -55,8 +64,9 @@ class AppointmentController extends Controller
         $validated = $request->validated();
         $appointment = Appointment::create([
             'patient_id' => $validated['patientId'],
-            'provider_id' => $validated['doctorId'],
-            'appointment_time' => Carbon::createFromFormat('Y-m-d H:i', $validated['appointmentDate'].$validated['appointmentTime']),
+            'employee_id' => $validated['doctorId'],
+            'company_id' => 1,
+            'appointment_time' => $validated['isoTime'],
         ]);
 
         return redirect(route('appointments.index'));
@@ -65,54 +75,63 @@ class AppointmentController extends Controller
     public function show(Request $request, $id)
     {
         $appointment = Appointment::firstWhere('id', '=', $id);
-        $employeeIds = Employee::firstWhere('user_id', '=', $appointment?->provider_id)
-            ?->company
-            ?->employees
+        $employeeIds = Company::firstWhere('id', '=', $appointment->company_id)
+            ->employees
             ->pluck('user_id')
             ->toArray();
 
         if (! $employeeIds) {
             abort(404);
         }
-        // TODO remove hardcoded id
-        if (! in_array(12, $employeeIds)) {
-            abort(401);
+
+        if (! in_array($request->user()?->id, $employeeIds)) {
+            abort(403);
         }
 
         return Inertia::render('Provider/Appointments/Show', [
             'id' => $id,
             'dateTime' => $appointment->appointment_time,
-            'first_name' => $appointment->patient->first_name,
-            'last_name' => $appointment->patient->last_name,
-            'doctor' => $appointment->provider->last_name,
+            'first_name' => $appointment->patient->user->first_name,
+            'last_name' => $appointment->patient->user->last_name,
+            'doctor' => $appointment->employee->last_name,
         ]);
     }
 
     public function edit(Request $request, $id)
     {
         $appointment = Appointment::firstWhere('id', '=', $id);
-        $employeeIds = Employee::firstWhere('user_id', '=', $appointment->provider_id)
-            ->company
-            ->employees()
-            ->pluck('user_id')
-            ->toArray();
+        $employeeInfo = Company::query()
+            ->select([
+                'employees.id AS employee_id', 'employees.first_name', 'employees.last_name'
+            ])
+            ->join('appointments', 'companies.id', '=', 'appointments.company_id')
+            ->join('employees','companies.id','=', 'employees.company_id')
+            ->groupBy('employees.id', 'employees.first_name', 'employees.last_name')
+            ->get();
 
-        // TODO remove hardcoded id
-        if (! in_array(12, $employeeIds)) {
-            abort(401);
+        if (! in_array(1, $employeeInfo->pluck('employee_id')->toArray())) {
+            abort(403);
         }
 
-        // TODO get employees for company
-        $employees = Employee::all(['user_id', 'first_name', 'last_name']);
+        $patient = $appointment->patient->user;
+
+        $employeesArray = [];
+        $employeeInfo->each(static function ($result) use (& $employeesArray) {
+            $employeesArray[] = [
+                'id' => $result->employee_id,
+                'first_name' => $result->first_name,
+                'last_name' => $result->last_name,
+            ];
+        });
 
         return Inertia::render('Provider/Appointments/Edit', [
             'id' => $id,
             'patient' => $appointment->patient_id,
             'dateTime' => $appointment->appointment_time,
-            'first_name' => $appointment->patient->first_name,
-            'last_name' => $appointment->patient->last_name,
-            'doctor' => $appointment->provider->id,
-            'employees' => $employees,
+            'first_name' => $patient->first_name,
+            'last_name' => $patient->last_name,
+            'doctor' => $appointment->employee_id,
+            'employees' => $employeesArray,
         ]);
     }
 
@@ -124,11 +143,9 @@ class AppointmentController extends Controller
         if (! $appointment) {
             abort(404);
         }
-
-        $appointment->update([
-            'patient_id' => $validated['patientId'],
-            'provider_id' => $validated['doctorId'],
-            'appointment_time' => Carbon::createFromFormat('Y-m-d H:i', $validated['appointmentDate'].$validated['appointmentTime']),
+         $appointment->update([
+            'employee_id' => $validated['doctorId'],
+            'appointment_time' => $validated['isoTime'],
         ]);
 
         return redirect(route('appointments.show', ['appointment' => $id]));

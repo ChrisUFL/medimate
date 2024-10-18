@@ -31,6 +31,10 @@ class UserFactory extends Factory
             'date_of_birth' => fake()->date(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'avatar_url' => fake()->imageUrl(100, 100),
+            'phone_number' => fake()->phoneNumber(),
+            'language' => fake()->languageCode(),
+            'address' => fake()->address(),
         ];
     }
 

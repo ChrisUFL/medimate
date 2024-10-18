@@ -47,7 +47,7 @@ const Index = ({ appointments }) => {
             start: appointment.appointment_time,
             end: endTime,
             url: route("appointments.show", {
-                appointment: appointment.id,
+                appointment: appointment.appointment_id,
             }),
         };
     });

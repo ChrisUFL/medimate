@@ -8,21 +8,29 @@ import InputLabel from "@/Components/InputLabel";
 import Select from "react-select";
 import PrimaryButton from "@/Components/PrimaryButton";
 
-const Create = ({ patients, employees, dateTime }) => {
-    let time = "";
-    let date = "";
-
-    if (dateTime !== undefined) {
-        const [datePart, timePart] = dateTime.split("T");
-        time = timePart?.substring(0, 8);
-        date = datePart;
+const Create = ({ patients, employees }) => {
+    let dateTimeString = "";
+    if (route().params.dateTime) {
+        dateTimeString = route().params.dateTime + "T00:00:00";
     }
 
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors, transform } = useForm({
         patientId: null,
         doctorId: null,
-        appointmentTime: time ?? "",
-        appointmentDate: date ?? "",
+        appointmentTime: dateTimeString ?? "",
+    });
+
+    transform((data) => {
+        const appointmentTime = new Date(data.appointmentTime);
+        appointmentTime.setHours(
+            appointmentTime.getHours() -
+                appointmentTime.getTimezoneOffset() / 60
+        );
+
+        return {
+            ...data,
+            isoTime: appointmentTime.toISOString(),
+        };
     });
 
     const submit = (e) => {
@@ -46,7 +54,7 @@ const Create = ({ patients, employees, dateTime }) => {
         const name = employee.first_name + " " + employee.last_name;
 
         return {
-            value: employee.user_id,
+            value: employee.id,
             label: name,
         };
     });
@@ -75,20 +83,8 @@ const Create = ({ patients, employees, dateTime }) => {
                         <div className="mt-4">
                             <InputLabel value="Select Date" htmlFor="date" />
                             <TextInput
-                                type="date"
+                                type="datetime-local"
                                 name="date"
-                                value={data.appointmentDate}
-                                onChange={(e) =>
-                                    setData("appointmentDate", e.target.value)
-                                }
-                                className="w-[100%]"
-                            />
-                        </div>
-                        <div className="mt-4">
-                            <InputLabel value="Select Time" htmlFor="time" />
-                            <TextInput
-                                type="time"
-                                name="time"
                                 value={data.appointmentTime}
                                 onChange={(e) =>
                                     setData("appointmentTime", e.target.value)

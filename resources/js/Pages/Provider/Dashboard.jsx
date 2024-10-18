@@ -21,7 +21,21 @@ const businessHours = [
     },
 ];
 
-function Home() {
+function Home({ appointments }) {
+    const appointmentTimes = appointments.map((appointment) => {
+        let datestring = new Date(appointment.appointment_time);
+        const endTime = datestring.setMinutes(datestring.getMinutes() + 30);
+
+        return {
+            title: appointment.title,
+            start: appointment.appointment_time,
+            end: endTime,
+            url: route("appointments.show", {
+                appointment: appointment.appointment_id,
+            }),
+        };
+    });
+
     return (
         <ProviderLayout pageTitle={"Provider"}>
             <div className="flex w-[100%]">
@@ -34,6 +48,7 @@ function Home() {
                     slotDuration={"00:15:00"}
                     nowIndicator={true}
                     allDaySlot={false}
+                    events={appointmentTimes}
                 />
             </div>
         </ProviderLayout>

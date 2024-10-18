@@ -11,8 +11,7 @@ class AppointmentRequest extends FormRequest
         return [
             'patientId' => ['required', 'int'],
             'doctorId' => ['required', 'int'],
-            'appointmentDate' => ['required', 'date'],
-            'appointmentTime' => ['required'],
+            'isoTime' => ['required'],
         ];
     }
 

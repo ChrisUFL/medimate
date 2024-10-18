@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property Carbon $appointment_time
  * @property int $patient_id
- * @property int $provider_id
+ * @property int $employee_id
+ * @property int $company_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
@@ -27,13 +28,19 @@ class Appointment extends Model
             'updated_at' => 'datetime',
         ];
     }
-    public function patient(): BelongsTo
+
+    public function employee(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'patient_id', 'id');
+        return $this->belongsTo(Employee::class);
     }
 
-    public function provider(): BelongsTo
+    public function patient(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'provider_id', 'id');
+        return $this->belongsTo(Patient::class);
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
     }
 }
