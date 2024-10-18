@@ -5,6 +5,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import DangerButton from "@/Components/DangerButton";
 import InputLabel from "@/Components/InputLabel";
 import { useForm } from "@inertiajs/react";
+import InputError from "@/Components/InputError";
 
 const Profile = ({ isActive, patientData, patientId }) => {
     const { data, setData, patch, processing, errors, reset } = useForm({
@@ -13,7 +14,8 @@ const Profile = ({ isActive, patientData, patientId }) => {
 
     const [isEditingProfile, setIsEditingProfile] = useState(false);
 
-    const editProfile = () => {
+    const editProfile = (e) => {
+        e.preventDefault();
         if (isEditingProfile) {
             patch(
                 route(
@@ -22,18 +24,19 @@ const Profile = ({ isActive, patientData, patientId }) => {
                         patient: patientId,
                     },
                     false
-                )
+                ),
+                {
+                    onSuccess: setIsEditingProfile(false),
+                }
             );
         }
-
-        setIsEditingProfile(true);
     };
 
     return (
         <ShadowBox styles={isActive ? "block" : "hidden"}>
             <div className="flex justify-center mb-6">
                 <img
-                    src="https://placehold.co/100"
+                    src={patientData.avatar_url}
                     alt="Profile Picture"
                     className="rounded-[50%]"
                 />
@@ -57,34 +60,53 @@ const Profile = ({ isActive, patientData, patientId }) => {
                                             );
                                         }}
                                     />
+                                    <InputError value={errors.first_name} />
                                 </div>
                                 <div className="w-1/2">
                                     <InputLabel value="Last Name" />
                                     <TextInput
-                                        value={patientData.last_name}
+                                        value={data.last_name}
                                         readOnly={
                                             isEditingProfile ? false : true
                                         }
+                                        onChange={(e) => {
+                                            setData(
+                                                "last_name",
+                                                e.target.value
+                                            );
+                                        }}
                                         className="w-[100%]"
                                     />
                                 </div>
                             </div>
                             <div className="flex flex-col w-[100%]">
                                 <InputLabel value="Email" />
-                                <TextInput value={data.email} readOnly={true} />
+                                <TextInput
+                                    value={data.email}
+                                    readOnly={isEditingProfile ? false : true}
+                                    onChange={(e) => {
+                                        setData("email", e.target.value);
+                                    }}
+                                />
                             </div>
                             <div className="flex flex-col w-[100%]">
                                 <InputLabel value="Phone" />
                                 <TextInput
                                     value={data.phone_number}
-                                    readOnly={true}
+                                    readOnly={isEditingProfile ? false : true}
+                                    onChange={(e) => {
+                                        setData("phone_number", e.target.value);
+                                    }}
                                 />
                             </div>
                             <div className="flex flex-col w-[100%]">
                                 <InputLabel value="Address" />
                                 <TextInput
                                     value={data.address}
-                                    readOnly={true}
+                                    readOnly={isEditingProfile ? false : true}
+                                    onChange={(e) => {
+                                        setData("address", e.target.value);
+                                    }}
                                 />
                             </div>
                         </div>
@@ -96,15 +118,25 @@ const Profile = ({ isActive, patientData, patientId }) => {
                                     <InputLabel value="Gender" />
                                     <TextInput
                                         value={data.gender}
-                                        readOnly={true}
+                                        readOnly={
+                                            isEditingProfile ? false : true
+                                        }
+                                        onChange={(e) => {
+                                            setData("gender", e.target.value);
+                                        }}
                                     />
                                 </div>
                                 <div className="w-1/2">
                                     <InputLabel value="Language" />
                                     <TextInput
                                         value={data.language}
-                                        readOnly={true}
+                                        readOnly={
+                                            isEditingProfile ? false : true
+                                        }
                                         className="w-[100%]"
+                                        onChange={(e) => {
+                                            setData("language", e.target.value);
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -112,21 +144,27 @@ const Profile = ({ isActive, patientData, patientId }) => {
                                 <InputLabel value="Date of Birth" />
                                 <TextInput
                                     value={data.date_of_birth}
-                                    readOnly={true}
+                                    readOnly={isEditingProfile ? false : true}
+                                    onChange={(e) => {
+                                        setData(
+                                            "date_of_birth",
+                                            e.target.value
+                                        );
+                                    }}
                                 />
                             </div>
                             <div className="flex flex-col w-[100%]">
                                 <InputLabel value="Place Holder" />
                                 <TextInput
                                     value={"Place Holder"}
-                                    readOnly={true}
+                                    readOnly={isEditingProfile ? false : true}
                                 />
                             </div>
                             <div className="flex flex-col w-[100%]">
                                 <InputLabel value="Place Holder" />
                                 <TextInput
                                     value={"Place Holder"}
-                                    readOnly={true}
+                                    readOnly={isEditingProfile ? false : true}
                                 />
                             </div>
                         </div>
@@ -141,7 +179,7 @@ const Profile = ({ isActive, patientData, patientId }) => {
                         </PrimaryButton>
                     )}
                     {isEditingProfile && (
-                        <PrimaryButton onClick={editProfile}>
+                        <PrimaryButton onSubmit={editProfile}>
                             Save
                         </PrimaryButton>
                     )}
@@ -152,7 +190,10 @@ const Profile = ({ isActive, patientData, patientId }) => {
                     )}
                     {isEditingProfile && (
                         <DangerButton
-                            onClick={() => setIsEditingProfile(false)}
+                            onClick={() => {
+                                setIsEditingProfile(false);
+                                reset();
+                            }}
                         >
                             Cancel
                         </DangerButton>

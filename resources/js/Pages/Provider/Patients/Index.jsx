@@ -42,7 +42,11 @@ const Index = ({ patients, search_term }) => {
                 onClick={() => tableRowClick(patient)}
             >
                 <td className="px-6 py-3">
-                    <img src={patient.avatar_url} alt="Avatar" />
+                    <img
+                        src={patient.avatar_url}
+                        alt="Avatar"
+                        className="h-10 w-10 rounded-[50%]"
+                    />
                 </td>
                 <td className="px-6 py-3">{patient.first_name}</td>
                 <td className="px-6 py-3">{patient.last_name}</td>

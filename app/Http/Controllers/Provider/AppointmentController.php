@@ -17,7 +17,11 @@ class AppointmentController extends Controller
     public function index(Request $request)
     {
         $appointments = [];
-        //todo Get company id from request
+        $companyId = $request->user()?->employee->company_id;
+        if (! $companyId) {
+            abort(403);
+        }
+
         Company::query()
             ->select([
                 'users.first_name', 'users.last_name',
@@ -27,7 +31,7 @@ class AppointmentController extends Controller
             ->join('appointments', 'companies.id', '=', 'appointments.company_id')
             ->join('patients', 'appointments.patient_id', '=', 'patients.id')
             ->join('users', 'patients.user_id', '=', 'users.id')
-            ->where('companies.id', '=', '1')
+            ->where('companies.id', '=', $companyId)
             ->each(static function ($result) use (& $appointments) {
                 $appointments[] = [
                     'title' => $result->first_name.' '.$result->last_name,

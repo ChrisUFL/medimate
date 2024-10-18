@@ -1,7 +1,6 @@
 import { React, useState } from "react";
 import TextInput from "@/Components/TextInput";
 import PrimaryButton from "@/Components/PrimaryButton";
-import Paginator from "@/Components/Paginator";
 import {
     Button,
     Dialog,
@@ -13,10 +12,10 @@ import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import { useForm } from "@inertiajs/react";
 
-const Charts = ({ charts, patientId }) => {
+const Charts = ({ charts, patientId, isActive }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
-    const { data, setData, post, patch, processing, errors, reset } = useForm({
+    const { data, setData, post, patch, errors, reset, clearErrors } = useForm({
         patientId: patientId,
         reason: "",
         summary: "",
@@ -31,12 +30,16 @@ const Charts = ({ charts, patientId }) => {
         setIsOpen(true);
     }
 
-    function addEntry() {
+    function addEntry(e) {
+        e.preventDefault();
         submit();
-        setIsOpen(false);
+        if (Object.keys(errors).length === 0) {
+            setIsOpen(false);
+        }
     }
 
     function close() {
+        clearErrors();
         setIsOpen(false);
         setIsEditing(false);
         reset();
@@ -81,13 +84,18 @@ const Charts = ({ charts, patientId }) => {
     const tbodyData = charts.map((chart) => {
         const date = chart.visit_date.split("T");
         return (
-            <tr key={chart.id} onClick={() => edit(chart.id)}>
+            <tr
+                key={chart.id}
+                onClick={() => edit(chart.id)}
+                className="hover:bg-indigo-300 hover:cursor-pointer"
+            >
                 <td className="px-6 py-3">{date[0]}</td>
                 <td className="px-6 py-3">{chart.visit_reason}</td>
                 <td className="px-6 py-3">{chart.content}</td>
             </tr>
         );
     });
+
     return (
         <>
             <Dialog
@@ -131,7 +139,7 @@ const Charts = ({ charts, patientId }) => {
                                         }
                                         className="w-[100%]"
                                     />
-                                    <InputError value={errors.reason} />
+                                    <InputError message={errors.reason} />
                                 </div>
                                 <div className="mt-4">
                                     <InputLabel
@@ -145,7 +153,7 @@ const Charts = ({ charts, patientId }) => {
                                         }
                                         className="w-[100%]"
                                     />
-                                    <InputError value={errors.summary} />
+                                    <InputError message={errors.summary} />
                                 </div>
                                 <div className="mt-4">
                                     <InputLabel
@@ -162,7 +170,9 @@ const Charts = ({ charts, patientId }) => {
                                         }
                                         className="w-[100%]"
                                     />
-                                    <InputError value={errors.summary} />
+                                    <InputError
+                                        message={errors.bloodPressure}
+                                    />
                                 </div>
                                 <div className="mt-4">
                                     <InputLabel
@@ -176,11 +186,11 @@ const Charts = ({ charts, patientId }) => {
                                         }
                                         className="w-[100%]"
                                     />
-                                    <InputError value={errors.summary} />
+                                    <InputError message={errors.bodyTemp} />
                                 </div>
                                 <div className="mt-4">
                                     <InputLabel
-                                        value="Pluse"
+                                        value="Pulse"
                                         className="text-white"
                                     />
                                     <TextInput
@@ -190,7 +200,7 @@ const Charts = ({ charts, patientId }) => {
                                         }
                                         className="w-[100%]"
                                     />
-                                    <InputError value={errors.summary} />
+                                    <InputError message={errors.pulse} />
                                 </div>
                                 <div className="mt-4">
                                     <InputLabel
@@ -204,7 +214,7 @@ const Charts = ({ charts, patientId }) => {
                                         }
                                         className="w-[100%]"
                                     />
-                                    <InputError value={errors.summary} />
+                                    <InputError message={errors.respRate} />
                                 </div>
                                 <div className="mt-4">
                                     <InputLabel
@@ -219,7 +229,7 @@ const Charts = ({ charts, patientId }) => {
                                         }
                                         className="w-[100%]"
                                     />
-                                    <InputError value={errors.reason} />
+                                    <InputError message={errors.date} />
                                 </div>
                                 <div className="mt-4 flex justify-end gap-3">
                                     <Button
@@ -240,7 +250,7 @@ const Charts = ({ charts, patientId }) => {
                     </div>
                 </div>
             </Dialog>
-            <div className={tabName === "chart" ? "block" : "hidden"}>
+            <div className={isActive ? "block" : "hidden"}>
                 <div className="flex justify-end mb-2">
                     <PrimaryButton onClick={open}>Add Entry</PrimaryButton>
                 </div>
@@ -255,13 +265,6 @@ const Charts = ({ charts, patientId }) => {
                         </thead>
                         <tbody className="bg-white border-b">{tbodyData}</tbody>
                     </table>
-                    {paginatorData && (
-                        <Paginator
-                            links={paginatorData.links}
-                            currentPage={paginatorData.current_page}
-                            lastPage={paginatorData.last_page}
-                        />
-                    )}
                 </div>
             </div>
         </>

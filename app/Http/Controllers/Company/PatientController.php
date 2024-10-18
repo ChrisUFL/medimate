@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PatientRequest;
 use App\Http\Requests\PatientUpdateRequest;
 use App\Models\ChartEntry;
-use App\Models\Company;
 use App\Models\Patient;
 use App\Models\User;
 use Carbon\Carbon;
@@ -20,6 +19,11 @@ class PatientController extends Controller
     public function index(Request $request)
     {
         $searchTerm = $request->query('q');
+        $companyId = $request->user()?->employee?->company_id;
+
+        if (! $companyId) {
+            abort(403);
+        }
         $patients = Patient::query()
             ->select([
                 'patients.id as user_id',
@@ -27,7 +31,7 @@ class PatientController extends Controller
             ])
             ->leftJoin('companies', 'patients.company_id', '=', 'companies.id')
             ->leftJoin('users', 'patients.user_id', '=', 'users.id')
-            ->where('patients.company_id', '=', 1)
+            ->where('patients.company_id', '=', $companyId)
             ->when($searchTerm, static function (Builder $query) use ($searchTerm) {
                 $query->where('users.first_name', 'LIKE', "%{$searchTerm}%")
                     ->orWhere('users.last_name', '=', "%{$searchTerm}%");
@@ -50,9 +54,13 @@ class PatientController extends Controller
     public function store(PatientRequest $request)
     {
         $validated = $request->validated();
-        // TODO get company id from user making request
-        $user = User::firstWhere('email', '=', $validated['email']);
 
+        $companyId = $request->user()?->employee?->company_id;
+        if (! $companyId) {
+            abort(403);
+        }
+
+        $user = User::firstWhere('email', '=', $validated['email']);
         if (! $user) {
             $user = User::create($validated);
             // dispatch(new SendPasswordResetEmailJob($validated['email']));
@@ -67,12 +75,16 @@ class PatientController extends Controller
 
     public function show(Request $request, $id)
     {
+        $companyId = $request->user()?->employee->company_id;
         $charts = ChartEntry::query()
             ->where('patient_id', '=', $id)
             ->get();
-
+        $patient = Patient::firstWhere('id', '=', $id);
+        if (! $companyId || ! $patient || $patient->company_id !== $companyId) {
+            abort(403);
+        }
         /** @var User $patientUser */
-        $patientUser = Patient::firstWhere('id', '=', $id)->user()->first();
+        $patientUser = $patient->user()->first();
 
         return Inertia::render('Provider/Patients/Show', [
             'charts' => $charts,
@@ -95,14 +107,12 @@ class PatientController extends Controller
 
     public function update(PatientUpdateRequest $request, $id)
     {
-        Log::info("update");
+        $companyId = $request->user()?->employee->company_id;
         $validated = $request->validated();
         $patient = Patient::firstWhere('id', '=', $id);
-        if (! $patient) {
+        if (! $patient || ! $companyId || $patient->company_id !== $companyId) {
             abort(404);
         }
-
-        Log::info($validated);
 
         Log::info($patient->user()->update([
             'first_name' => $validated['first_name'],
@@ -116,7 +126,16 @@ class PatientController extends Controller
         ]));
     }
 
-    public function destroy($id) {}
+    public function destroy(Request $request, $id)
+    {
+        $companyId = $request->user()?->employee->company_id;
+        $patient = Patient::firstWhere('id', '=', $id);
+        if (! $patient || ! $companyId || $patient->company_id !== $companyId) {
+            abort(404);
+        }
+
+        $patient->delete();
+    }
 
     private function getPreviousRoute($previousUrl)
     {
