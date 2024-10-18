@@ -29,9 +29,9 @@ class DashboardController extends Controller
             ->where('companies.id', '=', $companyId)
             ->each(static function ($result) use (&$appointments) {
                 $appointments[] = [
-                    'title' => $result->first_name.' '.$result->last_name,
-                    'appointment_time' => $result->appointment_time,
-                    'appointment_id' => $result->appointment_id,
+                    'title' => $result['first_name'].' '.$result['last_name'],
+                    'appointment_time' => $result['appointment_time'],
+                    'appointment_id' => $result['appointment_id'],
                 ];
             });
 

@@ -12,7 +12,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class PatientController extends Controller
@@ -122,7 +121,7 @@ class PatientController extends Controller
             abort(404);
         }
 
-        Log::info($patient->user()->update([
+        $patient->user()->update([
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
@@ -131,7 +130,7 @@ class PatientController extends Controller
             'gender' => $validated['gender'],
             'language' => $validated['language'],
             'address' => $validated['address'] ?? null,
-        ]));
+        ]);
     }
 
     public function destroy(Request $request, $id)
