@@ -16,6 +16,8 @@
     },
     "dependencies": {
         "@inertiajs/react": "^1.2.0",
+        "ag-grid-community": "^32.2.2",
+        "ag-grid-react": "^32.2.2",
         "react-dom": "^18.3.1"
     }
 }
