@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\NoteRequest;
 use App\Models\Note;
+use App\Models\PatientDocument;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class NoteController extends Controller
@@ -46,9 +50,36 @@ class NoteController extends Controller
         $validated = $request->validated();
         $user = $request->user();
         $validated['user_id'] = $user->id;
+        $files = $request->file('files');
 
         /** @var Note $note */
         $note = $request->user()->notes()->create($validated);
+        if ($note && $files) {
+            foreach ($files as $file) {
+                $fileName = $file->getClientOriginalName();
+                $fileType = $file->getClientOriginalExtension();
+                $fileUUID = Str::uuid();
+                $fileUpload = '';
+
+                try {
+                    $fileUpload = Storage::disk('s3')
+                        ->putFileAs('/', $file, 'user_documents/'.$fileUUID.'.'.$fileType, 'public');
+                } catch (\Exception $e) {
+                    Log::info($e);
+                }
+
+                if ($fileUpload) {
+                    PatientDocument::create([
+                        'file_id' => $fileUUID,
+                        'extension' => $fileType,
+                        'mimetype' => $file->getMimeType(),
+                        'original_name' => $fileName,
+                        'note_id' => $note->id,
+                        'user_id' => $user->id,
+                    ]);
+                }
+            }
+        }
 
         return redirect(route('notes.show', ['note' => $note->id]));
     }
