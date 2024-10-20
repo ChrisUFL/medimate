@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 
-class NotesController extends Controller
+class MedicationController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Notes');
+        return Inertia::render('Medications');
     }
 }

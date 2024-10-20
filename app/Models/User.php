@@ -3,10 +3,33 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property int $id
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $email
+ * @property Carbon $email_verified_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Carbon $date_of_birth
+ * @property string $avatar_url
+ * @property string $gender
+ * @property string $phone_number
+ * @property string $address
+ * @property string $language
+ *
+ * @property-read Note $note
+ * @property-read Company $company
+ */
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -17,9 +40,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
+        'date_of_birth',
+        'avatar_url',
     ];
 
     /**
@@ -42,6 +68,35 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'dob' => 'date',
         ];
+    }
+
+    public function notes(): HasMany
+    {
+        return $this->hasMany(Note::class);
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function company(): HasOne
+    {
+        return $this->hasOne(Company::class);
+    }
+
+    public function employee(): HasOne
+    {
+        return $this->hasOne(Employee::class);
+    }
+
+    /** User is a patient of many companies */
+    public function patient(): HasMany
+    {
+        return $this->hasMany(Patient::class);
     }
 }
