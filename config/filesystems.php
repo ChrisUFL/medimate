@@ -56,6 +56,45 @@ return [
             'throw' => false,
         ],
 
+        'r2' => [
+            'driver' => 's3',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => env('R2_DEFAULT_REGION'),
+            'bucket' => env('R2_BUCKET'),
+            'url' => env('R2_URL'),
+            'endpoint' => env('R2_ENDPOINT'),
+            'use_path_style_endpoint' => env('R2_USE_PATH_STYLE_ENDPOINT', false),
+            'throw' => false,
+        ],
+
+        'do' => [
+            'driver' => 's3',
+            'key' => env('DO_ACCESS_KEY_ID'),
+            'secret' => env('DO_SECRET_ACCESS_KEY'),
+            'region' => env('DO_DEFAULT_REGION'),
+            'bucket' => env('DO_BUCKET'),
+            'folder' => env('DO_FOLDER'),
+            'cdn_endpoint' => env('DO_CDN_ENDPOINT'),
+            'url' => env('DO_URL'),
+            'endpoint' => env('DO_ENDPOINT'),
+            'use_path_style_endpoint' => env('DO_USE_PATH_STYLE_ENDPOINT', false),
+        ],
+
+        'gcs' => [
+            'driver' => 'gcs',
+            'key_file_path' => env('GOOGLE_CLOUD_KEY_FILE', base_path('medimate-439216-616ad2331201.json')), // optional: /path/to/service-account.json
+            'key_file' => [], // optional: Array of data that substitutes the .json file (see below)
+            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', 'your-project-id'), // optional: is included in key file
+            'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET', 'your-bucket'),
+            'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''), // optional: /default/path/to/apply/in/bucket
+            'storage_api_uri' => env('GOOGLE_CLOUD_STORAGE_API_URI', null), // see: Public URLs below
+            'api_endpoint' => env('GOOGLE_CLOUD_STORAGE_API_ENDPOINT', null), // set storageClient apiEndpoint
+            'visibility' => 'private', // optional: public|private
+            'visibility_handler' => null, // optional: set to \League\Flysystem\GoogleCloudStorage\UniformBucketLevelAccessVisibility::class to enable uniform bucket level access
+            'metadata' => ['cacheControl' => 'public,max-age=86400'], // optional: default metadata
+        ],
+
     ],
 
     /*
