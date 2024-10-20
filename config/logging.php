@@ -18,7 +18,7 @@ return [
     |
     */
 
-    'default' => env('LOG_CHANNEL', 'stack'),
+    'default' => config('app.env') === 'local' ? 'stack' : 'bugsnag',
 
     /*
     |--------------------------------------------------------------------------

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 
-class AppointmentsController extends Controller
+class AppointmentController extends Controller
 {
     public function index()
     {
