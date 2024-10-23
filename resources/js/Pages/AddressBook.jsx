@@ -2,7 +2,6 @@ import React, {
     useState,
   } from "react";
 import Navbar from '../Components/Navbar'
-import Contact from '../Components/Contact';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-balham.css'; 
@@ -50,23 +49,12 @@ const AddressBook = ({contacts}) => {
         <div>
 
             <Navbar />
-            <div class = "flex justify-center items-center flex-col">
-                <input onChange = {filterData}class = "border border-solid rounded-md w-4/5 p-4 m-4" type="text" placeholder = "Search..."/>
-                {/* <table class="w-4/5 table-auto border rounded-lg  border-gray-400">
-                    <tr class="bg-blue-700 text-white border rounded-lg">
-                        <th class="border border-gray-400 px-3 py-2">Name</th>
-                        <th class="border border-gray-400 px-3 py-2">Email</th>
-                        <th class="border border-gray-400 px-3 py-2">Phone Number</th>
-                        <th class="border border-gray-400 px-3 py-2">Address</th>
-                    </tr>
-                    <tbody>
-                        {contacts.map((contact, index) => (
-                            <Contact key={index} contact_data={contact} />
-                        ))}
-                    </tbody>
+            <div class = "flex justify-center items-center flex-row ">
+            <div class = "flex justify-between items-center flex-row  w-4/5">
+                <input onChange = {filterData}class = "border border-solid rounded-md w-full p-4 mr-4" type="text" placeholder = "Search..."/>
+                <button class="border border-solid rounded-md p-4 text-white bg-[#1d4ed8] whitespace-nowrap"> Add New Contact </button>
 
-
-                </table> */}
+            </div>
             </div>
             <div>
                 <div class = "flex flex-col h-screen"className="ag-theme-balham" style={{ width: '80%', margin: '20px auto' }}>
