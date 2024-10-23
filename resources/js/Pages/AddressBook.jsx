@@ -52,7 +52,7 @@ const AddressBook = ({contacts}) => {
             <Navbar />
             <div class = "flex justify-center items-center flex-col">
                 <input onChange = {filterData}class = "border border-solid rounded-md w-4/5 p-4 m-4" type="text" placeholder = "Search..."/>
-                <table class="w-4/5 table-auto border rounded-lg  border-gray-400">
+                {/* <table class="w-4/5 table-auto border rounded-lg  border-gray-400">
                     <tr class="bg-blue-700 text-white border rounded-lg">
                         <th class="border border-gray-400 px-3 py-2">Name</th>
                         <th class="border border-gray-400 px-3 py-2">Email</th>
@@ -66,21 +66,19 @@ const AddressBook = ({contacts}) => {
                     </tbody>
 
 
-                </table>
+                </table> */}
             </div>
             <div>
-            <div class = "flex flex-col h-screen"className="ag-theme-balham" style={{ width: '80%', margin: '20px auto' }}>
-            <AgGridReact quickFilterText={quickFilterText}
-            rowData={rowData}  
-            columnDefs={columnDefs}
-            pagination={true} 
-            id="filter-text-box"
-
-            
-            domLayout="autoHeight"
-        
-            />
-            </div>
+                <div class = "flex flex-col h-screen"className="ag-theme-balham" style={{ width: '80%', margin: '20px auto' }}>
+                    <AgGridReact 
+                        quickFilterText={quickFilterText}
+                        rowData={rowData}  
+                        columnDefs={columnDefs}
+                        pagination={true}              
+                        domLayout="autoHeight"
+                        paginationPageSize={10}
+                    />
+                </div>
             
             </div>
 
