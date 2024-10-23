@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {
+    useState,
+  } from "react";
 import Navbar from '../Components/Navbar'
 import Contact from '../Components/Contact';
-import { useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-balham.css'; 
 import "../../css/app.css"
 
+ 
 const data = [
     {
         name : "KJ OBrien",
@@ -30,22 +32,26 @@ const data = [
 
 
 const AddressBook = ({contacts}) => {
-    const [rowData] = useState(data);
+    const [rowData] = useState(contacts);
+    const[quickFilterText, setQuickFilterText]= useState(null);
     
     const [columnDefs] = useState([
-        { field: 'name', headerName: 'Name', flex: 1 },
-        { field: 'email', headerName: 'Email', flex: 1 },
-        { field: 'phone', headerName: 'Phone', flex: 1},
-        { field: 'address', headerName: 'Address', flex: 1 }
+        { field: 'name', headerName: 'Name', flex: 1, filter: 'agTextColumnFilter' },
+        { field: 'email', headerName: 'Email', flex: 1, filter: 'agTextColumnFilter' },
+        { field: 'phone', headerName: 'Phone', flex: 1, filter: 'agTextColumnFilter'},
+        { field: 'address', headerName: 'Address', flex: 1,filter: 'agTextColumnFilter' }
       ]);
-    console.log(contacts);
+    
+    const filterData = (e)=>{
+        setQuickFilterText(e.target.value);  
+    }
     return (
 
         <div>
 
             <Navbar />
             <div class = "flex justify-center items-center flex-col">
-                <input class = "border border-solid rounded-md w-4/5 p-4 m-4" type="text" placeholder = "Search..."/>
+                <input onChange = {filterData}class = "border border-solid rounded-md w-4/5 p-4 m-4" type="text" placeholder = "Search..."/>
                 <table class="w-4/5 table-auto border rounded-lg  border-gray-400">
                     <tr class="bg-blue-700 text-white border rounded-lg">
                         <th class="border border-gray-400 px-3 py-2">Name</th>
@@ -64,10 +70,13 @@ const AddressBook = ({contacts}) => {
             </div>
             <div>
             <div class = "flex flex-col h-screen"className="ag-theme-balham" style={{ width: '80%', margin: '20px auto' }}>
-            <AgGridReact 
+            <AgGridReact quickFilterText={quickFilterText}
             rowData={rowData}  
             columnDefs={columnDefs}
             pagination={true} 
+            id="filter-text-box"
+
+            
             domLayout="autoHeight"
         
             />
