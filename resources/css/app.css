@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.ag-header-cell {
+    background-color: #1d4ed8;
+    color: white;
+    font-weight: bold;
+}
+
+.ag-header-cell-label {
+    justify-content: center; 
+}
+
+.ag-header-icon {
+    display: none;
+}
+
+.ag-header-cell:hover {
+    background-color: #1d4ed8 !important;
+    color: white !important;
+}
