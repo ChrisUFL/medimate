@@ -6,10 +6,15 @@
     background-color: #1d4ed8;
     color: white;
     font-weight: bold;
+    font-size: 16px;
+}
+.ag-cell {
+    font-size: 14px;
 }
 
 .ag-header-cell-label {
     justify-content: center; 
+
 }
 
 .ag-header-icon {

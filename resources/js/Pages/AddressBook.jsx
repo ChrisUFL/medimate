@@ -44,6 +44,13 @@ const AddressBook = ({contacts}) => {
     const filterData = (e)=>{
         setQuickFilterText(e.target.value);  
     }
+
+    const gridOptions = {
+        rowHeight: 50,
+        headerHeight: 50,
+        
+
+    }
     return (
 
         <div>
@@ -64,7 +71,8 @@ const AddressBook = ({contacts}) => {
                         columnDefs={columnDefs}
                         pagination={true}              
                         domLayout="autoHeight"
-                        paginationPageSize={10}
+                        paginationPageSize={7}
+                        gridOptions={gridOptions}
                     />
                 </div>
             
