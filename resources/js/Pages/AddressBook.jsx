@@ -78,7 +78,7 @@ const AddressBook = ({contacts}) => {
                 </div>
             
             </div>
-            {/* <ContactSubmission/> */}
+            <ContactSubmission/>
 
         </div>
     );
