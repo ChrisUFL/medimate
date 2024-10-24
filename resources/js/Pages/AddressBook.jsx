@@ -2,6 +2,7 @@ import React, {
     useState,
   } from "react";
 import Navbar from '../Components/Navbar'
+import ContactSubmission from '../Components/ContactSubmission'
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-balham.css'; 
@@ -57,26 +58,27 @@ const AddressBook = ({contacts}) => {
 
             <Navbar />
             <div class = "flex justify-center items-center flex-row ">
-            <div class = "flex justify-between items-center flex-row  w-4/5">
-                <input onChange = {filterData}class = "border border-solid rounded-md w-full p-4 mr-4" type="text" placeholder = "Search..."/>
-                <button class="border border-solid rounded-md p-4 text-white bg-[#1d4ed8] whitespace-nowrap"> Add New Contact </button>
+                <div class = "flex justify-between items-center flex-row  w-4/5">
+                    <input onChange = {filterData}class = "border border-solid rounded-md w-full p-4 mr-4" type="text" placeholder = "Search..."/>
+                    <button class="border border-solid rounded-md p-4 text-white bg-[#1d4ed8] whitespace-nowrap"> Add New Contact </button>
 
-            </div>
+                </div>
             </div>
             <div>
-                <div class = "flex flex-col h-screen"className="ag-theme-balham" style={{ width: '80%', margin: '20px auto' }}>
+                <div className="ag-theme-balham flex flex-col"  style={{ width: '80%', margin: '20px auto', height: '65vh' }}>
                     <AgGridReact 
                         quickFilterText={quickFilterText}
                         rowData={rowData}  
                         columnDefs={columnDefs}
                         pagination={true}              
-                        domLayout="autoHeight"
+                        domLayout="normal"
                         paginationPageSize={7}
                         gridOptions={gridOptions}
                     />
                 </div>
             
             </div>
+            {/* <ContactSubmission/> */}
 
         </div>
     );
