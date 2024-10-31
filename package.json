@@ -16,7 +16,10 @@
     },
     "dependencies": {
         "@ag-grid-community/core": "^32.2.2",
+        "@emotion/react": "^11.13.3",
+        "@emotion/styled": "^11.13.0",
         "@inertiajs/react": "^1.2.0",
+        "@mui/material": "^6.1.6",
         "ag-grid-community": "^32.2.2",
         "ag-grid-react": "^32.2.2",
         "react-dom": "^18.3.1"

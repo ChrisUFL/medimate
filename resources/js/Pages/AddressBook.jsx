@@ -3,6 +3,7 @@ import React, {
   } from "react";
 import Navbar from '../Components/Navbar'
 import ContactSubmission from '../Components/ContactSubmission'
+import { Modal, Box, Button } from '@mui/material';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-balham.css'; 
@@ -34,6 +35,10 @@ const data = [
 const AddressBook = ({contacts}) => {
     const [rowData] = useState(contacts);
     const[quickFilterText, setQuickFilterText]= useState(null);
+    const [open, toggleModal] = useState(false);
+    const changeModalState = () => {
+        toggleModal(!open);
+    }
     
     const [columnDefs] = useState([
         { field: 'name', headerName: 'Name', flex: 1, filter: 'agTextColumnFilter' },
@@ -49,18 +54,20 @@ const AddressBook = ({contacts}) => {
     const gridOptions = {
         rowHeight: 50,
         headerHeight: 50,
-        
-
     }
+
     return (
 
         <div>
 
             <Navbar />
+            <Modal open={open} onClose={changeModalState}>
+                <ContactSubmission/>
+            </Modal>
             <div class = "flex justify-center items-center flex-row ">
                 <div class = "flex justify-between items-center flex-row  w-4/5">
                     <input onChange = {filterData}class = "border border-solid rounded-md w-full p-4 mr-4" type="text" placeholder = "Search..."/>
-                    <button class="border border-solid rounded-md p-4 text-white bg-[#1d4ed8] whitespace-nowrap"> Add New Contact </button>
+                    <button onClick = {changeModalState} class="border border-solid rounded-md p-4 text-white bg-[#1d4ed8] whitespace-nowrap"> Add New Contact </button>
 
                 </div>
             </div>
@@ -78,8 +85,6 @@ const AddressBook = ({contacts}) => {
                 </div>
             
             </div>
-            <ContactSubmission/>
-
         </div>
     );
 };
