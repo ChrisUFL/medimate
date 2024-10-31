@@ -36,11 +36,25 @@ const ContactSubmission = () => {
             });
         }
     };
+    // const postData = (e)=>{
+    //     console.log(formData);
+        
+    // };
+
+    const postData = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('/addressbook', formData);
+            console.log('Contact saved:', response.data);
+        } catch (error) {
+            console.error('Error saving contact:', error);
+        }
+    };
 
     console.log(formData);
   return (
     <div>
-        <form action="" className="border border-solid w-4/5 flex justify-center items-center flex-col">
+        <form onSubmit={postData} className="border border-solid w-4/5 flex justify-center items-center flex-col">
             <div className = "flex justify-center items-center flex-row ">
                 <label>Name: </label>
                 <input type="text" placeholder = "Albert Gator" name = "name" onChange={updateForm}/>
@@ -57,7 +71,7 @@ const ContactSubmission = () => {
                 <label>Address: </label>
                 <input type="text" placeholder = "1 Swamp Ave." name = "address" onChange={updateForm}/>
             </div>
-            <button>Submit</button>
+            <button type="submit">Submit</button>
             
         </form>
     </div>
