@@ -3,7 +3,7 @@ import React, {
   } from "react";
 import Navbar from '../Components/Navbar'
 import ContactSubmission from '../Components/ContactSubmission'
-import { Modal, Box, Button } from '@mui/material';
+import { Modal, Box } from '@mui/material';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-balham.css'; 
@@ -74,6 +74,7 @@ const AddressBook = ({contacts}) => {
                         display: 'flex', 
                         flexDirection: 'column',
                         alignItems: 'center',
+                        borderRadius: '0.375rem',
                     }}
                 >
                     <div className = "w-full">
