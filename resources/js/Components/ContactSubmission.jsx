@@ -36,42 +36,40 @@ const ContactSubmission = () => {
             });
         }
     };
-    // const postData = (e)=>{
-    //     console.log(formData);
-        
-    // };
 
     const postData = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('/addressbook', formData);
-            console.log('Contact saved:', response.data);
+            console.log('New contact:', response.data);
         } catch (error) {
-            console.error('Error saving contact:', error);
+            console.error('Error adding contact:', error);
         }
     };
 
     console.log(formData);
   return (
-    <div>
-        <form onSubmit={postData} className="border border-solid w-4/5 flex justify-center items-center flex-col">
-            <div className = "flex justify-center items-center flex-row ">
-                <label>Name: </label>
-                <input type="text" placeholder = "Albert Gator" name = "name" onChange={updateForm}/>
+    <div className="flex justify-center items-center flex-col">
+        
+        <form onSubmit={postData} className="flex justify-center items-center flex-col p-4">
+
+            <div className = "flex flex-col items-start p-4 ">
+                <label ><b>Name</b></label>
+                <input type="text" placeholder = "Albert Gator" name = "name" onChange={updateForm} className = "border border-solid p-2"/>
             </div>
-            <div className = "flex justify-center items-center flex-row ">
-                <label>Email: </label>
-                <input type="text" placeholder = "albert.gator@ufl.edu" name = "email" onChange={updateForm}/>
+            <div className = "flex flex-col items-start p-4">
+                <label ><b>Email</b></label>
+                <input  type="text" placeholder = "albert.gator@ufl.edu" name = "email" onChange={updateForm} className = "border border-solid p-2"/>
             </div>
-            <div className = "flex justify-center items-center flex-row ">
-                <label>Phone Number: </label>
-                <input type="text" placeholder = "+1 (352) 123-4567" name = "phone" onChange={updateForm}/>
+            <div className = "flex flex-col items-start p-4">
+                <label><b>Phone Number</b></label>
+                <input type="text" placeholder = "+1 (352) 123-4567" name = "phone" onChange={updateForm} className = "border border-solid p-2"/>
             </div>
-            <div className = "flex justify-center items-center flex-row ">
-                <label>Address: </label>
-                <input type="text" placeholder = "1 Swamp Ave." name = "address" onChange={updateForm}/>
+            <div className = "flex flex-col items-start p-4">
+                <label><b>Address</b> </label>
+                <input type="text" placeholder = "1 Swamp Ave." name = "address" onChange={updateForm} className = "border border-solid p-2"/>
             </div>
-            <button type="submit">Submit</button>
+            <button style={{ backgroundColor: '#1d4ed8'}} className=" text-white py-2 px-4 rounded" type="submit">Submit</button>
             
         </form>
     </div>

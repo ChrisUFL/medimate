@@ -61,13 +61,32 @@ const AddressBook = ({contacts}) => {
         <div>
 
             <Navbar />
-            <Modal open={open} onClose={changeModalState}>
-                <ContactSubmission/>
+            <Modal  open={open} onClose={changeModalState} >
+            <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        bgcolor: 'white',
+                        border: '2px solid #1d4ed8',
+                        p: 5,
+                        pr: 20, 
+                        pl: 20,
+                        display: 'flex', 
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <ContactSubmission/>
+                    
+                </Box>
+                
             </Modal>
-            <div class = "flex justify-center items-center flex-row ">
-                <div class = "flex justify-between items-center flex-row  w-4/5">
-                    <input onChange = {filterData}class = "border border-solid rounded-md w-full p-4 mr-4" type="text" placeholder = "Search..."/>
-                    <button onClick = {changeModalState} class="border border-solid rounded-md p-4 text-white bg-[#1d4ed8] whitespace-nowrap"> Add New Contact </button>
+            <div className = "flex justify-center items-center flex-row ">
+                <div className = "flex justify-between items-center flex-row  w-4/5">
+                    <input onChange = {filterData}className = "border border-solid rounded-md w-full p-4 mr-4" type="text" placeholder = "Search..."/>
+                    <button onClick = {changeModalState} className="border border-solid rounded-md p-4 text-white bg-[#1d4ed8] whitespace-nowrap"> Add New Contact </button>
 
                 </div>
             </div>
