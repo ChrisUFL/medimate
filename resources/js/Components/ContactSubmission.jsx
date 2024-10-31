@@ -51,7 +51,7 @@ const ContactSubmission = () => {
   return (
     <div className="flex justify-center items-center flex-col">
         
-        <form onSubmit={postData} className="flex justify-center items-center flex-col p-4">
+        <form onSubmit={postData} className="flex justify-center items-center flex-col p-2">
 
             <div className = "flex flex-col items-start p-4 ">
                 <label ><b>Name</b></label>
@@ -69,8 +69,11 @@ const ContactSubmission = () => {
                 <label><b>Address</b> </label>
                 <input type="text" placeholder = "1 Swamp Ave." name = "address" onChange={updateForm} className = "border border-solid p-2"/>
             </div>
+            <div className = "flex flex-col items-start p-4">
             <button style={{ backgroundColor: '#1d4ed8'}} className=" text-white py-2 px-4 rounded" type="submit">Submit</button>
             
+            </div>
+           
         </form>
     </div>
   )

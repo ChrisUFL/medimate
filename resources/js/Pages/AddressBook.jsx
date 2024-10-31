@@ -61,7 +61,7 @@ const AddressBook = ({contacts}) => {
         <div>
 
             <Navbar />
-            <Modal  open={open} onClose={changeModalState} >
+            <Modal  open={open} onClose={changeModalState} >                
             <Box
                     sx={{
                         position: 'absolute',
@@ -70,16 +70,16 @@ const AddressBook = ({contacts}) => {
                         transform: 'translate(-50%, -50%)',
                         bgcolor: 'white',
                         border: '2px solid #1d4ed8',
-                        p: 5,
-                        pr: 20, 
-                        pl: 20,
+                        padding: 5,
                         display: 'flex', 
                         flexDirection: 'column',
                         alignItems: 'center',
                     }}
                 >
+                    <div className = "w-full">
+                        <h1 className="cursor-pointer text-white rounded-full w-10 h-10 flex items-center justify-center p-2 float-right" onClick={changeModalState} style={{ backgroundColor: '#1d4ed8'}}><b>X</b></h1>
+                    </div>
                     <ContactSubmission/>
-                    
                 </Box>
                 
             </Modal>
