@@ -46,7 +46,7 @@ class User extends Authenticatable
         'password',
         'date_of_birth',
         'avatar_url',
-        'theme_preference'
+        'theme_preference',
     ];
 
     /**

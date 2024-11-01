@@ -7,6 +7,15 @@ export default function Authenticated({ header, children }) {
     const user = usePage().props.auth.user;
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
+/*
+    useEffect(() => {
+        // Temporarily comment out to troubleshoot rendering
+        // const theme = user.theme_preference || 'light';
+        // document.documentElement.setAttribute('data-theme', theme);
+    }, [user]);*/
+    
+
+    
     // Set the theme preference on page load
     useEffect(() => {
         const theme = user.theme_preference || 'light';

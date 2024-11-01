@@ -33,6 +33,8 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
+                'theme_preference' => $request->user()->theme_preference ?? 'light',
+
             ],
         ];
     }

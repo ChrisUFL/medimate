@@ -1,14 +1,14 @@
 import { Link, usePage } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
 import Navlink from "./Navlink";
-import logo from "../../../public/static/images/logo.svg";
-import { FaSun, FaMoon } from "react-icons/fa"; // Sun and moon icons
-import axios from "axios"; // For backend updates
+import logoLight from "../../../public/static/images/logo.svg";
+import logoDark from "../../../public/static/images/logo-dark.svg"; // Import the dark mode logo
+import { FaSun, FaMoon } from "react-icons/fa";
+import axios from "axios";
 
 const Navbar = () => {
     const user = usePage().props.auth.user;
 
-    // Determine login text and route based on authentication status
     let loginText = "Login";
     let routeName = "login";
 
@@ -17,14 +17,12 @@ const Navbar = () => {
         routeName = "profile.edit";
     }
 
-    // Theme toggle logic: state for theme and effect to apply it
     const [theme, setTheme] = useState(user.theme_preference || 'light');
 
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', theme);
     }, [theme]);
 
-    // Toggle theme function: update state, backend, and document attribute
     const toggleTheme = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
@@ -32,12 +30,17 @@ const Navbar = () => {
     };
 
     return (
-        <div className="w-screen font-medium leading-8 text-center bg-white text-l py-7">
+        <div className="w-screen font-medium leading-8 text-center navbar py-7">
             <div className="content flex align-middle justify-between px-10 max-w-[1280px] m-auto">
                 <div className="flex logo">
                     <Link href={route("web.home")}>
-                        <div className="flex">
-                            <img src={logo} alt={"logo"} width={32} height={32} />
+                        <div className="flex items-center">
+                            <img 
+                                src={theme === 'dark' ? logoDark : logoLight} // Switch logo based on theme
+                                alt="MediMate logo" 
+                                width={32} 
+                                height={32} 
+                            />
                             <span className="ml-2">MediMate</span>
                         </div>
                     </Link>
@@ -52,17 +55,12 @@ const Navbar = () => {
                 </div>
 
                 <div className="flex items-center gap-5 account">
-                    <Link href={route(routeName)}>{loginText}</Link>
-                    {user ? (
-                        <></>
-                    ) : (
-                        <Link href={route(`register`)}> Register </Link>
-                    )}
+                    <Link href={route(routeName)} className="navlink">{loginText}</Link>
+                    {user ? null : <Link href={route('register')} className="navlink">Register</Link>}
 
-                    {/* Theme Toggle Switch */}
                     <div
                         onClick={toggleTheme}
-                        className={`cursor-pointer flex items-center rounded-full p-1 bg-gray-200 dark:bg-gray-600 transition-all duration-300`}
+                        className="flex items-center p-1 transition-all duration-300 bg-gray-200 rounded-full cursor-pointer dark:bg-gray-600"
                         style={{ width: '50px', height: '24px', position: 'relative' }}
                     >
                         <div
