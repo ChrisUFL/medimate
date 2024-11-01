@@ -18,10 +18,11 @@
     --navbar-text-color: #334155;
     --link-hover-color: #55bcd6;
     --active-link-color: #32cd32;
+    --submenu-bg-color: #f7f8fa;
 }
 
 [data-theme="dark"] {
-    --background-color: #1945a5;;
+    --background-color: #226d3b;
     --text-color: #cbd5e0;
     --navbar-bg-color: #334155;
     
@@ -29,6 +30,7 @@
     --link-hover-color: #ffffff;
     --active-link-color: #32cd32;
     --test-color: #8232cd;
+    --submenu-bg-color: #243c72;
 }
 
 
