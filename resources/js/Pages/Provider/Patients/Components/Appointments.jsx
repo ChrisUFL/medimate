@@ -32,7 +32,7 @@ const Appointments = ({ appointments, isActive }) => {
     return (
         <div className={isActive ? "block" : "hidden"}>
             <div className="flex justify-end mb-2">
-                <PrimaryButton onClick={open}>Add Entry</PrimaryButton>
+                <PrimaryButton onClick={open}>Add Appointment</PrimaryButton>
             </div>
             <div className="relative overflow-x-auto drop-shadow-md">
                 <table className="w-full text-md text-left">

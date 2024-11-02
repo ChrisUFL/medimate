@@ -65,7 +65,7 @@ function Create() {
                             <TextInput
                                 name="upload"
                                 type="file"
-                                className="mt-1 block w-full"
+                                className="mt-1 block"
                                 multiple="multiple"
                                 onChange={(e) => {
                                     if (
