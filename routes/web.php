@@ -37,6 +37,6 @@ Route::middleware([
     Route::patch('/chart/{id}', [ChartsController::class, 'update'])->name('chart-entry.update');
 });
 
-Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+//Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
 require __DIR__.'/auth.php';
