@@ -3,8 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CompanyResource\Pages;
+use App\Filament\Resources\CompanyResource\Pages\CompanyView;
+use App\Filament\Resources\CompanyResource\RelationManagers\EmployeesRelationManager;
 use App\Models\Company;
-use App\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -65,6 +66,7 @@ class CompanyResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -76,7 +78,7 @@ class CompanyResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            EmployeesRelationManager::class,
         ];
     }
 
@@ -86,6 +88,7 @@ class CompanyResource extends Resource
             'index' => Pages\ListCompanies::route('/'),
             'create' => Pages\CreateCompany::route('/create'),
             'edit' => Pages\EditCompany::route('/{record}/edit'),
+            'view' => CompanyView::route('/{record}'),
         ];
     }
 }
