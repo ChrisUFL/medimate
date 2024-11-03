@@ -110,7 +110,9 @@ class User extends Authenticatable implements HasName, FilamentUser
 
     public function getFilamentName(): string
     {
-        return "{$this->first_name} {$this->last_name}";
+        $firstName = ucfirst($this->first_name);
+        $lastName = ucfirst($this->last_name);
+        return "{$firstName} {$lastName}";
     }
     public function canAccessPanel(Panel $panel): bool
     {

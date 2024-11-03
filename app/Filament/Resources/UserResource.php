@@ -3,15 +3,17 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\UserResource\RelationManagers\PatientRelationManager;
 use App\Models\User;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -23,7 +25,27 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Section::make('User Info')->schema([
+                    TextInput::make('first_name')
+                        ->required()
+                        ->maxLength(255),
+                    TextInput::make('last_name')
+                        ->required()
+                        ->maxLength(255),
+                    TextInput::make('email')
+                        ->required()
+                        ->maxLength(255),
+                    DatePicker::make('date_of_birth')
+                        ->required(),
+                    TextInput::make('gender')
+                        ->maxLength(255),
+                    TextInput::make('phone_number')
+                        ->maxLength(12),
+                    TextInput::make('language')
+                        ->maxLength(255),
+                    TextInput::make('address')
+                        ->maxLength(255),
+                ]),
             ]);
     }
 
@@ -31,14 +53,25 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('first_name')->label('First Name'),
-                Tables\Columns\TextColumn::make('last_name')->label('Last Name'),
+                TextColumn::make('first_name')
+                    ->label('First Name')
+                    ->formatStateUsing(static fn ($state) => ucfirst($state))
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('last_name')
+                    ->label('Last Name')
+                    ->formatStateUsing(static fn ($state) => ucfirst($state))
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('email')
+                    ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -50,7 +83,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            PatientRelationManager::class,
         ];
     }
 
@@ -60,6 +93,7 @@ class UserResource extends Resource
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
+            'view' => Pages\UserView::route('/{record}'),
         ];
     }
 }
