@@ -1,6 +1,6 @@
-// ReadableLabeling.js
+// ReadableLabeling.jsx
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { Inertia } from '@inertiajs/react'; // Import Inertia for routing
 
 const ReadableLabeling = ({ labelingInfo }) => {
     const [summary, setSummary] = useState('');
@@ -14,36 +14,37 @@ const ReadableLabeling = ({ labelingInfo }) => {
             Side Effects: ${adverse_reactions ? adverse_reactions.join(', ') : 'None'}
             `;
         
-            console.log('Generating summary with prompt:', prompt);
         
             for (let attempt = 0; attempt < 5; attempt++) {
                 try {
-                    const response = await axios.post(
-                        'https://api.openai.com/v1/chat/completions',
-                        {
+                    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+                            'OpenAI-Organization': process.env.REACT_APP_OPENAI_ORG_ID,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
                             model: 'gpt-4o-mini',
                             messages: [{ role: 'user', content: prompt }],
                             max_tokens: 150,
-                        },
-                        {
-                            headers: {
-                                'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-                                'OpenAI-Organization': process.env.REACT_APP_OPENAI_ORG_ID, 
-                                'Content-Type': 'application/json',
-                            },
-                        }
-                    );
-        
-                    console.log('OpenAI response:', response.data);
-                    setSummary(response.data.choices[0].message.content);
+                        }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    setSummary(data.choices[0].message.content);
                     return; // Exit if successful
                 } catch (error) {
-                    if (error.response && error.response.status === 429) {
+                    if (error.message.includes('429')) {
                         const waitTime = Math.pow(2, attempt) * 1000; // Exponential backoff
                         console.log(`Rate limit hit. Waiting for ${waitTime} ms before retrying...`);
                         await new Promise(resolve => setTimeout(resolve, waitTime)); // Wait before retrying
                     } else {
-                        console.error('Error fetching summary:', error.response ? error.response.data : error.message);
+                        console.error('Error fetching summary:', error);
                         setSummary('Error generating summary.');
                         return; // Exit on other errors
                     }
@@ -55,6 +56,10 @@ const ReadableLabeling = ({ labelingInfo }) => {
             generateSummary();
         }
     }, [indications_and_usage, adverse_reactions]);
+
+    const handleNavigation = () => {
+        Inertia.get('/new-route'); // Replace with your desired route
+    };
 
     return (
         <div>
@@ -69,6 +74,7 @@ const ReadableLabeling = ({ labelingInfo }) => {
             ) : (
                 <p>Generating summary...</p>
             )}
+            <button onClick={handleNavigation}>Go to New Route</button>
         </div>
     );
 };

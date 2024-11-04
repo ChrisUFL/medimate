@@ -1,11 +1,3 @@
-// LabelingFetcher.js
-
-// Add these into the component you want to use the API call with
-
-// import React from 'react';
-// import LabelingFetcher from './LabelingFetcher';
-
-
 import React, { useState } from 'react';
 import ReadableLabeling from './ReadableLabeling'; // Import the new component
 
@@ -15,6 +7,11 @@ const LabelingFetcher = () => {
     const [error, setError] = useState('');
 
     const fetchLabeling = async () => {
+        if (!medicationName.trim()) {
+            setError('Please enter a medication name.');
+            return; // Early return if medicationName is empty
+        }
+        
         const url = `https://api.fda.gov/drug/label.json?search=spl_product_data_elements:${encodeURIComponent(medicationName)}&limit=1`;
 
         try {
@@ -24,7 +21,7 @@ const LabelingFetcher = () => {
             }
 
             const data = await response.json();
-            if (data.results && data.results.length > 0) {
+            if (data.results?.length > 0) {
                 setLabelingInfo(data.results[0]);
                 setError('');
             } else {
@@ -56,7 +53,7 @@ const LabelingFetcher = () => {
                 <button type="submit">Fetch Labeling</button>
             </form>
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p className="text-red-600">{error}</p>}
             {labelingInfo && <ReadableLabeling labelingInfo={labelingInfo} />}
         </div>
     );
