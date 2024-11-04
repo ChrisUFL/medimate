@@ -19,6 +19,9 @@ const Fitness = ({ data }) => {
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
                 <h1 className="text-2xl font-bold mb-4 text-center">Fitness Tracker</h1>
+
+                <a href={route('fitness.dashboard')}>Go to Fitness Dashboard</a>
+
                 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>

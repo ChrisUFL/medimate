@@ -27,6 +27,7 @@ Route::middleware('auth')->group(static function () {
     // Routes for handling fitness data (fetch and store)
     Route::get('/fitness-data', [FitnessDataController::class, 'index'])->name('fitness.index');
     Route::post('/fitness-data', [FitnessDataController::class, 'store'])->name('fitness.store');
+    Route::get('/fitness-dashboard', [FitnessDataController::class, 'dashboard'])->name('fitness.dashboard');
     Route::resource('notes', NoteController::class);
 });
 
