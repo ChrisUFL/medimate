@@ -2,15 +2,23 @@ import React, {
     useState,
   } from "react";
 
-const ContactSubmission = () => {
-
-    const [formData, setFormData] = useState({
-        user_pk: 1, 
+const ContactSubmission  = ({
+    values = {
+        user_pk: 1,
         name: '',
         email: '',
         phone: '',
         address: ''
+    }}) => {
+    const [formData, setFormData] = useState({
+        user_pk: values.user_pk || 1,
+        name: values.name || '',
+        email: values.email || '',
+        phone: values.phone || '',
+        address: values.address || ''
     });
+
+    console.log("values from here", values);
 
     const updateForm = (e) => {
         
@@ -45,9 +53,8 @@ const ContactSubmission = () => {
         } catch (error) {
             console.error('Error adding contact:', error);
         }
+        values = {};
     };
-
-    console.log(formData);
   return (
     <div className="flex justify-center items-center flex-col">
         
@@ -56,21 +63,21 @@ const ContactSubmission = () => {
         <div className = "flex flex-row items-start">
             <div className = "flex flex-col items-start p-4 ">
                 <label ><b>Name</b></label>
-                <input type="text" placeholder = "Albert Gator" name = "name" onChange={updateForm} className = "border border-solid p-2"/>
+                <input type="text" value = {formData.name} placeholder = "Albert Gator" name = "name" onChange={updateForm} className = "border border-solid p-2"/>
             </div>
             <div className = "flex flex-col items-start p-4">
                 <label ><b>Email</b></label>
-                <input  type="text" placeholder = "albert.gator@ufl.edu" name = "email" onChange={updateForm} className = "border border-solid p-2"/>
+                <input  type="text" value = {formData.email} placeholder = "albert.gator@ufl.edu" name = "email" onChange={updateForm} className = "border border-solid p-2"/>
             </div>
         </div>
         <div className = "flex flex-row items-start">
             <div className = "flex flex-col items-start p-4">
                 <label><b>Phone Number</b></label>
-                <input type="text" placeholder = "+1 (352) 123-4567" name = "phone" onChange={updateForm} className = "border border-solid p-2"/>
+                <input type="text" value = {formData.phone} placeholder = "+1 (352) 123-4567" name = "phone" onChange={updateForm} className = "border border-solid p-2"/>
             </div>
             <div className = "flex flex-col items-start p-4">
                 <label><b>Address</b> </label>
-                <input type="text" placeholder = "1 Swamp Ave." name = "address" onChange={updateForm} className = "border border-solid p-2"/>
+                <input type="text" value = {formData.address} placeholder = "1 Swamp Ave." name = "address" onChange={updateForm} className = "border border-solid p-2"/>
             </div>
         </div>
             <div className = "flex flex-col items-start p-4">

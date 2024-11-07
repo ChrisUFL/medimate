@@ -35,16 +35,25 @@ const data = [
 const AddressBook = ({contacts}) => {
     const [rowData] = useState(contacts);
     const[quickFilterText, setQuickFilterText]= useState(null);
+
+    const[nameDefault, setNameDefault]= useState('');
+    const[addressDefault, setAddressDefault]= useState('');
+    const[phoneDefault, setPhoneDefault]= useState('');
+    const[emailDefault, setEmailDefault]= useState('');
+
     const [open, toggleModal] = useState(false);
     const changeModalState = () => {
         toggleModal(!open);
+        
     }
     
     const [columnDefs] = useState([
+       
         { field: 'name', headerName: 'Name', flex: 1, filter: 'agTextColumnFilter' },
         { field: 'email', headerName: 'Email', flex: 1, filter: 'agTextColumnFilter' },
         { field: 'phone', headerName: 'Phone', flex: 1, filter: 'agTextColumnFilter'},
-        { field: 'address', headerName: 'Address', flex: 1,filter: 'agTextColumnFilter' }
+        { field: 'address', headerName: 'Address', flex: 1,filter: 'agTextColumnFilter' },
+        { headerName: 'Edit',   flex: 0.25,checkboxSelection: true }
       ]);
     
     const filterData = (e)=>{
@@ -55,6 +64,15 @@ const AddressBook = ({contacts}) => {
         rowHeight: 50,
         headerHeight: 50,
     }
+    const editRow = (event) => {
+        const row = event.api.getSelectedRows();
+        setNameDefault(row[0].name);
+        setEmailDefault(row[0].email);
+        setPhoneDefault(row[0].phone);
+        setAddressDefault(row[0].address);
+        changeModalState();   
+        event.api.deselectAll();
+    };
 
     return (
 
@@ -80,7 +98,7 @@ const AddressBook = ({contacts}) => {
                     <div className = "w-full">
                         <h1 className="cursor-pointer text-white rounded-full w-10 h-10 flex items-center justify-center p-2 float-right" onClick={changeModalState} style={{ backgroundColor: '#1d4ed8'}}><b>X</b></h1>
                     </div>
-                    <ContactSubmission/>
+                    <ContactSubmission values={{ name: nameDefault, email: emailDefault, phone: phoneDefault, address : addressDefault }} />
                 </Box>
                 
             </Modal>
@@ -101,6 +119,7 @@ const AddressBook = ({contacts}) => {
                         domLayout="normal"
                         paginationPageSize={7}
                         gridOptions={gridOptions}
+                        onSelectionChanged={editRow}
                     />
                 </div>
             
