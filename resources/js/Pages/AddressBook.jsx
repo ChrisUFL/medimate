@@ -70,7 +70,7 @@ const AddressBook = ({contacts}) => {
         setEmailDefault(row[0].email);
         setPhoneDefault(row[0].phone);
         setAddressDefault(row[0].address);
-        changeModalState();   
+        changeModalState();
         event.api.deselectAll();
     };
 

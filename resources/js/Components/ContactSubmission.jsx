@@ -19,6 +19,10 @@ const ContactSubmission  = ({
     });
 
     console.log("values from here", values);
+    let showDelete = false;
+    if(values.name != ''){
+        showDelete = true;
+    }
 
     const updateForm = (e) => {
         
@@ -80,9 +84,10 @@ const ContactSubmission  = ({
                 <input type="text" value = {formData.address} placeholder = "1 Swamp Ave." name = "address" onChange={updateForm} className = "border border-solid p-2"/>
             </div>
         </div>
-            <div className = "flex flex-col items-start p-4">
-            <button style={{ backgroundColor: '#1d4ed8'}} className=" text-white py-2 px-4 rounded" type="submit">Save New Contact</button>
-            
+            <div className = "flex flex-row items-center p-4 gap-5">
+            {!showDelete &&<button style={{ backgroundColor: '#1d4ed8'}} className=" text-white py-2 px-4 rounded" type="submit">Save New Contact</button>}
+            {showDelete && <button style={{ backgroundColor: '#1d4ed8'}} className=" text-white py-2 px-4 rounded" type="submit">Save Changes</button>}
+            {showDelete && <button style={{ backgroundColor: '#ef4444'}} className=" text-white py-2 px-4 rounded" type="submit">Delete Contact</button>}
             </div>
            
         </form>
