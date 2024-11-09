@@ -59,20 +59,7 @@ export default function Edit({ mustVerifyEmail, status }) {
                         <DeleteUserForm className="max-w-xl" />
                     </div>
 
-                    {/* Theme toggle button */}
-                    <div
-                        onClick={toggleTheme}
-                        className="flex items-center p-1 transition-all duration-300 bg-gray-200 rounded-full cursor-pointer dark:bg-gray-600"
-                        style={{ width: "50px", height: "24px", position: "relative" }}
-                    >
-                        <div
-                            className={`flex items-center justify-center w-5 h-5 rounded-full bg-white shadow-md transform ${
-                                theme === "dark" ? "translate-x-6" : "translate-x-0"
-                            } ${mounted ? "transition-transform duration-300" : ""}`}
-                        >
-                            {theme === "light" ? <FaSun className="text-yellow-500" /> : <FaMoon className="text-blue-500" />}
-                        </div>
-                    </div>
+                 
                 </div>
             </div>
         </AuthenticatedLayout>

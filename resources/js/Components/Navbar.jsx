@@ -41,13 +41,7 @@ const Navbar = () => {
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
 
-        if (user) {
-            try {
-                await axios.patch('/user/theme', { theme_preference: newTheme });
-            } catch (error) {
-                console.error("Failed to save theme preference", error);
-            }
-        }
+    
     };
 
     return (
