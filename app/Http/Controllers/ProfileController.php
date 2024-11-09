@@ -61,18 +61,6 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
-    public function updateTheme(Request $request): \Illuminate\Http\JsonResponse
-    {
-        $request->validate([
-            'theme_preference' => 'required|string|in:light,dark',
-        ]);
-    
-        $user = $request->user();
-        $user->theme_preference = $request->input('theme_preference');
-        $user->save();
-    
-        return response()->json(['message' => 'Theme preference updated']);
-    }
     
 
 }

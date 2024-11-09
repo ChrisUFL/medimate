@@ -31,10 +31,10 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-           'auth' => [
-        'user' => $request->user(),
-        'theme_preference' => $request->user() ? $request->user()->theme_preference : 'light',
-        ],
+          'auth' => [
+    'user' => $request->user(),
+],
+
 
         ];
     }

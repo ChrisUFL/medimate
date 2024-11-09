@@ -23,7 +23,6 @@ Route::middleware('auth')->group(static function () {
     Route::get('/medications', [MedicationController::class, 'index'])->name('web.medications');
     Route::get('/fitness', [FitnessController::class, 'index'])->name('web.fitness');
     Route::resource('notes', NoteController::class);
-    Route::patch('/user/theme', [ProfileController::class, 'updateTheme'])->name('user.theme.update');
 
 });
 
