@@ -19,6 +19,8 @@
     --link-hover-color: #55bcd6;
     --active-link-color: #32cd32;
     --submenu-bg-color: #f7f8fa;
+    --danger-color: #c90707;
+    --safe-color:#03cb3f;
 }
 
 [data-theme="dark"] {
@@ -31,6 +33,8 @@
     --active-link-color: #32cd32;
     --test-color: #8232cd;
     --submenu-bg-color: #243c72;
+    --danger-color: #f42e2e;
+    --safe-color:#03cb3f;
 }
 
 

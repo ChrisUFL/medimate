@@ -2,12 +2,13 @@ import { Link, usePage } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
 import Navlink from "./Navlink";
 import logoLight from "../../../public/static/images/logo.svg";
-import logoDark from "../../../public/static/images/logo-dark.svg"; // Import the dark mode logo
+import logoDark from "../../../public/static/images/logo-dark.svg";
 import { FaSun, FaMoon } from "react-icons/fa";
 import axios from "axios";
 
 const Navbar = () => {
-    const user = usePage().props.auth.user;
+    const { auth } = usePage().props;
+    const user = auth?.user;
 
     let loginText = "Login";
     let routeName = "login";
@@ -17,16 +18,36 @@ const Navbar = () => {
         routeName = "profile.edit";
     }
 
-    const [theme, setTheme] = useState(user.theme_preference || 'light');
+    const [theme, setTheme] = useState('light');
 
     useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme);
-    }, [theme]);
+        const localTheme = localStorage.getItem('theme');
+        if (localTheme) {
+            setTheme(localTheme);
+            document.documentElement.setAttribute('data-theme', localTheme);
+        } else if (user && user.theme_preference) {
+            setTheme(user.theme_preference);
+            document.documentElement.setAttribute('data-theme', user.theme_preference);
+            localStorage.setItem('theme', user.theme_preference);
+        } else {
+            setTheme('light');
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    }, []);
 
-    const toggleTheme = () => {
+    const toggleTheme = async () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
-        axios.patch('/user/theme', { theme_preference: newTheme });
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+
+        if (user) {
+            try {
+                await axios.patch('/user/theme', { theme_preference: newTheme });
+            } catch (error) {
+                console.error("Failed to save theme preference", error);
+            }
+        }
     };
 
     return (
@@ -36,7 +57,7 @@ const Navbar = () => {
                     <Link href={route("web.home")}>
                         <div className="flex items-center">
                             <img 
-                                src={theme === 'dark' ? logoDark : logoLight} // Switch logo based on theme
+                                src={theme === 'dark' ? logoDark : logoLight}
                                 alt="MediMate logo" 
                                 width={32} 
                                 height={32} 
