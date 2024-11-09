@@ -61,7 +61,7 @@ const Index = ({ appointments }) => {
                     initialView="timeGridDay"
                     viewClassNames={"w-[1000px]"}
                     headerToolbar={headerToolBar}
-                    businessHours={businessHours}
+                    //businessHours={businessHours}
                     slotDuration={"00:15:00"}
                     nowIndicator={true}
                     allDaySlot={false}

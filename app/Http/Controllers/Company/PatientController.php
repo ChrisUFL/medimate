@@ -68,7 +68,7 @@ class PatientController extends Controller
 
         Patient::create([
             'user_id' => $user->id,
-            'company_id' => 1, ]);
+            'company_id' => $companyId]);
 
         return redirect()->route('patients.index');
     }
@@ -87,9 +87,7 @@ class PatientController extends Controller
         $patientUser = $patient->user()->first();
         $appointments = Appointment::query()
             ->where('patient_id', '=', $id)
-            ->where('appointment_time', '>=', Carbon::now())
             ->orderBy('appointment_time')
-            ->limit(10)
             ->get();
 
         return Inertia::render('Provider/Patients/Show', [
