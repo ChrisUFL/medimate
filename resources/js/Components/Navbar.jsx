@@ -4,10 +4,9 @@ import Navlink from "./Navlink";
 import logoLight from "../../../public/static/images/logo.svg";
 import logoDark from "../../../public/static/images/logo-dark.svg";
 import { FaSun, FaMoon } from "react-icons/fa";
-import axios from "axios";
 
 const Navbar = () => {
-    const { auth } = usePage().props;
+    const { auth, url: currentRoute } = usePage().props;
     const user = auth?.user;
 
     let loginText = "Login";
@@ -25,23 +24,17 @@ const Navbar = () => {
         if (localTheme) {
             setTheme(localTheme);
             document.documentElement.setAttribute('data-theme', localTheme);
-        } else if (user && user.theme_preference) {
-            setTheme(user.theme_preference);
-            document.documentElement.setAttribute('data-theme', user.theme_preference);
-            localStorage.setItem('theme', user.theme_preference);
         } else {
             setTheme('light');
             document.documentElement.setAttribute('data-theme', 'light');
         }
     }, []);
 
-    const toggleTheme = async () => {
+    const toggleTheme = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
-
-    
     };
 
     return (
@@ -62,11 +55,11 @@ const Navbar = () => {
                 </div>
 
                 <div className="flex gap-5 links">
-                    <Navlink name="Home" routeName="web.home" />
-                    <Navlink name="Medications" routeName="web.medications" />
-                    <Navlink name="Notes" routeName="notes.index" />
-                    <Navlink name="Appointments" routeName="web.appointments" />
-                    <Navlink name="Fitness" routeName="web.fitness" />
+                    <Navlink name="Home" routeName="web.home" isActive={currentRoute === route("web.home")} />
+                    <Navlink name="Medications" routeName="web.medications" isActive={currentRoute === route("web.medications")} />
+                    <Navlink name="Notes" routeName="notes.index" isActive={currentRoute === route("notes.index")} />
+                    <Navlink name="Appointments" routeName="web.appointments" isActive={currentRoute === route("web.appointments")} />
+                    <Navlink name="Fitness" routeName="web.fitness" isActive={currentRoute === route("web.fitness")} />
                 </div>
 
                 <div className="flex items-center gap-5 account">
