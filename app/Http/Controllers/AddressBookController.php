@@ -25,4 +25,22 @@ class AddressBookController extends Controller
         ]);
         Contact::create($validatedData);
     }
+
+    public function delete(Request $request)
+    {
+        $deletedRows = Contact::where('user_pk', $request->user_pk)
+                              ->where('name', $request->name)
+                              ->where('email', $request->email)
+                              ->where('address', $request->address)
+                              ->where('phone', $request->phone)
+                              ->delete();
+    
+        if ($deletedRows) {
+            return response()->json(['message' => 'deleted successfully']);
+        } else {
+            return response()->json(['message' => 'did not delete']);
+        }
+    }
+    
+
 }

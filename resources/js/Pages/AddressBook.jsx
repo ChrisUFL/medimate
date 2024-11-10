@@ -33,6 +33,7 @@ const data = [
 
 
 const AddressBook = ({contacts}) => {
+    console.log(contacts);
     const [rowData] = useState(contacts);
     const[quickFilterText, setQuickFilterText]= useState(null);
 

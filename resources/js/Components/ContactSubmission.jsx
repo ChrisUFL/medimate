@@ -49,6 +49,7 @@ const ContactSubmission  = ({
         }
     };
 
+
     const postData = async (e) => {
         e.preventDefault();
         try {
@@ -59,6 +60,28 @@ const ContactSubmission  = ({
         }
         values = {};
     };
+
+    const deleteContact = async (e) => {
+        e.preventDefault();
+        console.log("hello");
+        try {
+            const response = await axios.delete('/addressbook', { 
+                data: { 
+                    //user_pk: formData.user_pk, 
+                    user_pk: 1,
+                    name: formData.name, 
+                    email: formData.email, 
+                    address: formData.address, 
+                    phone: formData.phone 
+                } 
+            });
+            console.log('Contact deleted:', response.data);
+            setFormData({ user_pk: 1, name: '', email: '', phone: '', address: '' });
+        } catch (error) {
+            console.error('Error deleting contact:', error);
+        }
+    };
+    
   return (
     <div className="flex justify-center items-center flex-col">
         
@@ -85,9 +108,10 @@ const ContactSubmission  = ({
             </div>
         </div>
             <div className = "flex flex-row items-center p-4 gap-5">
-            {!showDelete &&<button style={{ backgroundColor: '#1d4ed8'}} className=" text-white py-2 px-4 rounded" type="submit">Save New Contact</button>}
+            {!showDelete &&<button  style={{ backgroundColor: '#1d4ed8'}} className=" text-white py-2 px-4 rounded" type="submit">Save New Contact</button>}
             {showDelete && <button style={{ backgroundColor: '#1d4ed8'}} className=" text-white py-2 px-4 rounded" type="submit">Save Changes</button>}
-            {showDelete && <button style={{ backgroundColor: '#ef4444'}} className=" text-white py-2 px-4 rounded" type="submit">Delete Contact</button>}
+            {showDelete && <button onClick={deleteContact}  style={{ backgroundColor: '#ef4547'}} className=" text-white py-2 px-4 rounded" >Delete Contact</button>}
+            
             </div>
            
         </form>

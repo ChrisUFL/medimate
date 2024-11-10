@@ -16,3 +16,4 @@ Route::get('/medications', [MedicationsController::class, 'index'])->name('web.m
 Route::get('/fitness', [FitnessController::class, 'index'])->name('web.fitness');
 Route::get('/addressbook', [AddressBookController::class, 'index'])->name('web.addressbook');
 Route::post('/addressbook', [AddressBookController::class, 'store'])->name('store.addressbook');
+Route::delete('/addressbook', [AddressBookController::class, 'delete']);
