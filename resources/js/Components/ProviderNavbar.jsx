@@ -23,20 +23,14 @@ function ProviderNavbar() {
 
                 <div className="links flex gap-5">
                     <Navlink name="Home" routeName="web.home" />
-                    <Navlink name="Medications" routeName="web.medications" />
-                    <Navlink name="Notes" routeName="notes.index" />
-                    <Navlink name="Appointments" routeName="web.appointments" />
-                    <Navlink name="Fitness" routeName="web.fitness" />
+                    <Navlink
+                        name="Appointments"
+                        routeName="appointments.index"
+                    />
+                    <Navlink name="Patients" routeName="patients.index" />
                 </div>
 
-                <div className="flex gap-5 account">
-                    <Link href={"/"}>{"loginText"}</Link>
-                    {true ? (
-                        <></>
-                    ) : (
-                        <Link href={route(`register`)}> Register </Link>
-                    )}
-                </div>
+                <div></div>
             </div>
         </div>
     );

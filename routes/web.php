@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\CalendarEventController;
 use App\Http\Controllers\Company\ChartsController;
 use App\Http\Controllers\Company\PatientController;
 use App\Http\Controllers\FitnessController;
@@ -37,6 +38,9 @@ Route::middleware([
     Route::patch('/chart/{id}', [ChartsController::class, 'update'])->name('chart-entry.update');
 });
 
+Route::resource('reminder', CalendarEventController::class);
+
 //Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
 require __DIR__.'/auth.php';
+
