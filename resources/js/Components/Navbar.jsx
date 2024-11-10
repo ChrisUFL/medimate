@@ -56,7 +56,7 @@ const Navbar = () => {
                                 width={32} 
                                 height={32} 
                             />
-                            <span className="ml-2">MediMate</span>
+                            <span className="ml-2 text-[var(--medimate-text-color)]">MediMate</span>
                         </div>
                     </Link>
                 </div>
