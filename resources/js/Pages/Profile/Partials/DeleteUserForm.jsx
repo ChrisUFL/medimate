@@ -1,3 +1,4 @@
+// DeleteUserForm.jsx
 import { useRef, useState } from "react";
 import DangerButton from "@/Components/DangerButton";
 import InputError from "@/Components/InputError";
@@ -49,11 +50,11 @@ export default function DeleteUserForm({ className = "" }) {
     return (
         <section className={`space-y-6 ${className}`}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">
+                <h2 className="text-lg font-medium text-[var(--text-color)]">
                     Delete Account
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p className="mt-1 text-sm text-[var(--danger-color)]">
                     Once your account is deleted, all of its resources and data
                     will be permanently deleted.
                 </p>
@@ -65,11 +66,11 @@ export default function DeleteUserForm({ className = "" }) {
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
-                    <h2 className="text-lg font-medium text-gray-900">
+                    <h2 className="text-lg font-medium text-[var(--text-color)]">
                         Are you sure you want to delete your account?
                     </h2>
 
-                    <p className="mt-1 text-sm text-gray-600">
+                    <p className="mt-1 text-sm text-[var(--secondary-text-color)]">
                         Once your account is deleted, all of its resources and
                         data will be permanently deleted. Enter your password to
                         confirm you would like to permanently delete your
@@ -89,10 +90,8 @@ export default function DeleteUserForm({ className = "" }) {
                             name="password"
                             ref={passwordInput}
                             value={data.password}
-                            onChange={(e) =>
-                                setData("password", e.target.value)
-                            }
-                            className="mt-1 block w-3/4"
+                            onChange={(e) => setData("password", e.target.value)}
+                            className="mt-1 block w-3/4 bg-[var(--background-color)] text-[var(--text-color)] placeholder-[var(--placeholder-text-color)]"
                             isFocused
                             placeholder="Password"
                         />

@@ -48,11 +48,11 @@ export default function UpdatePasswordForm({ className = "" }) {
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">
+                <h2 className="text-lg font-medium text-[var(--text-color)]">
                     Update Password
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600">
+                <p className="mt-1 text-sm text-[var(--navbar-text-color)]">
                     Ensure your account is using a long, random password to stay
                     secure.
                 </p>
@@ -73,7 +73,7 @@ export default function UpdatePasswordForm({ className = "" }) {
                             setData("current_password", e.target.value)
                         }
                         type="password"
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full bg-[var(--background-color)] text-[var(--text-color)]"
                         autoComplete="current-password"
                     />
 
@@ -92,7 +92,7 @@ export default function UpdatePasswordForm({ className = "" }) {
                         value={data.password}
                         onChange={(e) => setData("password", e.target.value)}
                         type="password"
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full bg-[var(--background-color)] text-[var(--text-color)]"
                         autoComplete="new-password"
                     />
 
@@ -112,7 +112,7 @@ export default function UpdatePasswordForm({ className = "" }) {
                             setData("password_confirmation", e.target.value)
                         }
                         type="password"
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full bg-[var(--background-color)] text-[var(--text-color)]"
                         autoComplete="new-password"
                     />
 
@@ -127,12 +127,16 @@ export default function UpdatePasswordForm({ className = "" }) {
 
                     <Transition
                         show={recentlySuccessful}
-                        enter="transition ease-in-out"
+                        enter="transition ease-in-out duration-500"
                         enterFrom="opacity-0"
-                        leave="transition ease-in-out"
+                        enterTo="opacity-100"
+                        leave="transition ease-in-out duration-500"
+                        leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600">Saved.</p>
+                        <p className="text-sm text-[var(--navbar-text-color)]">
+                            Saved.
+                        </p>
                     </Transition>
                 </div>
             </form>

@@ -17,23 +17,22 @@ function Edit({ ...note }) {
         e.preventDefault();
         put(route("notes.update", { note: note.note_id }, false));
     }
+
     return (
         <SimpleLayout>
-            <div className="w-full mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                <Head title="Create Note" />
+            <div className="w-full mt-6 px-6 py-4 bg-[var(--submenu-bg-color)] shadow-md overflow-hidden sm:rounded-lg text-[var(--text-color)]">
+                <Head title="Edit Note" />
                 <section>
                     <form onSubmit={submit}>
-                        <div className="">
+                        <div>
                             <InputLabel htmlFor="title" value="Title" />
                             <TextInput
                                 placeholder="Title"
                                 name="title"
                                 type="text"
-                                className="mt-1 block w-full"
+                                className="mt-1 block w-full bg-[var(--background-color)] text-[var(--text-color)]"
                                 value={data.title}
-                                onChange={(e) =>
-                                    setData("title", e.target.value)
-                                }
+                                onChange={(e) => setData("title", e.target.value)}
                             />
                             <InputError
                                 message={errors.title}
@@ -46,12 +45,10 @@ function Edit({ ...note }) {
                             <Textarea
                                 placeholder="Note"
                                 name="content"
-                                className="mt-1 block w-full rounded"
+                                className="mt-1 block w-full rounded bg-[var(--background-color)] text-[var(--text-color)]"
                                 rows={3}
                                 value={data.content}
-                                onChange={(e) => {
-                                    setData("content", e.target.value);
-                                }}
+                                onChange={(e) => setData("content", e.target.value)}
                             ></Textarea>
                             <InputError
                                 message={errors.content}
