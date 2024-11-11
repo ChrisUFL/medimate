@@ -4,6 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Carbon\Carbon;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -30,7 +33,7 @@ use Illuminate\Notifications\Notifiable;
  * @property-read Note $note
  * @property-read Company $company
  */
-class User extends Authenticatable
+class User extends Authenticatable implements HasName, FilamentUser
 {
     use HasFactory, Notifiable;
 
@@ -105,4 +108,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(PatientDocument::class);
     }
+
+    public function getFilamentName(): string
+    {
+        $firstName = ucfirst($this->first_name);
+        $lastName = ucfirst($this->last_name);
+        return "{$firstName} {$lastName}";
+    }
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return str_ends_with($this->email, '@ufl.edu') /*&& $this->hasVerifiedEmail()*/;
+    }
+
 }

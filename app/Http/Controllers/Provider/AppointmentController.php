@@ -62,10 +62,15 @@ class AppointmentController extends Controller
     public function store(AppointmentRequest $request)
     {
         $validated = $request->validated();
+        $company_id = Employee::firstWhere('user_id', '=', $request->user()->id)->company_id;
+        if (!$company_id) {
+            abort(403);
+        }
+
         $appointment = Appointment::create([
             'patient_id' => $validated['patientId'],
             'employee_id' => $validated['doctorId'],
-            'company_id' => 1,
+            'company_id' => $company_id,
             'appointment_time' => $validated['isoTime'],
         ]);
 
@@ -153,7 +158,6 @@ class AppointmentController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        // TODO Validate user can delete
         $appointment = Appointment::firstWhere('id', '=', $id);
         if (! $appointment) {
             abort(404);

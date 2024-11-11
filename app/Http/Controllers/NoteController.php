@@ -62,8 +62,7 @@ class NoteController extends Controller
                 $fileUpload = '';
 
                 try {
-                    $fileUpload = Storage::disk('s3')
-                        ->putFileAs('/', $file, 'user_documents/'.$fileUUID.'.'.$fileType, 'public');
+                    $fileUpload = Storage::putFileAs('/', $file, 'user_documents/'.$fileUUID.'.'.$fileType, 'public');
                 } catch (\Exception $e) {
                     Log::info($e);
                 }
@@ -100,12 +99,24 @@ class NoteController extends Controller
             abort(403);
         }
 
+        $documentUrls = [];
+        PatientDocument::query()
+            ->where('note_id', '=', $id)
+            ->each(static function ($result) use (&$documentUrls) {
+                /** @var PatientDocument $result */
+                $documentUrls[] = [
+                    'url' => Storage::Url('/user_documents/'.$result->file_id.'.'.$result->extension),
+                    'file_name' => $result->original_name,
+                ];
+            });
+
         /** @var Note $note */
         return Inertia::render('Notes/Show', [
             'note_id' => $note->id,
             'note_title' => $note->title,
             'note_content' => $note->content,
             'note_owner' => $note->user_id,
+            'documents' => $documentUrls,
         ]);
     }
 
@@ -164,9 +175,20 @@ class NoteController extends Controller
         }
 
         if ($note->delete()) {
+            $attachments = $note->documents;
+            foreach ($attachments as $attachment) {
+                /** @var PatientDocument $attachment */
+                Storage::delete($this->getDocumentName($attachment));
+            }
+
             return redirect(route('notes.index'));
         }
 
         return redirect()->back();
+    }
+
+    private function getDocumentName(PatientDocument $document): string
+    {
+        return 'user_documents/'.$document->file_id.'.'.$document->extension;
     }
 }

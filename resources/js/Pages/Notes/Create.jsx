@@ -56,7 +56,29 @@ function Create() {
                                 className="mt-2"
                             />
                         </div>
-
+                        <div className="mt-4">
+                            <InputLabel htmlFor="upload" value="Upload" />
+                            <TextInput
+                                name="upload"
+                                type="file"
+                                className="mt-1 block"
+                                multiple="multiple"
+                                onChange={(e) => {
+                                    if (
+                                        e.target.value !== "" ||
+                                        e.target.value !== undefined
+                                    ) {
+                                        setData("files", e.target.files);
+                                        console.log(e.target.files);
+                                    }
+                                }}
+                            />
+                            {progress && (
+                                <progress value={progress.percentage} max="100">
+                                    {progress.percentage}%
+                                </progress>
+                            )}
+                        </div>
                         <div className="flex justify-end">
                             <PrimaryButton
                                 className="mt-2"

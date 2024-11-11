@@ -11,7 +11,8 @@ import PrimaryButton from "@/Components/PrimaryButton";
 const Create = ({ patients, employees }) => {
     let dateTimeString = "";
     if (route().params.dateTime) {
-        dateTimeString = route().params.dateTime + "T00:00:00";
+        dateTimeString = route().params.dateTime;
+        dateTimeString = dateTimeString.substring(0, 19);
     }
 
     const { data, setData, post, processing, errors, transform } = useForm({
