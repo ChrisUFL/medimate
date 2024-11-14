@@ -15,5 +15,7 @@ Route::get('/appointments', [AppointmentsController::class, 'index'])->name('web
 Route::get('/medications', [MedicationsController::class, 'index'])->name('web.medications');
 Route::get('/fitness', [FitnessController::class, 'index'])->name('web.fitness');
 Route::get('/addressbook', [AddressBookController::class, 'index'])->name('web.addressbook');
+//Route used to add new data for the contact book
 Route::post('/addressbook', [AddressBookController::class, 'store'])->name('store.addressbook');
+//Route used to delete data for the contact book
 Route::delete('/addressbook', [AddressBookController::class, 'delete']);

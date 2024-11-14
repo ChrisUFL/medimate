@@ -2,6 +2,7 @@ import React, {
     useState,
   } from "react";
 
+  // Component used to manage submitting queries to the databsae (add, edit, delete)
 const ContactSubmission  = ({
     values = {
         user_pk: 1,
@@ -10,6 +11,7 @@ const ContactSubmission  = ({
         phone: '',
         address: ''
     }}) => {
+//if default values are provided, set the values
     const [formData, setFormData] = useState({
         user_pk: values.user_pk || 1,
         name: values.name || '',
@@ -18,12 +20,13 @@ const ContactSubmission  = ({
         address: values.address || ''
     });
 
-    console.log("values from here", values);
+//logic used to control whether the delete and edit buttons, or the add buttons should be shown
     let showDelete = false;
     if(values.name != ''){
         showDelete = true;
     }
 
+//function to update the form with the values the user types into the form
     const updateForm = (e) => {
         
         if(e.target.name == "name"){
@@ -49,19 +52,18 @@ const ContactSubmission  = ({
         }
     };
 
-
+//function used to add new data to the database
     const postData = async (e) => {
-        console.log('posting');
         e.preventDefault();
         try {
             const response = await axios.post('/addressbook', formData);
-            console.log('New contact:', response.data);
         } catch (error) {
             console.error('Error adding contact:', error);
         }
         values = {};
     };
 
+//function used to delete data from the database
     const deleteContact = async (e) => {
         e.preventDefault();
         try {
@@ -75,16 +77,16 @@ const ContactSubmission  = ({
                     phone: formData.phone 
                 } 
             });
-            console.log('Contact deleted to update:', response.data);
             setFormData({ user_pk: 1, name: '', email: '', phone: '', address: '' });
         } catch (error) {
             console.error('Error deleting contact:', error);
         }
     };
 
+//funciton used to update the data in the database
     const updateContact = async (e) => {
         e.preventDefault();
-        //delete previous stuff
+        //Step 1 is to delete previous data
         try {
             const response = await axios.delete('/addressbook', { 
                 data: { 
@@ -96,15 +98,13 @@ const ContactSubmission  = ({
                     phone: values.phone 
                 } 
             });
-            console.log('Contact deleted:', response.data);
             setFormData({ user_pk: 1, name: '', email: '', phone: '', address: '' });
         } catch (error) {
             console.error('Error deleting contact:', error);
         }
-
+        //Step 2 is to add the updated data
         try {
             const response = await axios.post('/addressbook', formData);
-            console.log('New contact:', response.data);
         } catch (error) {
             console.error('Error adding contact:', error);
         }
@@ -112,7 +112,7 @@ const ContactSubmission  = ({
     
   return (
     <div className="flex justify-center items-center flex-col">
-        
+        {/* Form with inputs for all the required data to add a new contact */}
         <form onSubmit={postData} className="flex justify-center items-center flex-col p-2">
 
         <div className = "flex flex-row items-start">
@@ -136,6 +136,7 @@ const ContactSubmission  = ({
             </div>
         </div>
             <div className = "flex flex-row items-center p-4 gap-5">
+            {/* Logic to show buttons whether it is an add or edit/delete */}
             {!showDelete &&<button  style={{ backgroundColor: '#1d4ed8'}} className=" text-white py-2 px-4 rounded" type="submit">Save New Contact</button>}
             {showDelete && <button onClick = {updateContact} style={{ backgroundColor: '#1d4ed8'}} className=" text-white py-2 px-4 rounded" type="submit">Save Changes</button>}
             {showDelete && <button onClick={deleteContact}  style={{ backgroundColor: '#ef4547'}} className=" text-white py-2 px-4 rounded" >Delete Contact</button>}

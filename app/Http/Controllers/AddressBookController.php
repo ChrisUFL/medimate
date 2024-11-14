@@ -8,6 +8,7 @@ use Inertia\Inertia;
 
 class AddressBookController extends Controller
 {
+    //Get all the entries from the database
     public function index()
     {
         $contacts = Contact::all();
@@ -15,6 +16,8 @@ class AddressBookController extends Controller
             'contacts' => $contacts,
         ]);
     }
+    
+    //Store new value contact into the databsae
     public function store(Request $request){
         $validatedData = $request->validate([
             'user_pk' => 'required|integer',
@@ -26,6 +29,7 @@ class AddressBookController extends Controller
         Contact::create($validatedData);
     }
 
+    //Delete a contact from the databsae
     public function delete(Request $request)
     {
         $deletedRows = Contact::where('user_pk', $request->user_pk)
