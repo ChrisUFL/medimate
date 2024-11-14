@@ -36,7 +36,7 @@ const AddressBook = ({contacts}) => {
     console.log(contacts);
     const [rowData] = useState(contacts);
     const[quickFilterText, setQuickFilterText]= useState(null);
-
+    const[modalOpen, changeModalOpen]= useState(false);
     const[nameDefault, setNameDefault]= useState('');
     const[addressDefault, setAddressDefault]= useState('');
     const[phoneDefault, setPhoneDefault]= useState('');
@@ -44,7 +44,16 @@ const AddressBook = ({contacts}) => {
 
     const [open, toggleModal] = useState(false);
     const changeModalState = () => {
+        console.log(modalOpen)
         toggleModal(!open);
+        if(modalOpen){
+            setNameDefault('');
+            setEmailDefault('');
+            setPhoneDefault('');
+            setAddressDefault('');
+            changeModalOpen(false);
+        }
+        
         
     }
     
@@ -73,6 +82,7 @@ const AddressBook = ({contacts}) => {
         setAddressDefault(row[0].address);
         changeModalState();
         event.api.deselectAll();
+        changeModalOpen(true);
     };
 
     return (
