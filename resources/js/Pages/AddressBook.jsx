@@ -9,6 +9,8 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-balham.css'; 
 import "../../css/app.css"
 
+
+
 const AddressBook = ({contacts}) => {
 
 // variables used to perform updating on the page
@@ -64,11 +66,13 @@ const gridOptions = {
         changeModalState();
         event.api.deselectAll();
         changeModalOpen(true);
+        
     };
 
     return (
 
         <div>
+            
             {/* NavBar Default to all pages */}
             <Navbar />
             {/* Modal (pop up) confiruation and set up  */}
@@ -97,6 +101,7 @@ const gridOptions = {
                 
             </Modal>
             {/* Search Bar and Add new Contact implementation and styling */}
+
             <div className = "flex justify-center items-center flex-row ">
                 <div className = "flex justify-between items-center flex-row  w-4/5">
                     <input onChange = {filterData}className = "border border-solid rounded-md w-full p-4 mr-4" type="text" placeholder = "Search..."/>

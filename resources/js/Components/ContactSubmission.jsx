@@ -1,7 +1,6 @@
-import React, {
-    useState,
-  } from "react";
-
+import React, {useState} from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
   // Component used to manage submitting queries to the databsae (add, edit, delete)
 const ContactSubmission  = ({
     values = {
@@ -57,8 +56,9 @@ const ContactSubmission  = ({
         e.preventDefault();
         try {
             const response = await axios.post('/addressbook', formData);
+            toast.success("Contact created successfully");
         } catch (error) {
-            console.error('Error adding contact:', error);
+            toast.error("Error creating contact");
         }
         values = {};
     };
@@ -77,15 +77,18 @@ const ContactSubmission  = ({
                     phone: formData.phone 
                 } 
             });
-            setFormData({ user_pk: 1, name: '', email: '', phone: '', address: '' });
+            toast.info("Contact deleted successfully");
         } catch (error) {
-            console.error('Error deleting contact:', error);
+            toast.error("Error deleting contact.");
         }
+        
     };
 
 //funciton used to update the data in the database
     const updateContact = async (e) => {
         e.preventDefault();
+        
+
         //Step 1 is to delete previous data
         try {
             const response = await axios.delete('/addressbook', { 
@@ -98,20 +101,21 @@ const ContactSubmission  = ({
                     phone: values.phone 
                 } 
             });
-            setFormData({ user_pk: 1, name: '', email: '', phone: '', address: '' });
         } catch (error) {
-            console.error('Error deleting contact:', error);
+            toast.error("Error updating contact.");
         }
         //Step 2 is to add the updated data
         try {
             const response = await axios.post('/addressbook', formData);
+            toast.success("Contact updated successfully");
         } catch (error) {
-            console.error('Error adding contact:', error);
+            toast.error("Error updating contact.");
         }
     }
     
   return (
     <div className="flex justify-center items-center flex-col">
+       
         {/* Form with inputs for all the required data to add a new contact */}
         <form onSubmit={postData} className="flex justify-center items-center flex-col p-2">
 
@@ -144,6 +148,7 @@ const ContactSubmission  = ({
             </div>
            
         </form>
+        <ToastContainer position="top-center" autoClose={3000} />
     </div>
   )
 }
