@@ -127,8 +127,7 @@ const AddressBook = ({contacts}) => {
                         rowData={rowData}  
                         columnDefs={columnDefs}
                         pagination={true}              
-                        domLayout="normal"
-                        paginationPageSize={7}
+                        paginationAutoPageSize={true}
                         gridOptions={gridOptions}
                         onSelectionChanged={editRow}
                     />
