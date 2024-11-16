@@ -10,6 +10,7 @@ const Navbar = () => {
     const { auth } = usePage().props;
     const user = auth?.user;
 
+
     let loginText = "Login";
     let routeName = "login";
 
@@ -64,8 +65,11 @@ const Navbar = () => {
                 <div className="flex gap-5 links">
                     <Navlink name="Home" routeName="web.home" />
                     <Navlink name="Medications" routeName="web.medications" />
+                    <Navlink
+                        name="Medication Reminders"
+                        routeName="reminder.index"
+                    />
                     <Navlink name="Notes" routeName="notes.index" />
-                    <Navlink name="Appointments" routeName="web.appointments" />
                     <Navlink name="Fitness" routeName="web.fitness" />
                 </div>
 
