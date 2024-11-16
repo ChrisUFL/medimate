@@ -107,7 +107,7 @@ class NoteController extends Controller
                 /** @var PatientDocument $result */
                 $documentUrls[] = [
                     //'/user_documents/'.$result->file_id.'.'.$result->extension
-                    'url' => Storage::temporaryUrl('/user_documents/'.$result->file_id.'.'.$result->extension, Carbon::now()->addMinutes(30)),
+                    'url' => Storage::url('/user_documents/'.$result->file_id.'.'.$result->extension),
                     'file_name' => $result->original_name,
                 ];
             });
