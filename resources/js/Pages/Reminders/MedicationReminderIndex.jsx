@@ -1,5 +1,6 @@
+import PrimaryButton from "@/Components/PrimaryButton";
 import ShadowBox from "@/Components/ShadowBox";
-import SimpleLayout from "@/Layouts/ProviderLayout";
+import SimpleLayout from "@/Layouts/SimpleLayout";
 import { router } from "@inertiajs/react";
 import React from "react";
 import { MdCancel } from "react-icons/md";
@@ -29,14 +30,28 @@ const MedicationReminderIndex = ({ events }) => {
         );
     };
 
+    const addEvent = () => {
+        router.get(route("reminder.create"));
+    };
+
     return (
         <div>
             <SimpleLayout>
                 <ShadowBox>
+                    <div className="flex justify-end">
+                        <PrimaryButton onClick={() => addEvent()}>
+                            Add New Reminder
+                        </PrimaryButton>
+                    </div>
                     <div className="flex flex-col flex-wrap content-center">
+                        {Object.keys(events).length > 0
+                            ? ""
+                            : "No Reminders Found"}
                         {Object.entries(events).map(([date, eventData]) => (
                             <div key={date} className="date-section w-2/5 mb-5">
-                                <h2>{date}</h2>
+                                <h2 className="-mb-5 font-bold text-lg">
+                                    {date}
+                                </h2>
                                 {eventData.map((event) => (
                                     <ShadowBox styles="mt-2 bg-indigo-200/55">
                                         <div

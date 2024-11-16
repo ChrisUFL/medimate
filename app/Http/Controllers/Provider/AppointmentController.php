@@ -7,9 +7,11 @@ use App\Http\Requests\AppointmentRequest;
 use App\Models\Appointment;
 use App\Models\Company;
 use App\Models\Employee;
+use App\Models\Patient;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class AppointmentController extends Controller
@@ -28,11 +30,11 @@ class AppointmentController extends Controller
                 'appointments.appointment_time', 'appointments.id AS appointment_id',
                 'companies.id',
             ])
-            ->join('appointments', 'companies.id', '=', 'appointments.company_id')
-            ->join('patients', 'appointments.patient_id', '=', 'patients.id')
-            ->join('users', 'patients.user_id', '=', 'users.id')
+            ->leftjoin('appointments', 'companies.id', '=', 'appointments.company_id')
+            ->leftjoin('patients', 'appointments.patient_id', '=', 'patients.id')
+            ->leftjoin('users', 'patients.user_id', '=', 'users.id')
             ->where('companies.id', '=', $companyId)
-            ->each(static function ($result) use (& $appointments) {
+            ->each(static function ($result) use (&$appointments) {
                 $appointments[] = [
                     'title' => $result->first_name.' '.$result->last_name,
                     'appointment_time' => $result->appointment_time,
@@ -48,12 +50,24 @@ class AppointmentController extends Controller
     public function create(Request $request)
     {
         $dateStr = $request->query('dateTime');
-
-        $users = User::all(['id', 'first_name', 'last_name', 'email']);
+        $companyId = $request->user()->employee->company_id;
+        $patients = [];
+        Patient::query()
+            ->where('company_id', '=', $companyId)
+            ->each(static function ($result) use (&$patients) {
+                /** @var Patient $result */
+                $user = $result->user;
+                $patients[] = [
+                    'id' => $result->id,
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'email' => $user->email,
+                ];
+            });
         $employees = Employee::all(['id', 'first_name', 'last_name']);
 
         return Inertia::render('Provider/Appointments/Create', [
-            'patients' => $users,
+            'patients' => $patients,
             'employees' => $employees,
             'dateTime' => $dateStr,
         ]);

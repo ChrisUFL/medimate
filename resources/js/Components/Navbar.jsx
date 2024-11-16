@@ -2,10 +2,13 @@ import { Link, usePage } from "@inertiajs/react";
 import React from "react";
 import Navlink from "./Navlink";
 import logo from "../../../public/static/images/logo.svg";
-import Dropdown from "./Dropdown";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
 const Navbar = () => {
     const user = usePage().props.auth.user;
+    const { flags } = usePage().props;
+
+    console.log(flags);
 
     let loginText = "Login";
     let routeName = "login";
@@ -36,8 +39,11 @@ const Navbar = () => {
                 <div className="links flex gap-5">
                     <Navlink name="Home" routeName="web.home" />
                     <Navlink name="Medications" routeName="web.medications" />
+                    <Navlink
+                        name="Medication Reminders"
+                        routeName="reminder.index"
+                    />
                     <Navlink name="Notes" routeName="notes.index" />
-                    <Navlink name="Appointments" routeName="web.appointments" />
                     <Navlink name="Fitness" routeName="web.fitness" />
                 </div>
 

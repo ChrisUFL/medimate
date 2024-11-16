@@ -92,6 +92,8 @@ class CalendarEventController extends Controller
                 }
             }
         });
+
+        return redirect(route('reminder.index'));
     }
 
     public function show($id) {}

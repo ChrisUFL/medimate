@@ -119,4 +119,9 @@ class User extends Authenticatable implements HasName, FilamentUser
         return str_ends_with($this->email, '@ufl.edu') /*&& $this->hasVerifiedEmail()*/;
     }
 
+    public function events(): HasMany
+    {
+        return $this->hasMany(CalendarEvent::class);
+    }
+
 }
