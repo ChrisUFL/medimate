@@ -182,7 +182,7 @@ class NoteController extends Controller
             $attachments = $note->documents;
             foreach ($attachments as $attachment) {
                 /** @var PatientDocument $attachment */
-                Storage::delete($this->getDocumentName($attachment));
+                Storage::disk('r2')->delete($this->getDocumentName($attachment));
             }
 
             return redirect(route('notes.index'));
