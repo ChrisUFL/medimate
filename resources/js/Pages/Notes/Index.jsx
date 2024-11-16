@@ -27,12 +27,16 @@ const Notes = ({ notes, search_term }) => {
         );
     }
 
+    // Map each note to a new element
     const content = notes.data.map((note) => {
         let note_content = note.content.substring(0, 85).trim();
         note_content += note.content.length > 50 ? "..." : "";
 
         return (
-            <tr key={note.id} className="bg-[var(--background-color)] text-[var(--text-color)]">
+            <tr
+                key={note.id}
+                className="bg-[var(--background-color)] text-[var(--text-color)]"
+            >
                 <td className="px-6 py-3">{note.title}</td>
                 <td className="px-6 py-3">{note_content}</td>
                 <td className="flex justify-center px-6 py-3">

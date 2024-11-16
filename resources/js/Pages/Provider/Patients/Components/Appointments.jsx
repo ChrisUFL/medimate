@@ -27,6 +27,7 @@ const Appointments = ({ appointments, isActive }) => {
                 key={appointment.id}
                 className="hover:bg-indigo-300 hover:cursor-pointer"
                 onClick={() => goToAppointment(appointment.id)}
+                id={appointment.id}
             >
                 <td className="px-6 py-3">{date.toLocaleDateString()}</td>
                 <td className="px-6 py-3">

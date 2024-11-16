@@ -17,6 +17,7 @@ class DashboardController extends Controller
             abort(403);
         }
 
+        // Get the appointments for the given employer
         Company::query()
             ->select([
                 'users.first_name', 'users.last_name',

@@ -24,6 +24,9 @@ class AppointmentController extends Controller
             abort(403);
         }
 
+        /*
+         * Get all appointments for the given employer and join the required tables to get the user name, and appt info
+         */
         Company::query()
             ->select([
                 'users.first_name', 'users.last_name',

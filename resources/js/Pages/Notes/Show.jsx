@@ -8,7 +8,6 @@ import React, { useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 function Show({ documents, ...note }) {
-    console.log(documents);
     const page = usePage();
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
 
@@ -45,6 +44,7 @@ function Show({ documents, ...note }) {
         window.open(link, "_blank").focus();
     };
 
+    // Create new elements for each document
     const attachemnts = documents.map((document) => {
         return (
             <Link onClick={() => openLink(document.url)}>
@@ -59,7 +59,7 @@ function Show({ documents, ...note }) {
     });
 
     return (
- <SimpleLayout title={note.note_title}>
+        <SimpleLayout title={note.note_title}>
             <div className="mt-6 px-6 py-4 bg-[var(--submenu-bg-color)] shadow-md overflow-hidden sm:rounded-lg text-[var(--text-color)]">
                 <h3 className="my-3 text-2xl font-semibold">
                     {note.note_title}

@@ -149,6 +149,7 @@ class NoteController extends Controller
      */
     public function update(NoteRequest $request, string $id)
     {
+        // Find the note and update it if it exists
         $note = Note::firstWhere('id', '=', $id);
         $userId = $request->user()->id;
         $validated = $request->validated();
@@ -170,6 +171,7 @@ class NoteController extends Controller
     public function destroy(Request $request, string $id)
     {
         $note = Note::firstWhere('id', '=', $id);
+        // If the note does not belong to the user attempting to delete it, throw a 403
         if (! $note || $note->user_id !== $request->user()->id) {
             abort(403);
         }
