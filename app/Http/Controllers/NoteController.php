@@ -62,7 +62,7 @@ class NoteController extends Controller
                 $fileUpload = '';
 
                 try {
-                    $fileUpload = Storage::putFileAs('/', $file, 'user_documents/'.$fileUUID.'.'.$fileType, 'public');
+                    $fileUpload = Storage::disk('r2')->putFileAs('/', $file, 'user_documents/'.$fileUUID.'.'.$fileType, 'public');
                 } catch (\Exception $e) {
                     Log::info($e);
                 }
@@ -105,7 +105,7 @@ class NoteController extends Controller
             ->each(static function ($result) use (&$documentUrls) {
                 /** @var PatientDocument $result */
                 $documentUrls[] = [
-                    'url' => Storage::Url('/user_documents/'.$result->file_id.'.'.$result->extension),
+                    'url' => Storage::disk('r2')->Url('/user_documents/'.$result->file_id.'.'.$result->extension),
                     'file_name' => $result->original_name,
                 ];
             });
