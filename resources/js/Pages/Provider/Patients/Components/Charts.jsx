@@ -47,6 +47,7 @@ const Charts = ({ charts, patientId, isActive }) => {
 
     const submit = () => {
         post(route("chart-entry.store", {}, false));
+        reset();
     };
 
     const edit = (id) => {
