@@ -25,7 +25,7 @@ Route::middleware('auth')->group(static function () {
     Route::get('/medications', [MedicationController::class, 'index'])->name('web.medications');
     Route::get('/fitness', [FitnessController::class, 'index'])->name('web.fitness');
     Route::resource('notes', NoteController::class);
-
+    Route::resource('reminder', CalendarEventController::class);
 });
 
 Route::middleware([
@@ -39,7 +39,7 @@ Route::middleware([
     Route::patch('/chart/{id}', [ChartsController::class, 'update'])->name('chart-entry.update');
 });
 
-Route::resource('reminder', CalendarEventController::class);
+
 
 //Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
