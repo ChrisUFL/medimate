@@ -43,8 +43,12 @@ class HandleInertiaRequests extends Middleware
         ];
     }
 
-    private function getUserFlags(Request $request): int
+    private function getUserFlags(Request $request): ?int
     {
+        if (! $request->user()) {
+            return null;
+        }
+
         $accountFlags = 0;
         if ($request->user()->employee) {
             $accountFlags |= self::FLAG_PROVIDER;
