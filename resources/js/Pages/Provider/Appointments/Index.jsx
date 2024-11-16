@@ -39,6 +39,13 @@ const dateClick = (e) => {
 
 const Index = ({ appointments }) => {
     const appointmentTimes = appointments.map((appointment) => {
+        if (
+            appointment.appointment_id === undefined ||
+            appointment.appointment_id === null
+        ) {
+            return {};
+        }
+
         let datestring = new Date(appointment.appointment_time);
         const endTime = datestring.setMinutes(datestring.getMinutes() + 30);
 

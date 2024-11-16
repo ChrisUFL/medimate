@@ -87,7 +87,7 @@ class PatientController extends Controller
         /** @var User $patientUser */
         $patientUser = $patient->user()->first();
         $appointments = Appointment::query()
-            ->where('patient_id', '=', $patient->user_id)
+            ->where('patient_id', '=', $patient->id)
             ->orderBy('appointment_time')
             ->get();
 
