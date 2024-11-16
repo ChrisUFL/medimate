@@ -22,19 +22,18 @@ export default function UpdateProfileInformation({
     const submit = (e) => {
         e.preventDefault();
 
-        // eslint-disable-next-line no-undef
         patch(route("profile.update"));
     };
 
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">
+                <h2 className="text-lg font-medium text-[var(--text-color)]">
                     Profile Information
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600">
-                    Update your account&apos;s profile information and email
+                <p className="mt-1 text-sm text-[var(--navbar-text-color)]">
+                    Update your account's profile information and email
                     address.
                 </p>
             </header>
@@ -45,7 +44,7 @@ export default function UpdateProfileInformation({
 
                     <TextInput
                         id="name"
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full bg-[var(--background-color)] text-[var(--text-color)]"
                         value={data.name}
                         onChange={(e) => setData("name", e.target.value)}
                         required
@@ -62,7 +61,7 @@ export default function UpdateProfileInformation({
                     <TextInput
                         id="email"
                         type="email"
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full bg-[var(--background-color)] text-[var(--text-color)]"
                         value={data.email}
                         onChange={(e) => setData("email", e.target.value)}
                         required
@@ -74,21 +73,20 @@ export default function UpdateProfileInformation({
 
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
-                        <p className="text-sm mt-2 text-gray-800">
+                        <p className="text-sm mt-2 text-[var(--text-color)]">
                             Your email address is unverified.
                             <Link
-                                // eslint-disable-next-line no-undef
                                 href={route("verification.send")}
                                 method="post"
                                 as="button"
-                                className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                className="underline text-sm text-[var(--link-hover-color)] hover:text-[var(--active-link-color)] rounded-md focus:outline-none"
                             >
                                 Click here to re-send the verification email.
                             </Link>
                         </p>
 
                         {status === "verification-link-sent" && (
-                            <div className="mt-2 font-medium text-sm text-green-600">
+                            <div className="mt-2 font-medium text-sm text-[var(--text-color)]">
                                 A new verification link has been sent to your
                                 email address.
                             </div>
@@ -101,12 +99,16 @@ export default function UpdateProfileInformation({
 
                     <Transition
                         show={recentlySuccessful}
-                        enter="transition ease-in-out"
+                        enter="transition ease-in-out duration-500"
                         enterFrom="opacity-0"
-                        leave="transition ease-in-out"
+                        enterTo="opacity-100"
+                        leave="transition ease-in-out duration-500"
+                        leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600">Saved.</p>
+                        <p className="text-sm text-[var(--navbar-text-color)]">
+                            Saved.
+                        </p>
                     </Transition>
                 </div>
             </form>

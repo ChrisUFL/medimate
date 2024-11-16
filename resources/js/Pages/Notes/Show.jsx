@@ -59,12 +59,12 @@ function Show({ documents, ...note }) {
     });
 
     return (
-        <SimpleLayout title={note.note_title}>
-            <div className="mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg w-full">
-                <h3 className="text-2xl font-semibold my-3">
+ <SimpleLayout title={note.note_title}>
+            <div className="mt-6 px-6 py-4 bg-[var(--submenu-bg-color)] shadow-md overflow-hidden sm:rounded-lg text-[var(--text-color)]">
+                <h3 className="my-3 text-2xl font-semibold">
                     {note.note_title}
                 </h3>
-                <pre className="max-h-screen text-slate-700 text-wrap overflow-auto font-serif">
+                <pre className="max-h-screen text-[var(--text-color)] text-wrap overflow-auto font-serif">
                     {note.note_content}
                 </pre>
                 <div className="mt-8">
@@ -88,10 +88,10 @@ function Show({ documents, ...note }) {
                         )}
                     <Modal show={confirmingUserDeletion} onClose={closeModal}>
                         <form onSubmit={deleteNote} className="p-6">
-                            <h2 className="text-lg font-medium text-gray-900">
+                            <h2 className="text-lg font-medium text-[var(--text-color)]">
                                 Are you sure you want to delete this note?
                             </h2>
-                            <div className="mt-6 flex justify-end">
+                            <div className="flex justify-end mt-6">
                                 <SecondaryButton onClick={closeModal}>
                                     Cancel
                                 </SecondaryButton>

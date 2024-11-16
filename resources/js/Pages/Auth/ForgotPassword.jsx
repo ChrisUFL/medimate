@@ -20,7 +20,7 @@ export default function ForgotPassword({ status }) {
         <GuestLayout>
             <Head title="Forgot Password" />
 
-            <div className="mb-4 text-sm text-gray-600">
+            <div className="mb-4 text-sm text-[var(--text-color)]">
                 Forgot your password? Let us know your email address and we will
                 email you a password reset link.
             </div>

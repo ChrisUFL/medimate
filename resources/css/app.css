@@ -9,3 +9,60 @@
 .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr {
     margin-bottom: 4px;
 }
+
+
+:root {
+    --background-color: #ffffff;
+    --text-color: #334155;
+    --navbar-bg-color: #ffffff;
+    --medimate-text-color: #303e99;
+    --navbar-text-color: #2c323a;
+    --link-hover-color: #55bcd6;
+    --active-link-color: #32cd32;
+    --submenu-bg-color: #f7f8fa;
+    --danger-color: #c90707;
+    --safe-color:#03cb3f;
+    --button-color:#ffffff;
+}
+
+[data-theme="dark"] {
+    --background-color: #111827;
+    --text-color: #a6acb3;
+    --navbar-bg-color: #111827;
+    --medimate-text-color: #55bcd6;
+    --navbar-text-color: #899496;
+    --link-hover-color: #ffffff;
+    --active-link-color: #32cd32;
+    --submenu-bg-color: #333c50;
+    --danger-color: #f42e2e;
+    --safe-color:#03cb3f;
+    --button-color:#a6acb3;
+}
+
+
+.navbar {
+    background-color: var(--navbar-bg-color);
+    color: var(--navbar-text-color);
+}
+
+.navlink {
+    color: var(--navbar-text-color);
+    transition: color 0.3s ease;
+    text-decoration: none;
+}
+
+.navlink:hover {
+    color: var(--link-hover-color);
+}
+
+.navlink-active {
+    color: var(--active-link-color) !important;
+    font-weight: 800;
+    border-bottom: 2px solid var(--active-link-color); /* Optional underline/border for active */
+    text-decoration: none;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
