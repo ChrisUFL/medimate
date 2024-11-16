@@ -107,7 +107,7 @@ class NoteController extends Controller
                 /** @var PatientDocument $result */
                 $documentUrls[] = [
                     //'/user_documents/'.$result->file_id.'.'.$result->extension
-                    'url' => Storage::url('/user_documents/'.$result->file_id.'.'.$result->extension),
+                    'url' => Storage::disk('r2')->url('user_documents/'.$result->file_id.'.'.$result->extension),
                     'file_name' => $result->original_name,
                 ];
             });
