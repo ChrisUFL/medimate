@@ -8,7 +8,6 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -29,13 +28,19 @@ use Illuminate\Notifications\Notifiable;
  * @property string $phone_number
  * @property string $address
  * @property string $language
- *
  * @property-read Note $note
  * @property-read Company $company
  */
-class User extends Authenticatable implements HasName, FilamentUser
+class User extends Authenticatable implements FilamentUser, HasName
 {
     use HasFactory, Notifiable;
+
+    protected static function booted(): void
+    {
+        static::creating(static function (User $user) {
+            $user->avatar_url = fake()->imageUrl(100, 100);
+        });
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -49,7 +54,7 @@ class User extends Authenticatable implements HasName, FilamentUser
         'password',
         'date_of_birth',
         'avatar_url',
-       
+
     ];
 
     /**
@@ -113,8 +118,10 @@ class User extends Authenticatable implements HasName, FilamentUser
     {
         $firstName = ucfirst($this->first_name);
         $lastName = ucfirst($this->last_name);
+
         return "{$firstName} {$lastName}";
     }
+
     public function canAccessPanel(Panel $panel): bool
     {
         return str_ends_with($this->email, '@ufl.edu') /*&& $this->hasVerifiedEmail()*/;
@@ -124,5 +131,4 @@ class User extends Authenticatable implements HasName, FilamentUser
     {
         return $this->hasMany(CalendarEvent::class);
     }
-
 }
