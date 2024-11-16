@@ -36,7 +36,6 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-feature/add-reminders
             'auth' => [
                 'user' => $request->user(),
             ],
