@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Contact;
 
@@ -8,10 +9,10 @@ use Inertia\Inertia;
 
 class AddressBookController extends Controller
 {
-    //Get all the entries from the database
+    //Get all the entries from the database with proper logged in user
     public function index()
     {
-        $contacts = Contact::all();
+        $contacts = Contact::where('user_pk', Auth::id())->get();
         return Inertia::render('AddressBook', [
             'contacts' => $contacts,
         ]);
@@ -20,19 +21,19 @@ class AddressBookController extends Controller
     //Store new value contact into the databsae
     public function store(Request $request){
         $validatedData = $request->validate([
-            'user_pk' => 'required|integer',
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:255',
             'address' => 'required|string|max:255',
         ]);
+        $validatedData['user_pk'] = Auth::id();
         Contact::create($validatedData);
     }
 
     //Delete a contact from the databsae
     public function delete(Request $request)
     {
-        $deletedRows = Contact::where('user_pk', $request->user_pk)
+        $deletedRows = Contact::where('user_pk', Auth::id())
                               ->where('name', $request->name)
                               ->where('email', $request->email)
                               ->where('address', $request->address)
