@@ -15,7 +15,6 @@ use App\Http\Controllers\Provider\DashboardController;
 use App\Http\Middleware\EmployeeMiddleware;
 use App\Http\Controllers\AddressBookController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AddressBookController;
 
 Route::get('/', [HomeController::class, 'index'])->name('web.home');
 Route::middleware('auth')->group(static function () {
