@@ -13,10 +13,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Provider\AppointmentController as ProviderAppointments;
 use App\Http\Controllers\Provider\DashboardController;
 use App\Http\Middleware\EmployeeMiddleware;
+use App\Http\Controllers\AddressBookController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AddressBookController;
 
 Route::get('/', [HomeController::class, 'index'])->name('web.home');
-
 Route::middleware('auth')->group(static function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -45,3 +46,8 @@ Route::middleware([
 
 require __DIR__.'/auth.php';
 
+Route::get('/addressbook', [AddressBookController::class, 'index'])->name('web.addressbook');
+//Route used to add new data for the contact book
+Route::post('/addressbook', [AddressBookController::class, 'store'])->name('store.addressbook');
+//Route used to delete data for the contact book
+Route::delete('/addressbook', [AddressBookController::class, 'delete']);
