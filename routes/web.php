@@ -26,6 +26,9 @@ Route::middleware('auth')->group(static function () {
     Route::get('/fitness', [FitnessController::class, 'index'])->name('web.fitness');
     Route::resource('notes', NoteController::class);
     Route::resource('reminder', CalendarEventController::class);
+    Route::get('/addressbook', [AddressBookController::class, 'index'])->name('web.addressbook');
+    Route::post('/addressbook', [AddressBookController::class, 'store'])->name('store.addressbook');
+    Route::delete('/addressbook', [AddressBookController::class, 'delete']);
 });
 
 Route::middleware([
@@ -45,8 +48,4 @@ Route::middleware([
 
 require __DIR__.'/auth.php';
 
-Route::get('/addressbook', [AddressBookController::class, 'index'])->name('web.addressbook');
-//Route used to add new data for the contact book
-Route::post('/addressbook', [AddressBookController::class, 'store'])->name('store.addressbook');
-//Route used to delete data for the contact book
-Route::delete('/addressbook', [AddressBookController::class, 'delete']);
+

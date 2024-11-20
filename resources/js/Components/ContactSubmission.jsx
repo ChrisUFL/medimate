@@ -56,9 +56,10 @@ const ContactSubmission  = ({
         e.preventDefault();
         try {
             const response = await axios.post('/addressbook', formData);
+            console.log(response);
             toast.success("Contact created successfully");
         } catch (error) {
-            toast.error("Error creating contact");
+            toast.error("Error creating contact:", error);
         }
         values = {};
     };
@@ -77,9 +78,10 @@ const ContactSubmission  = ({
                     phone: formData.phone 
                 } 
             });
+            console.log(response)
             toast.info("Contact deleted successfully");
         } catch (error) {
-            toast.error("Error deleting contact.");
+            toast.error("Error deleting contact: ", error);
         }
         
     };
@@ -101,15 +103,17 @@ const ContactSubmission  = ({
                     phone: values.phone 
                 } 
             });
+            console.log(response)
         } catch (error) {
-            toast.error("Error updating contact.");
+            toast.error("Error updating contact:", error);
         }
         //Step 2 is to add the updated data
         try {
             const response = await axios.post('/addressbook', formData);
+            console.log(response)
             toast.success("Contact updated successfully");
         } catch (error) {
-            toast.error("Error updating contact.");
+            toast.error("Error updating contact: ", error);
         }
     }
     
