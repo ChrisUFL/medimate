@@ -23,9 +23,23 @@ const AddressBook = ({contacts}) => {
     const[emailDefault, setEmailDefault]= useState('');
     const [open, toggleModal] = useState(false);
 
+    const openModal = () =>{
+        toggleModal(true);
+    }
+
+    const closeModal = () =>{
+        toggleModal(false);
+        setNameDefault('');
+        setEmailDefault('');
+        setPhoneDefault('');
+        setAddressDefault('');
+        // changeModalOpen(false);
+    }
+
 //opens or closes the modal
     const changeModalState = () => {
         toggleModal(!open);
+        console.log("after change", open)
         if(modalOpen){
             setNameDefault('');
             setEmailDefault('');
@@ -41,14 +55,18 @@ const AddressBook = ({contacts}) => {
         { field: 'name', headerName: 'Name', flex: 1, filter: 'agTextColumnFilter' },
         { field: 'email', headerName: 'Email', flex: 1, filter: 'agTextColumnFilter' },
         { field: 'phone', headerName: 'Phone', flex: 1, filter: 'agTextColumnFilter'},
-        { field: 'address', headerName: 'Address', flex: 1,filter: 'agTextColumnFilter' },
-        { headerName: 'Edit',   flex: 0.25,checkboxSelection: true }
+        { field: 'address', headerName: 'Address', flex: 1,filter: 'agTextColumnFilter' }
       ]);
 
 //default settings for rows in the grid
 const gridOptions = {
     rowHeight: 50,
     headerHeight: 50,
+    rowSelection: {
+        checkboxes: false,
+        enableClickSelection: true,
+        mode: 'singleRow'
+    }
 }
     
 //performs filtering on the table based on the search bar
@@ -58,14 +76,14 @@ const gridOptions = {
 
 //call to edit row value. updates the form data with the values in the row
     const editRow = (event) => {
+        openModal();
         const row = event.api.getSelectedRows();
         setNameDefault(row[0].name);
         setEmailDefault(row[0].email);
         setPhoneDefault(row[0].phone);
         setAddressDefault(row[0].address);
-        changeModalState();
         event.api.deselectAll();
-        changeModalOpen(true);
+        
         
     };
 
@@ -76,7 +94,7 @@ const gridOptions = {
             {/* NavBar Default to all pages */}
             <Navbar />
             {/* Modal (pop up) confiruation and set up  */}
-            <Modal  open={open} onClose={changeModalState} >                
+            <Modal  open={open} onClose={closeModal} >                
             <Box
                     sx={{
                         position: 'absolute',
@@ -93,7 +111,7 @@ const gridOptions = {
                     }}
                 >
                     <div className = "w-full">
-                        <h1 className="cursor-pointer text-white rounded-full w-10 h-10 flex items-center justify-center p-2 float-right" onClick={changeModalState} style={{ backgroundColor: '#1d4ed8'}}><b>X</b></h1>
+                        <h1 className="cursor-pointer text-white rounded-full w-10 h-10 flex items-center justify-center p-2 float-right" onClick={closeModal} style={{ backgroundColor: '#1d4ed8'}}><b>X</b></h1>
                     </div>
                     {/*Form used to add, edit, or delete values. For latter two options provides the values of the content in the selected row */}
                     <ContactSubmission values={{ name: nameDefault, email: emailDefault, phone: phoneDefault, address : addressDefault }} />
@@ -105,7 +123,7 @@ const gridOptions = {
             <div className = "flex justify-center items-center flex-row ">
                 <div className = "flex justify-between items-center flex-row  w-4/5">
                     <input onChange = {filterData}className = "border border-solid rounded-md w-full p-4 mr-4" type="text" placeholder = "Search..."/>
-                    <button onClick = {changeModalState} className="border border-solid rounded-md p-4 text-white bg-[#1d4ed8] whitespace-nowrap"> Add New Contact </button>
+                    <button onClick = {openModal} className="border border-solid rounded-md p-4 text-white bg-[#1d4ed8] whitespace-nowrap"> Add New Contact </button>
 
                 </div>
             </div>
