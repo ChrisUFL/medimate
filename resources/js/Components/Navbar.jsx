@@ -4,7 +4,6 @@ import Navlink from "./Navlink";
 import logoLight from "../../../public/static/images/logo.svg";
 import logoDark from "../../../public/static/images/logo-dark.svg";
 import { FaSun, FaMoon } from "react-icons/fa";
-import axios from "axios";
 
 const Navbar = () => {
     const { auth } = usePage().props;
@@ -65,12 +64,10 @@ const Navbar = () => {
                 <div className="flex gap-5 links">
                     <Navlink name="Home" routeName="web.home" />
                     <Navlink name="Medications" routeName="web.medications" />
-                    <Navlink
-                        name="Medication Reminders"
-                        routeName="reminder.index"
-                    />
+                    <Navlink name="Medication Reminders" routeName="reminder.index"/>
                     <Navlink name="Notes" routeName="notes.index" />
                     <Navlink name="Fitness" routeName="web.fitness" />
+                    <Navlink name="Contact Book" routeName="web.addressbook" />
                 </div>
 
                 <div className="flex items-center gap-5 account">

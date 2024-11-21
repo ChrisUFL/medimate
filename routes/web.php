@@ -13,10 +13,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Provider\AppointmentController as ProviderAppointments;
 use App\Http\Controllers\Provider\DashboardController;
 use App\Http\Middleware\EmployeeMiddleware;
+use App\Http\Controllers\AddressBookController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('web.home');
-
 Route::middleware('auth')->group(static function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -26,6 +26,9 @@ Route::middleware('auth')->group(static function () {
     Route::get('/fitness', [FitnessController::class, 'index'])->name('web.fitness');
     Route::resource('notes', NoteController::class);
     Route::resource('reminder', CalendarEventController::class);
+    Route::get('/addressbook', [AddressBookController::class, 'index'])->name('web.addressbook');
+    Route::post('/addressbook', [AddressBookController::class, 'store'])->name('store.addressbook');
+    Route::delete('/addressbook', [AddressBookController::class, 'delete']);
 });
 
 Route::middleware([
@@ -44,4 +47,5 @@ Route::middleware([
 //Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
 require __DIR__.'/auth.php';
+
 
