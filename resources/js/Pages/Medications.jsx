@@ -51,9 +51,6 @@ const Medications = ({ labelingInfo: initialLabelingInfo, error: initialError, m
             Side Effects: ${adverse_reactions ? adverse_reactions.join(', ') : 'None'}
             `;
 
-            console.log('Generating summary with prompt:', prompt);
-            console.log(process.env);
-
             for (let attempt = 0; attempt < 5; attempt++) {
                 try {
                     const response = await axios.post(
