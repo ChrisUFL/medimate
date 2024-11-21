@@ -45,11 +45,11 @@ const Medications = ({ labelingInfo: initialLabelingInfo, error: initialError, m
 
             const { indications_and_usage, adverse_reactions } = labelingInfo;
             const prompt = `
-            Create a brief patient summary in the form of a paragraph for the following information:
+            Create a bulleted with hearders, for indication and usage and side effects,  of the following information:
             Indications and Usage: ${indications_and_usage ? indications_and_usage.join(', ') : 'None'}
             Also create a brief paragraph about the
             Side Effects: ${adverse_reactions ? adverse_reactions.join(', ') : 'None'}
-            `;
+            DO NOT include formatting like bold and italics.`;
 
             for (let attempt = 0; attempt < 5; attempt++) {
                 try {
@@ -122,24 +122,65 @@ const Medications = ({ labelingInfo: initialLabelingInfo, error: initialError, m
                     {/* Labeling Information */}
                     {labelingInfo && (
                         <div>
-                            <h2 className="text-2xl font-bold mb-4 text-gray-800">Readable Labeling Information</h2>
-                            <h3 className="text-xl font-semibold text-gray-800">Summary:</h3>
-                            {summary ? (
-                                <ul className="text-gray-800">
-                                    {summary.split('\n').map((point, index) => (
-                                        <li key={index}>{point}</li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p className="text-gray-800">Generating summary...</p>
-                            )}
+{summary ? (
+    <div>
+        {summary.split('\n').map((line, index) => {
+            // Check if the line is a header (ends with ":")
+            const isHeader = line.trim().endsWith(':');
+
+            if (isHeader) {
+                return (
+                    <h4
+                        key={index}
+                        style={{
+                            fontSize: '18px',
+                            fontWeight: 'bold',
+                            color: 'black',
+                            marginTop: '16px',
+                        }}
+                    >
+                        {line.replace(':', '')} 
+                    </h4>
+                );
+            } else if (line.trim().startsWith('-')) {
+                // Render list items if line starts with a dash ("-")
+                return (
+                    <li
+                        key={index}
+                        style={{
+                            color: 'gray',
+                            fontSize: '16px',
+                            marginLeft: '20px',
+                            listStyleType: 'disc',
+                        }}
+                    >
+                        {line.replace('-', '').trim()} 
+                    </li>
+                );
+            } else {
+                // Render any other lines as plain text (if necessary)
+                return (
+                    <p
+                        key={index}
+                        style={{
+                            color: 'gray',
+                            fontSize: '16px',
+                            marginTop: '8px',
+                        }}
+                    >
+                        {line.trim()}
+                    </p>
+                );
+            }
+        })}
+    </div>
+) : (
+    <p style={{ color: 'gray', fontSize: '16px' }}>Generating summary...</p>
+)}
                         </div>
                     )}
                 </section>
             </div>
-
-            {/* Footer */}
-            <Footer />
         </div>
     );
 };
