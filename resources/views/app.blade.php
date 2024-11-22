@@ -8,7 +8,7 @@
         @routes
 
         <!-- Main JS -->
-        <script src="{{ mix('js/app.jsx') }}" defer></script>
+        <script src="{{ mix('resources/js/app.jsx') }}" defer></script>
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
