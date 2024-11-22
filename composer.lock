@@ -3108,7 +3108,7 @@
                 "tijsverkoyen/css-to-inline-styles": "^2.2.5",
                 "vlucas/phpdotenv": "^5.4.1",
                 "voku/portable-ascii": "^2.0",
-                "fakerphp/faker": "^1.23",
+                "fakerphp/faker": "^1.23"
             },
             "conflict": {
                 "mockery/mockery": "1.6.8",
