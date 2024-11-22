@@ -8,8 +8,6 @@
         @routes
 
         <!-- Main JS -->
-        <script src="{{ mix('resources/js/app.jsx') }}" defer></script>
-
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
