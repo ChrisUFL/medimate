@@ -1,0 +1,43 @@
+[1mdiff --git a/package-lock.json b/package-lock.json[m
+[1mindex 9a38565..61af65b 100644[m
+[1m--- a/package-lock.json[m
+[1m+++ b/package-lock.json[m
+[36m@@ -1,5 +1,5 @@[m
+ {[m
+[31m-    "name": "medimate",[m
+[32m+[m[32m    "name": "Medimate",[m
+     "lockfileVersion": 3,[m
+     "requires": true,[m
+     "packages": {[m
+[36m@@ -1412,6 +1412,7 @@[m
+             "version": "6.1.8",[m
+             "resolved": "https://registry.npmjs.org/@mui/material/-/material-6.1.8.tgz",[m
+             "integrity": "sha512-QZdQFnXct+7NXIzHgT3qt+sQiO7HYGZU2vymP9Xl9tUMXEOA/S1mZMMb7+WGZrk5TzNlU/kP/85K0da5V1jXoQ==",[m
+[32m+[m[32m            "license": "MIT",[m
+             "dependencies": {[m
+                 "@babel/runtime": "^7.26.0",[m
+                 "@mui/core-downloads-tracker": "^6.1.8",[m
+[36m@@ -2139,6 +2140,7 @@[m
+             "version": "32.3.3",[m
+             "resolved": "https://registry.npmjs.org/ag-grid-community/-/ag-grid-community-32.3.3.tgz",[m
+             "integrity": "sha512-KhSJ3B6mwRFA4cLjNjOZkDndJBh8o83794ZHl4Q7xP9MJf43oCN9qoZ8pyBanohgpVfLcP0scYYCr9xIlzjdiA==",[m
+[32m+[m[32m            "license": "MIT",[m
+             "dependencies": {[m
+                 "ag-charts-types": "10.3.3"[m
+             }[m
+[36m@@ -2147,6 +2149,7 @@[m
+             "version": "32.3.3",[m
+             "resolved": "https://registry.npmjs.org/ag-grid-react/-/ag-grid-react-32.3.3.tgz",[m
+             "integrity": "sha512-0u6oYoSHf7P2eRgK8FtnXix+bW8hcbiGXhYhg+UpYJHNlKug+spNqjGSzX43f70AZ2QpOBLsL7Bz2FPsadv3HA==",[m
+[32m+[m[32m            "license": "MIT",[m
+             "dependencies": {[m
+                 "ag-grid-community": "32.3.3",[m
+                 "prop-types": "^15.8.1"[m
+[36m@@ -5491,6 +5494,7 @@[m
+             "version": "10.0.6",[m
+             "resolved": "https://registry.npmjs.org/react-toastify/-/react-toastify-10.0.6.tgz",[m
+             "integrity": "sha512-yYjp+omCDf9lhZcrZHKbSq7YMuK0zcYkDFTzfRFgTXkTFHZ1ToxwAonzA4JI5CxA91JpjFLmwEsZEgfYfOqI1A==",[m
+[32m+[m[32m            "license": "MIT",[m
+             "dependencies": {[m
+                 "clsx": "^2.1.0"[m
+             },[m
