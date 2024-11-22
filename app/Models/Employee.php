@@ -24,6 +24,13 @@ class Employee extends Model
 
     protected $guarded = [];
 
+    protected function casts(): array
+    {
+        return [
+            'verified' => 'bool',
+        ];
+    }
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);

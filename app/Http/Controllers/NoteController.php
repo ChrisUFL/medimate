@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\NoteRequest;
 use App\Models\Note;
 use App\Models\PatientDocument;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -62,8 +63,7 @@ class NoteController extends Controller
                 $fileUpload = '';
 
                 try {
-                    $fileUpload = Storage::disk('s3')
-                        ->putFileAs('/', $file, 'user_documents/'.$fileUUID.'.'.$fileType, 'public');
+                    $fileUpload = Storage::disk('r2')->putFileAs('/', $file, 'user_documents/'.$fileUUID.'.'.$fileType, 'public');
                 } catch (\Exception $e) {
                     Log::info($e);
                 }
@@ -100,12 +100,25 @@ class NoteController extends Controller
             abort(403);
         }
 
+        $documentUrls = [];
+        PatientDocument::query()
+            ->where('note_id', '=', $id)
+            ->each(static function ($result) use (&$documentUrls) {
+                /** @var PatientDocument $result */
+                $documentUrls[] = [
+                    //'/user_documents/'.$result->file_id.'.'.$result->extension
+                    'url' => Storage::disk('r2')->url('user_documents/'.$result->file_id.'.'.$result->extension),
+                    'file_name' => $result->original_name,
+                ];
+            });
+
         /** @var Note $note */
         return Inertia::render('Notes/Show', [
             'note_id' => $note->id,
             'note_title' => $note->title,
             'note_content' => $note->content,
             'note_owner' => $note->user_id,
+            'documents' => $documentUrls,
         ]);
     }
 
@@ -138,6 +151,7 @@ class NoteController extends Controller
      */
     public function update(NoteRequest $request, string $id)
     {
+        // Find the note and update it if it exists
         $note = Note::firstWhere('id', '=', $id);
         $userId = $request->user()->id;
         $validated = $request->validated();
@@ -159,14 +173,26 @@ class NoteController extends Controller
     public function destroy(Request $request, string $id)
     {
         $note = Note::firstWhere('id', '=', $id);
+        // If the note does not belong to the user attempting to delete it, throw a 403
         if (! $note || $note->user_id !== $request->user()->id) {
             abort(403);
         }
 
         if ($note->delete()) {
+            $attachments = $note->documents;
+            foreach ($attachments as $attachment) {
+                /** @var PatientDocument $attachment */
+                Storage::disk('r2')->delete($this->getDocumentName($attachment));
+            }
+
             return redirect(route('notes.index'));
         }
 
         return redirect()->back();
+    }
+
+    private function getDocumentName(PatientDocument $document): string
+    {
+        return 'user_documents/'.$document->file_id.'.'.$document->extension;
     }
 }

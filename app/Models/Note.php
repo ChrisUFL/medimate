@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property Carbon $updated_at
  *
  * @property-read User $user
+ * @property-read Note[]|null $documents
  */
 class Note extends Model
 {

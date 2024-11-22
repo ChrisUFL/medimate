@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PatientRequest;
 use App\Http\Requests\PatientUpdateRequest;
+use App\Jobs\SendPasswordResetEmailJob;
 use App\Models\Appointment;
 use App\Models\ChartEntry;
 use App\Models\Patient;
@@ -63,12 +64,12 @@ class PatientController extends Controller
         $user = User::firstWhere('email', '=', $validated['email']);
         if (! $user) {
             $user = User::create($validated);
-            // dispatch(new SendPasswordResetEmailJob($validated['email']));
+            dispatch(new SendPasswordResetEmailJob($validated['email']));
         }
 
         Patient::create([
             'user_id' => $user->id,
-            'company_id' => 1, ]);
+            'company_id' => $companyId]);
 
         return redirect()->route('patients.index');
     }
@@ -86,10 +87,8 @@ class PatientController extends Controller
         /** @var User $patientUser */
         $patientUser = $patient->user()->first();
         $appointments = Appointment::query()
-            ->where('patient_id', '=', $id)
-            ->where('appointment_time', '>=', Carbon::now())
+            ->where('patient_id', '=', $patient->id)
             ->orderBy('appointment_time')
-            ->limit(10)
             ->get();
 
         return Inertia::render('Provider/Patients/Show', [

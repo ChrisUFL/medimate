@@ -3,10 +3,15 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
+    private const FLAG_PROVIDER = 1 << 0;
+
+    private const FLAG_ADMIN = 1 << 1;
+
     /**
      * The root template that is loaded on the first page visit.
      *
@@ -34,6 +39,25 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'flags' => $this->getUserFlags($request),
         ];
+    }
+
+    private function getUserFlags(Request $request): ?int
+    {
+        if (! $request->user()) {
+            return null;
+        }
+
+        $accountFlags = 0;
+        if ($request->user()->employee) {
+            $accountFlags |= self::FLAG_PROVIDER;
+        }
+
+        if (str_contains($request->user()->email, 'ufl.edu')) {
+            $accountFlags |= self::FLAG_ADMIN;
+        }
+
+        return $accountFlags;
     }
 }

@@ -14,9 +14,9 @@ function Logout({ className }) {
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Log out</h2>
+                <h2 className="text-lg font-medium text-[var(--text-color)]">Log out</h2>
 
-                <p className="mt-1 text-sm text-gray-600">
+                <p className="mt-1 text-sm text-[var(--safe-color)]">
                     Protect your privacy by logging out when you're done.
                 </p>
             </header>

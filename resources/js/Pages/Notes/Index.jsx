@@ -27,15 +27,19 @@ const Notes = ({ notes, search_term }) => {
         );
     }
 
+    // Map each note to a new element
     const content = notes.data.map((note) => {
         let note_content = note.content.substring(0, 85).trim();
         note_content += note.content.length > 50 ? "..." : "";
 
         return (
-            <tr key={note.id}>
+            <tr
+                key={note.id}
+                className="bg-[var(--background-color)] text-[var(--text-color)]"
+            >
                 <td className="px-6 py-3">{note.title}</td>
                 <td className="px-6 py-3">{note_content}</td>
-                <td className="px-6 py-3 flex justify-center">
+                <td className="flex justify-center px-6 py-3">
                     <Link href={route("notes.show", { note: note.id })}>
                         <FaLink />
                     </Link>
@@ -46,12 +50,12 @@ const Notes = ({ notes, search_term }) => {
 
     return (
         <SimpleLayout title="Notes">
-            <div className="mt-3 flex-col w-[1000px]">
+            <div className="mt-3 flex-col w-[1000px] bg-[var(--submenu-bg-color)] text-[var(--text-color)] p-4 rounded-lg">
                 <div className="flex justify-between drop-shadow-lg">
                     <div className="flex mb-1">
                         <input
                             type="text"
-                            className="h-9 rounded"
+                            className="h-9 rounded bg-[var(--background-color)] text-[var(--text-color)] placeholder-[var(--placeholder-text-color)]"
                             placeholder="Search"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -60,7 +64,7 @@ const Notes = ({ notes, search_term }) => {
                         <div className="h-9 flex items-center absolute left-[170px]">
                             <FaSearch
                                 onClick={search}
-                                className="text-slate-300 cursor-pointer"
+                                className="text-[var(--text-color)] cursor-pointer"
                             />
                         </div>
                     </div>
@@ -69,18 +73,18 @@ const Notes = ({ notes, search_term }) => {
                     </PrimaryButton>
                 </div>
 
-                <div className="relative overflow-x-auto">
-                    <table className="w-full text-md text-left">
-                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <div className="relative oveok rflow-x-auto bg-[var(--submenu-bg-color)] p-4 rounded-lg">
+                    <table className="w-full text-left text-md">
+                        <thead className="text-xs uppercase bg-[var(--navbar-bg-color)] text-[var(--navbar-text-color)]">
                             <tr>
                                 <th className="px-6 py-3">Title</th>
                                 <th className="px-6 py-3">Content</th>
-                                <th className="px-6 py-3 flex justify-center">
+                                <th className="flex justify-center px-6 py-3">
                                     View
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white border-b">{content}</tbody>
+                        <tbody>{content}</tbody>
                     </table>
                     <Paginator
                         links={notes.links}
