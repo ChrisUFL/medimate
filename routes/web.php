@@ -6,6 +6,7 @@ use App\Http\Controllers\CalendarEventController;
 use App\Http\Controllers\Company\ChartsController;
 use App\Http\Controllers\Company\PatientController;
 use App\Http\Controllers\FitnessController;
+use App\Http\Controllers\FitnessDataController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MedicationController;
 use App\Http\Controllers\NoteController;
@@ -24,6 +25,11 @@ Route::middleware('auth')->group(static function () {
     Route::get('/appointments', [AppointmentController::class, 'index'])->name('web.appointments');
     Route::get('/medications', [MedicationController::class, 'index'])->name('web.medications');
     Route::get('/fitness', [FitnessController::class, 'index'])->name('web.fitness');
+
+    // Routes for handling fitness data (fetch and store)
+    Route::get('/fitness-data', [FitnessDataController::class, 'index'])->name('fitness.index');
+    Route::post('/fitness-data', [FitnessDataController::class, 'store'])->name('fitness.store');
+    Route::get('/fitness-dashboard', [FitnessDataController::class, 'dashboard'])->name('fitness.dashboard');
     Route::resource('notes', NoteController::class);
     Route::resource('reminder', CalendarEventController::class);
     Route::get('/addressbook', [AddressBookController::class, 'index'])->name('web.addressbook');
