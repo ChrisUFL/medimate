@@ -5,8 +5,6 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd()); // Load environment variables based on mode
 
-    console.log('Loaded env variables:', env); // Debug log to verify variables are loaded
-
     return {
         plugins: [
             laravel({
