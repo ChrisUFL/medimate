@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class PatientDocument extends Model
 {
     protected $guarded = [];
+
     protected function casts(): array
     {
         return [

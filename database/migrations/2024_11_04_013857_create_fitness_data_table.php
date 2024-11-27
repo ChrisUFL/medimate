@@ -23,4 +23,3 @@ class CreateFitnessDataTable extends Migration
         Schema::dropIfExists('fitness_data');
     }
 }
-

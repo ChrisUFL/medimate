@@ -2,15 +2,12 @@
 
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
-use App\Models\Company;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PatientRelationManager extends RelationManager
 {

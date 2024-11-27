@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\NoteRequest;
 use App\Models\Note;
 use App\Models\PatientDocument;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -55,6 +54,7 @@ class NoteController extends Controller
 
         /** @var Note $note */
         $note = $request->user()->notes()->create($validated);
+        /* @phpstan-ignore-next-line */
         if ($note && $files) {
             foreach ($files as $file) {
                 $fileName = $file->getClientOriginalName();

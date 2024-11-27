@@ -19,6 +19,7 @@ class ScheduleSmsReminders implements ShouldQueue
 
     public function handle(): void
     {
+        // Get all calendar events that are scheduled between the current time and in one minute and send the reminders
         CalendarEvent::query()
             ->where('datetime', '>', Carbon::now())
             ->where('datetime', '<=', Carbon::now()->addMinute())

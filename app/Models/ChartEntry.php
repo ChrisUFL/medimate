@@ -17,12 +17,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Carbon $visit_date
  * @property Carbon $created_at
  * @property Carbon $updated_at
- *
  * @property-read User $patient_id
  */
-class ChartEntry extends Model {
-
+class ChartEntry extends Model
+{
     use HasFactory;
+
     protected $guarded = [];
 
     protected function casts(): array

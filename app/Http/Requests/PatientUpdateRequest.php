@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Log;
 
 class PatientUpdateRequest extends FormRequest
 {
@@ -14,7 +13,7 @@ class PatientUpdateRequest extends FormRequest
             'last_name' => ['required', 'string', 'min:2', 'max:255'],
             'email' => ['required', 'email', 'min:5', 'max:255'],
             'date_of_birth' => ['required', 'date'],
-            'phone_number' => ['required', 'string', 'min:12', 'max:12'],
+            'phone_number' => ['required', 'string', 'min:10', 'max:12'],
             'gender' => ['required', 'string', 'max:255'],
             'language' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string', 'min:10', 'max:255'],

@@ -14,7 +14,6 @@ use Illuminate\Support\Carbon;
  * @property bool $verified
  * @property Carbon $created_at
  * @property Carbon $updated_at
- *
  * @property-read Company $company_id
  * @property-read User $user_id
  */

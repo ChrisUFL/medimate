@@ -1,4 +1,6 @@
-<?php /** @noinspection ALL */
+<?php
+
+/** @noinspection ALL */
 
 namespace App\Http\Controllers\Provider;
 
@@ -9,9 +11,7 @@ use App\Models\Company;
 use App\Models\Employee;
 use App\Models\Patient;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class AppointmentController extends Controller
@@ -80,7 +80,7 @@ class AppointmentController extends Controller
     {
         $validated = $request->validated();
         $company_id = Employee::firstWhere('user_id', '=', $request->user()->id)->company_id;
-        if (!$company_id) {
+        if (! $company_id) {
             abort(403);
         }
 
@@ -102,10 +102,12 @@ class AppointmentController extends Controller
             ->pluck('user_id')
             ->toArray();
 
+        // Ensure the company has employees
         if (! $employeeIds) {
             abort(404);
         }
 
+        // Ensure the user is authorized to see the resource.
         if (! in_array($request->user()?->id, $employeeIds)) {
             abort(403);
         }
@@ -124,10 +126,10 @@ class AppointmentController extends Controller
         $appointment = Appointment::firstWhere('id', '=', $id);
         $employeeInfo = Company::query()
             ->select([
-                'employees.id AS employee_id', 'employees.first_name', 'employees.last_name'
+                'employees.id AS employee_id', 'employees.first_name', 'employees.last_name',
             ])
             ->join('appointments', 'companies.id', '=', 'appointments.company_id')
-            ->join('employees','companies.id','=', 'employees.company_id')
+            ->join('employees', 'companies.id', '=', 'employees.company_id')
             ->groupBy('employees.id', 'employees.first_name', 'employees.last_name')
             ->get();
 
@@ -138,7 +140,7 @@ class AppointmentController extends Controller
         $patient = $appointment->patient->user;
 
         $employeesArray = [];
-        $employeeInfo->each(static function ($result) use (& $employeesArray) {
+        $employeeInfo->each(static function ($result) use (&$employeesArray) {
             $employeesArray[] = [
                 'id' => $result->employee_id,
                 'first_name' => $result->first_name,
@@ -160,12 +162,12 @@ class AppointmentController extends Controller
     public function update(AppointmentRequest $request, $id)
     {
         $validated = $request->validated();
-
         $appointment = Appointment::firstWhere('id', '=', $id);
         if (! $appointment) {
             abort(404);
         }
-         $appointment->update([
+
+        $appointment->update([
             'employee_id' => $validated['doctorId'],
             'appointment_time' => $validated['isoTime'],
         ]);

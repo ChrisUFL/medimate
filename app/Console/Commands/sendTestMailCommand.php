@@ -12,7 +12,6 @@ class sendTestMailCommand extends Command
 
     protected $description = 'Command description';
 
-
     public function handle(): void
     {
         Mail::to('')->send(new test);

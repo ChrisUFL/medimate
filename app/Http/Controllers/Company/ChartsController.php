@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChartEntryRequest;
 use App\Models\ChartEntry;
-use App\Models\Patient;
 
 class ChartsController extends Controller
 {

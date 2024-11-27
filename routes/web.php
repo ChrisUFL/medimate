@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressBookController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\CalendarEventController;
@@ -14,7 +15,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Provider\AppointmentController as ProviderAppointments;
 use App\Http\Controllers\Provider\DashboardController;
 use App\Http\Middleware\EmployeeMiddleware;
-use App\Http\Controllers\AddressBookController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('web.home');
@@ -48,10 +48,6 @@ Route::middleware([
     Route::patch('/chart/{id}', [ChartsController::class, 'update'])->name('chart-entry.update');
 });
 
-
-
 //Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
 require __DIR__.'/auth.php';
-
-

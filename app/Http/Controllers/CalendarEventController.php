@@ -38,6 +38,7 @@ class CalendarEventController extends Controller
                 $datetime = Carbon::parse($result['datetime']);
                 $eventDate = $datetime->toDateString();
                 $currentDateEvents = [];
+                /* @phpstan-ignore-next-line */
                 if (array_key_exists($eventDate, $events) && is_array($events[$eventDate])) {
                     $currentDateEvents = $events[$eventDate];
                 }
